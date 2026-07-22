@@ -1,0 +1,88 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 5rem 1.5rem 3rem;
+}
+
+.content {
+  max-width: 640px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.header {
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-active);
+  margin-bottom: 0.35rem;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.actionCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.actionCard:hover {
+  border-color: var(--accent);
+  background: var(--card-bg-accent);
+}
+
+.actionIcon {
+  font-size: 1.5rem;
+}
+
+.actionLabel {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-active);
+}
+
+.actionDesc {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.signOutBtn {
+  width: 100%;
+  height: 44px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.signOutBtn:hover {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
