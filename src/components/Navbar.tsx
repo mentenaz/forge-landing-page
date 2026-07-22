@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { getUser, signOut } from "@/lib/twin-auth";
+import { twin } from "@/lib/twin";
 import styles from "./Navbar.module.css";
 
 const navLinks = [
@@ -18,14 +19,30 @@ export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [user, setUser] = useState<{ id: string; email: string } | null>(null);
+  const [displayName, setDisplayName] = useState<string>("");
 
   useEffect(() => {
-    setUser(getUser());
+    const u = getUser();
+    setUser(u);
+
+    if (u) {
+      twin
+        .from("profiles")
+        .select("name")
+        .eq("id", u.id)
+        .single()
+        .then(({ data }) => {
+          setDisplayName(data?.name || u.email);
+        });
+    } else {
+      setDisplayName("");
+    }
   }, [pathname]);
 
   const handleSignOut = async () => {
     await signOut();
     setUser(null);
+    setDisplayName("");
     router.push("/");
   };
 
@@ -62,7 +79,7 @@ export function Navbar() {
           {user ? (
             <div className={styles.authArea}>
               <Link href="/profile" className={styles.userEmail}>
-                {user.email}
+                {displayName}
               </Link>
               <button className={styles.authBtn} onClick={handleSignOut}>
                 Sign out
