@@ -192,7 +192,7 @@ export default function ForgeAIChat() {
             <img src="/forge-logo.png" alt="" className={styles.homeLogo} />
           </Link>
           <Link href="/ai" className={styles.brand}>
-            {"\u26A1"} Mentenaz AI
+            <img src="/icons/AITwin.png" alt="" className={styles.brandIcon} />
           </Link>
         </div>
         <div className={styles.modes}>
