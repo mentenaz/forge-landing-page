@@ -13,6 +13,11 @@ import Footer from "@/components/Footer";
 import styles from "./page.module.css";
 
 const notesSchema = z.object({
+	name: z
+		.string()
+		.max(100, "Name must be under 100 characters")
+		.optional()
+		.or(z.literal("")),
 	notes: z
 		.string()
 		.max(1000, "Notes must be under 1000 characters")
@@ -25,6 +30,7 @@ type NotesFormData = z.infer<typeof notesSchema>;
 interface Profile {
 	id: string;
 	email: string;
+	name: string | null;
 	status: string;
 	plan: string;
 	is_admin: string;
@@ -98,7 +104,7 @@ export default function ProfilePage() {
 
 	useEffect(() => {
 		if (profile) {
-			reset({ notes: profile.notes || "" });
+			reset({ name: profile.name || "", notes: profile.notes || "" });
 		}
 	}, [profile, reset]);
 
@@ -185,7 +191,10 @@ export default function ProfilePage() {
 
 		const { error: updateError } = await twin
 			.from("profiles")
-			.update({ notes: data.notes || null })
+			.update({
+				name: data.name || null,
+				notes: data.notes || null,
+			})
 			.eq("id", profile.id);
 
 		if (updateError) {
@@ -194,7 +203,9 @@ export default function ProfilePage() {
 		}
 
 		setProfile((prev) =>
-			prev ? { ...prev, notes: data.notes || null } : prev,
+			prev
+				? { ...prev, name: data.name || null, notes: data.notes || null }
+				: prev,
 		);
 		setSaved(true);
 		setTimeout(() => setSaved(false), 3000);
@@ -205,7 +216,14 @@ export default function ProfilePage() {
 		router.push("/");
 	};
 
-	const initials = profile?.email?.[0]?.toUpperCase() || "?";
+	const initials = profile?.name
+		? profile.name
+				.split(" ")
+				.map((n) => n[0])
+				.join("")
+				.toUpperCase()
+				.slice(0, 2)
+		: profile?.email?.[0]?.toUpperCase() || "?";
 
 	const joinDate = profile?.created_at
 		? new Date(profile.created_at).toLocaleDateString("en-US", {
@@ -301,6 +319,9 @@ export default function ProfilePage() {
 							</button>
 						)}
 
+						{profile.name && (
+							<div className={styles.profileName}>{profile.name}</div>
+						)}
 						<div className={styles.email}>{profile.email}</div>
 						<div className={styles.badges}>
 							<span className={`${styles.badge} ${styles.badgePlan}`}>
@@ -317,7 +338,7 @@ export default function ProfilePage() {
 						</div>
 					</div>
 
-					{saved && <div className={styles.saved}>Notes saved.</div>}
+					{saved && <div className={styles.saved}>Profile saved.</div>}
 					{error && <div className={styles.error}>{error}</div>}
 
 					<div className={styles.section}>
@@ -361,9 +382,28 @@ export default function ProfilePage() {
 					</div>
 
 					<div className={styles.section}>
-						<div className={styles.sectionTitle}>Notes</div>
+						<div className={styles.sectionTitle}>Personal Info</div>
 						<form onSubmit={handleSubmit(onSubmitNotes)}>
 							<div className={styles.field}>
+								<label className={styles.label} htmlFor="name">
+									Name
+								</label>
+								<input
+									id="name"
+									className={`${styles.input} ${errors.name ? styles.inputError : ""}`}
+									type="text"
+									placeholder="Your name"
+									{...register("name")}
+								/>
+								{errors.name && (
+									<span className={styles.fieldError}>{errors.name.message}</span>
+								)}
+							</div>
+
+							<div className={styles.field}>
+								<label className={styles.label} htmlFor="notes">
+									Notes
+								</label>
 								<textarea
 									id="notes"
 									className={`${styles.input} ${styles.textarea} ${errors.notes ? styles.inputError : ""}`}
@@ -389,7 +429,7 @@ export default function ProfilePage() {
 									type="submit"
 									disabled={!isDirty || isSubmitting}
 								>
-									{isSubmitting ? "Saving..." : "Save Notes"}
+									{isSubmitting ? "Saving..." : "Save Profile"}
 								</button>
 							</div>
 						</form>

@@ -100,6 +100,13 @@
 	margin-top: 0.25rem;
 }
 
+.profileName {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--text);
+	margin-bottom: 0.15rem;
+}
+
 .badges {
 	display: flex;
 	gap: 0.5rem;
