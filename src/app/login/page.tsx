@@ -38,7 +38,7 @@ export default function LoginPage() {
 		setServerError("");
 		try {
 			await signIn(data.email, data.password);
-			router.push("/ai/chat");
+			router.push("/dashboard");
 		} catch (err: any) {
 			setServerError(err.message || "Invalid credentials");
 		}
