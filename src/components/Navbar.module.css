@@ -105,3 +105,113 @@
 	border-color: var(--accent);
 	background: rgba(147, 51, 234, 0.1);
 }
+
+/* Mobile hamburger */
+.hamburger {
+	display: none;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0.5rem;
+}
+
+.hamburgerLine {
+	display: block;
+	width: 20px;
+	height: 2px;
+	background: var(--text-secondary);
+	margin: 4px 0;
+	transition: all 0.2s ease;
+}
+
+.mobileMenu {
+	display: none;
+	position: fixed;
+	top: 60px;
+	left: 0;
+	right: 0;
+	background: rgba(10, 10, 15, 0.95);
+	backdrop-filter: blur(12px);
+	border-bottom: 1px solid var(--border);
+	padding: 1rem 1.5rem;
+	z-index: 99;
+}
+
+.mobileMenuOpen {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.mobileLink {
+	font-family: var(--font-body);
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--text-secondary);
+	text-decoration: none;
+	padding: 0.5rem 0;
+	transition: color var(--transition-fast);
+}
+
+.mobileLink:hover {
+	color: var(--accent-light);
+}
+
+.mobileAuthArea {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	margin-top: 0.5rem;
+	padding-top: 0.5rem;
+	border-top: 1px solid var(--border);
+}
+
+.mobileUserEmail {
+	font-size: 14px;
+	color: var(--text-secondary);
+	text-decoration: none;
+	padding: 0.5rem 0;
+}
+
+.mobileSignOutBtn {
+	padding: 0.75rem;
+	background: transparent;
+	color: var(--text-secondary);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	text-align: center;
+}
+
+.mobileSignInLink {
+	display: block;
+	padding: 0.75rem;
+	background: var(--accent);
+	color: #fff;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	text-align: center;
+}
+
+@media (max-width: 768px) {
+	.hamburger {
+		display: block;
+	}
+
+	.links {
+		display: none;
+	}
+
+	.brandText {
+		font-size: 1rem;
+	}
+
+	.logo {
+		width: 32px;
+		height: 32px;
+	}
+}

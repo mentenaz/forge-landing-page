@@ -334,3 +334,50 @@
 .btnDanger:hover:not(:disabled) {
 	background: color-mix(in srgb, #ef4444 8%, transparent);
 }
+
+/* Responsive */
+@media (max-width: 640px) {
+	.main {
+		padding: 5rem 1rem 2rem;
+	}
+
+	.card {
+		padding: 1.5rem;
+		border-radius: 12px;
+	}
+
+	.avatarWrap {
+		width: 72px;
+		height: 72px;
+	}
+
+	.profileName {
+		font-size: 1.1rem;
+	}
+
+	.badges {
+		gap: 0.35rem;
+	}
+
+	.badge {
+		font-size: 0.7rem;
+		padding: 0.2rem 0.6rem;
+	}
+
+	.actions {
+		flex-direction: column;
+	}
+
+	.btn {
+		width: 100%;
+		justify-content: center;
+	}
+
+	.metaRow {
+		font-size: 0.8rem;
+	}
+
+	.sectionTitle {
+		font-size: 0.75rem;
+	}
+}

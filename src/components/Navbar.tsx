@@ -20,6 +20,7 @@ export function Navbar() {
   const router = useRouter();
   const [user, setUser] = useState<{ id: string; email: string } | null>(null);
   const [displayName, setDisplayName] = useState<string>("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const u = getUser();
@@ -43,7 +44,12 @@ export function Navbar() {
     await signOut();
     setUser(null);
     setDisplayName("");
+    setMobileMenuOpen(false);
     router.push("/");
+  };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
@@ -94,6 +100,40 @@ export function Navbar() {
             </Link>
           )}
         </div>
+
+        <button className={styles.hamburger} onClick={toggleMobileMenu} aria-label="Toggle menu">
+          <span className={styles.hamburgerLine}></span>
+          <span className={styles.hamburgerLine}></span>
+          <span className={styles.hamburgerLine}></span>
+        </button>
+      </div>
+
+      <div className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.mobileMenuOpen : ""}`}>
+        {navLinks.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className={styles.mobileLink}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            {link.label}
+          </Link>
+        ))}
+
+        {user ? (
+          <div className={styles.mobileAuthArea}>
+            <Link href="/profile" className={styles.mobileUserEmail} onClick={() => setMobileMenuOpen(false)}>
+              {displayName}
+            </Link>
+            <button className={styles.mobileSignOutBtn} onClick={handleSignOut}>
+              Sign out
+            </button>
+          </div>
+        ) : (
+          <Link href="/login" className={styles.mobileSignInLink} onClick={() => setMobileMenuOpen(false)}>
+            Sign in
+          </Link>
+        )}
       </div>
     </nav>
   );

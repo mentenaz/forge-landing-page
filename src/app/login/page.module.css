@@ -143,3 +143,23 @@
 .footer a:hover {
   text-decoration: underline;
 }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .page {
+    padding: 5rem 1rem 2rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .logo {
+    width: 48px;
+    height: 48px;
+  }
+}

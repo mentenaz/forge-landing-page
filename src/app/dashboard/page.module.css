@@ -86,3 +86,34 @@
   color: var(--color-danger);
   border-color: var(--color-danger);
 }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .page {
+    padding: 5rem 1rem 2rem;
+  }
+
+  .title {
+    font-size: 1.4rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
+  }
+
+  .actionCard {
+    padding: 1.25rem;
+  }
+
+  .actionLabel {
+    font-size: 0.95rem;
+  }
+
+  .actionDesc {
+    font-size: 12px;
+  }
+}
