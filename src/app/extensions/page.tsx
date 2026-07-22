@@ -35,6 +35,9 @@ export default async function ExtensionsPage() {
 				<p className={styles.heroSubtitle}>
 					Extend Forge with community-built integrations and tools.
 				</p>
+				<div className={styles.notice}>
+					Coming soon in the official release. Stay tuned!
+				</div>
 			</section>
 
 			<section className={styles.content}>

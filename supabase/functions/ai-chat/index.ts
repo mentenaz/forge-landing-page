@@ -47,6 +47,15 @@ Deno.serve(async (req) => {
     const bearerToken = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
     const token = bearerToken || TWIN_KEY;
 
+    // Extract user ID from JWT payload when authenticated
+    let userId = "web-user";
+    if (bearerToken) {
+      try {
+        const payload = JSON.parse(atob(bearerToken.split(".")[1]));
+        userId = payload.sub ?? "web-user";
+      } catch {}
+    }
+
     const res = await fetch(`${TWIN_URL}/functions/v1/${endpoint}`, {
       method: "POST",
       headers: {
@@ -55,7 +64,7 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         message,
-        user_id: "web-user",
+        user_id: userId,
         project_context: "",
         source: "forge-site-web",
       }),

@@ -6,12 +6,12 @@ export default function Footer() {
 			<div className={styles.inner}>
 				<span className={styles.brand}>Mentenaz Forge</span>
 				<span className={styles.copy}>
-					&copy; {new Date().getFullYear()} Mentenaz. Open source under MIT.
+					&copy; {new Date().getFullYear()} Mentenaz.
 				</span>
 				<div className={styles.links}>
 					<a
 						className={styles.link}
-						href="https://github.com/mentenaz/mentenaz-forge"
+						href="https://github.com/mentenaz/forge-landing-page"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
@@ -19,7 +19,7 @@ export default function Footer() {
 					</a>
 					<a
 						className={styles.link}
-						href="https://github.com/mentenaz/mentenaz-forge/issues"
+						href="https://github.com/mentenaz/forge-landing-page/issues"
 						target="_blank"
 						rel="noopener noreferrer"
 					>

@@ -11,6 +11,7 @@ const navLinks = [
   { label: "AI", href: "/ai" },
   { label: "Extensions", href: "/extensions" },
   { label: "Download", href: "/#download" },
+  { label: "Newsletter", href: "/newsletter" },
 ];
 
 export function Navbar() {
@@ -60,7 +61,9 @@ export function Navbar() {
 
           {user ? (
             <div className={styles.authArea}>
-              <span className={styles.userEmail}>{user.email}</span>
+              <Link href="/profile" className={styles.userEmail}>
+                {user.email}
+              </Link>
               <button className={styles.authBtn} onClick={handleSignOut}>
                 Sign out
               </button>

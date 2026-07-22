@@ -62,19 +62,12 @@ export default function ForgeAIChat() {
   }, [messages]);
 
   const send = async () => {
-    if (!input.trim() || streamingRef.current) {
-      console.log("[chat] send blocked:", { empty: !input.trim(), alreadyStreaming: streamingRef.current });
-      return;
-    }
+    if (!input.trim() || streamingRef.current) return;
 
     // Debounce: prevent double-fire within 500ms
     const now = Date.now();
-    if (now - lastSendTime.current < 500) {
-      console.log("[chat] send blocked by debounce:", now - lastSendTime.current, "ms ago");
-      return;
-    }
+    if (now - lastSendTime.current < 500) return;
     lastSendTime.current = now;
-    console.log("[chat] send fired:", { message: input.trim().slice(0, 40) });
 
     // Guest mode: enforce limit
     if (!isAuthed && guestCount >= GUEST_LIMIT) return;
@@ -95,15 +88,11 @@ export default function ForgeAIChat() {
 
     const processSSELine = (line: string) => {
       const data = line.slice(6); // strip "data: "
-      if (data === "[DONE]") {
-        console.log("[chat] received [DONE]");
-        return false;
-      }
+      if (data === "[DONE]") return false;
       try {
         const parsed = JSON.parse(data);
         const text = parsed.chunk ?? "";
         if (text) {
-          console.log("[chat] chunk:", text.slice(0, 60));
           setMessages((prev) => {
             const updated = [...prev];
             const last = updated[updated.length - 1];
@@ -132,7 +121,6 @@ export default function ForgeAIChat() {
 
       if (token) {
         // Authenticated: use ai-chat Edge Function with user's JWT
-        console.log("[chat] fetch: authenticated mode");
         const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
         const res = await fetch(`${supabaseUrl}/functions/v1/ai-chat`, {
           method: "POST",
@@ -154,7 +142,6 @@ export default function ForgeAIChat() {
         }
       } else {
         // Guest: use guest-chat Edge Function (HuggingFace, no auth)
-        console.log("[chat] fetch: guest mode");
         const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
         const res = await fetch(`${supabaseUrl}/functions/v1/guest-chat`, {
           method: "POST",

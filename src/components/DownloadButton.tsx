@@ -9,7 +9,7 @@ interface DownloadButtonProps {
 }
 
 export default function DownloadButton({ icon, platform, filename, href }: DownloadButtonProps) {
-	const downloadUrl = href ?? `https://github.com/mentenaz/mentenaz-forge/releases/latest/download/${filename}`;
+	const downloadUrl = href ?? `https://github.com/mentenaz/forge-landing-page/releases/latest/download/${filename}`;
 
 	return (
 		<a

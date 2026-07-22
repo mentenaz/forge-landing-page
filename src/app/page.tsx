@@ -89,7 +89,7 @@ export default async function Home() {
 	const statsMap = Object.fromEntries(statsRows.map((s) => [s.key, s.value]));
 
 	const stats = [
-		{ value: formatStat(statsMap["total_extensions"] ?? 6), label: "Extensions" },
+		{ value: formatStat(statsMap["total_extensions"] ?? 0), label: "Extensions" },
 		{ value: "28MB", label: "RAM Usage" },
 		{ value: "7", label: "LSP Languages" },
 		{ value: formatStat(statsMap["total_releases"] ?? 1), label: "Releases" },
@@ -124,7 +124,7 @@ export default async function Home() {
 				icon: <ForgeIcon src="/icons/Forge_Cockpit.png" alt={d.platform} width={48} height={48} />,
 				platform: d.platform,
 				filename: d.filename,
-				url: `https://github.com/mentenaz/mentenaz-forge/releases/latest/download/${d.filename}`,
+				url: `https://github.com/mentenaz/forge-landing-page/releases/latest/download/${d.filename}`,
 			}));
 
 	return (
@@ -151,7 +151,7 @@ export default async function Home() {
 						</a>
 						<a
 							className={styles.btnSecondary}
-							href="https://github.com/mentenaz/mentenaz-forge"
+							href="https://github.com/mentenaz/forge-landing-page"
 							target="_blank"
 							rel="noopener noreferrer"
 						>
@@ -199,7 +199,7 @@ export default async function Home() {
 				<div className="container">
 					<h2 className="section-title">Download Forge</h2>
 					<p className="section-subtitle">
-						Free and open source. Available for Windows and Linux.
+						Free. Available for Windows and Linux.
 					</p>
 					<div className={styles.downloadRow}>
 						{downloads.map((d) => (
