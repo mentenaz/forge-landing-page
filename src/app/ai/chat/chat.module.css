@@ -18,12 +18,30 @@
 	flex-shrink: 0;
 }
 
+.headerLeft {
+	display: flex;
+	align-items: center;
+}
+
 .brand {
 	font-family: var(--font-heading, 'Oxanium');
 	font-weight: 700;
 	font-size: 1rem;
 	color: var(--text-active, #fff);
 	text-decoration: none;
+}
+
+.homeLink {
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	margin-right: 0.75rem;
+}
+
+.homeLogo {
+	width: 28px;
+	height: 28px;
+	object-fit: contain;
 }
 
 .modes {

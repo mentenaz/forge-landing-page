@@ -187,9 +187,14 @@ export default function ForgeAIChat() {
     <div className={styles.chatPage}>
       {/* Header */}
       <div className={styles.header}>
-        <Link href="/ai" className={styles.brand}>
-          {"\u26A1"} Mentenaz AI
-        </Link>
+        <div className={styles.headerLeft}>
+          <Link href="/" className={styles.homeLink}>
+            <img src="/forge-logo.png" alt="" className={styles.homeLogo} />
+          </Link>
+          <Link href="/ai" className={styles.brand}>
+            {"\u26A1"} Mentenaz AI
+          </Link>
+        </div>
         <div className={styles.modes}>
           {(["chat", "brainstorm", "code"] as Mode[]).map((m) => (
             <button
