@@ -24,15 +24,13 @@
 }
 
 .brand {
-	font-family: var(--font-heading, 'Oxanium');
-	font-weight: 700;
-	font-size: 1rem;
-	color: var(--text-active, #fff);
+	display: flex;
+	align-items: center;
 	text-decoration: none;
 }
 
 .brandIcon {
-	height: 28px;
+	height: 32px;
 	width: auto;
 }
 
@@ -44,8 +42,8 @@
 }
 
 .homeLogo {
-	width: 28px;
-	height: 28px;
+	width: 32px;
+	height: 32px;
 	object-fit: contain;
 }
 
