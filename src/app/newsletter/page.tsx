@@ -23,7 +23,8 @@ const newsletterSchema = z.object({
 type NewsletterFormData = z.infer<typeof newsletterSchema>;
 
 export default function NewsletterPage() {
-	const [status, setStatus] = useState<"idle" | "success">("idle");
+	const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+	const [message, setMessage] = useState("");
 
 	const {
 		register,
@@ -34,14 +35,27 @@ export default function NewsletterPage() {
 	});
 
 	const onSubmit = async (data: NewsletterFormData) => {
-		const res = await fetch("/api/newsletter", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(data),
-		});
+		try {
+			const res = await fetch("/api/newsletter", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(data),
+			});
 
-		if (!res.ok) throw new Error("Signup failed");
-		setStatus("success");
+			const result = await res.json();
+
+			if (!res.ok) {
+				setStatus("error");
+				setMessage(result.error || "Something went wrong");
+				return;
+			}
+
+			setStatus("success");
+			setMessage(result.message || "You're subscribed!");
+		} catch {
+			setStatus("error");
+			setMessage("Network error. Please try again.");
+		}
 	};
 
 	return (
@@ -59,10 +73,17 @@ export default function NewsletterPage() {
 
 					{status === "success" ? (
 						<div className={styles.success}>
-							You&apos;re on the list! We&apos;ll keep you updated.
+							<p>{message}</p>
+							<p className={styles.successSub}>
+								Check your inbox for a welcome email.
+							</p>
 						</div>
 					) : (
 						<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+							{status === "error" && (
+								<div className={styles.error}>{message}</div>
+							)}
+
 							<div className={styles.field}>
 								<label className={styles.label} htmlFor="name">
 									Name

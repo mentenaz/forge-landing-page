@@ -125,6 +125,12 @@
 	text-align: center;
 }
 
+.successSub {
+	margin-top: 0.5rem;
+	font-size: 12px;
+	color: var(--text-muted);
+}
+
 .error {
 	background: rgba(220, 50, 50, 0.12);
 	border: 1px solid #dc3232;
