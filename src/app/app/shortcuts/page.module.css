@@ -1,0 +1,76 @@
+.page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2rem;
+	padding: 3rem 1.5rem;
+	animation: fadeInUp 0.5s ease both;
+	width: 100%;
+	max-width: 720px;
+}
+
+.heading {
+	font-family: var(--font-heading);
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: var(--text-active);
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1.5rem;
+	width: 100%;
+}
+
+.group {
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 1.25rem;
+}
+
+.groupTitle {
+	font-family: var(--font-heading);
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--accent-light);
+	margin-bottom: 0.875rem;
+}
+
+.rows {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+}
+
+.keys {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	flex-shrink: 0;
+}
+
+.kbd {
+	background: var(--bg-input);
+	border: 1px solid var(--border);
+	border-radius: 3px;
+	padding: 2px 6px;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	color: var(--text-primary);
+	line-height: 1.4;
+}
+
+.desc {
+	font-size: 13px;
+	color: var(--text-secondary);
+	text-align: right;
+}

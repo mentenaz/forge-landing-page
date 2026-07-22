@@ -1,0 +1,293 @@
+.page {
+	background: var(--bg-body);
+	min-height: 100vh;
+}
+
+/* ── Hero ─────────────────────────────────────────────── */
+
+.hero {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 10rem 1.5rem 6rem;
+	overflow: hidden;
+}
+
+.heroOrb {
+	position: absolute;
+	width: 600px;
+	height: 600px;
+	border-radius: 50%;
+	background: radial-gradient(circle, rgba(147, 51, 234, 0.18) 0%, transparent 70%);
+	pointer-events: none;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.heroTitle {
+	position: relative;
+	font-family: var(--font-heading);
+	font-size: 3rem;
+	font-weight: 800;
+	color: var(--text-active);
+	line-height: 1.15;
+	margin-bottom: 1rem;
+}
+
+.heroSubtitle {
+	position: relative;
+	color: var(--text-secondary);
+	font-size: 1.15rem;
+	max-width: 520px;
+	margin-bottom: 2rem;
+}
+
+.heroCta {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--accent);
+	color: #fff;
+	font-family: var(--font-body);
+	font-weight: 600;
+	font-size: 1rem;
+	padding: 0.75rem 2rem;
+	border-radius: 8px;
+	text-decoration: none;
+	transition: background var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.heroCta:hover {
+	background: var(--accent-hover);
+	box-shadow: 0 0 20px var(--shadow-accent);
+}
+
+/* ── Sections ─────────────────────────────────────────── */
+
+.section {
+	padding: 5rem 0;
+}
+
+.sectionAlt {
+	padding: 5rem 0;
+	background: var(--bg-deepest);
+}
+
+.container {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 0 1.5rem;
+}
+
+.sectionTitle {
+	font-family: var(--font-heading);
+	font-size: 2rem;
+	font-weight: 800;
+	text-align: center;
+	margin-bottom: 0.5rem;
+}
+
+.sectionSubtitle {
+	text-align: center;
+	color: var(--text-secondary);
+	font-size: 1.05rem;
+	margin-bottom: 3rem;
+}
+
+/* ── Modes Grid ───────────────────────────────────────── */
+
+.modesGrid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.5rem;
+	margin-top: 2.5rem;
+}
+
+.modeCard {
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 1.5rem;
+	transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.modeCard:hover {
+	border-color: var(--accent);
+	box-shadow: 0 0 20px rgba(147, 51, 234, 0.08);
+}
+
+.modeIcon {
+	display: block;
+	margin-bottom: 0.75rem;
+}
+
+.modeIcon img {
+	width: 48px;
+	height: 48px;
+	object-fit: contain;
+}
+
+.modeTitle {
+	font-family: var(--font-heading);
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: var(--text-active);
+	margin-bottom: 0.5rem;
+}
+
+.modeDesc {
+	font-size: 0.875rem;
+	color: var(--text-secondary);
+	line-height: 1.6;
+}
+
+/* ── Providers ────────────────────────────────────────── */
+
+.providersRow {
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+	margin-bottom: 2rem;
+}
+
+.providerCard {
+	background: var(--bg-card-alt);
+	border-radius: 6px;
+	padding: 0.6rem 1.25rem;
+	font-family: var(--font-heading);
+	font-size: 0.875rem;
+	font-weight: 700;
+	color: var(--text-active);
+}
+
+.fallbackChain {
+	text-align: center;
+}
+
+.fallbackCode {
+	font-family: var(--font-mono);
+	font-size: 0.8rem;
+	color: var(--text-secondary);
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	padding: 0.6rem 1.25rem;
+	display: inline-block;
+}
+
+/* ── Features Grid ────────────────────────────────────── */
+
+.featuresGrid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1.25rem;
+}
+
+.featureItem {
+	display: flex;
+	align-items: flex-start;
+	gap: 1rem;
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 1.25rem;
+	transition: border-color var(--transition-fast);
+}
+
+.featureItem:hover {
+	border-color: var(--accent);
+}
+
+.featureIcon {
+	flex-shrink: 0;
+	margin-top: 0.1rem;
+}
+
+.featureIcon img {
+	width: 32px;
+	height: 32px;
+	object-fit: contain;
+}
+
+.featureTitle {
+	font-family: var(--font-heading);
+	font-size: 0.95rem;
+	font-weight: 700;
+	color: var(--text-active);
+	margin-bottom: 0.25rem;
+}
+
+.featureDesc {
+	font-size: 0.825rem;
+	color: var(--text-secondary);
+	line-height: 1.55;
+}
+
+/* ── CTA Section ──────────────────────────────────────── */
+
+.ctaSection {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 5rem 1.5rem;
+	text-align: center;
+}
+
+.ctaTitle {
+	font-family: var(--font-heading);
+	font-size: 2rem;
+	font-weight: 800;
+	color: var(--text-active);
+	margin-bottom: 1.5rem;
+}
+
+.ctaButton {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--accent);
+	color: #fff;
+	font-family: var(--font-body);
+	font-weight: 600;
+	font-size: 1rem;
+	padding: 0.75rem 2rem;
+	border-radius: 8px;
+	text-decoration: none;
+	transition: background var(--transition-fast), box-shadow var(--transition-fast);
+	margin-bottom: 0.75rem;
+}
+
+.ctaButton:hover {
+	background: var(--accent-hover);
+	box-shadow: 0 0 20px var(--shadow-accent);
+}
+
+.ctaNote {
+	font-size: 0.8rem;
+	color: var(--text-muted);
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+
+@media (max-width: 768px) {
+	.heroTitle {
+		font-size: 2rem;
+	}
+
+	.modesGrid {
+		grid-template-columns: 1fr;
+	}
+
+	.featuresGrid {
+		grid-template-columns: 1fr;
+	}
+
+	.providersRow {
+		flex-wrap: wrap;
+	}
+}

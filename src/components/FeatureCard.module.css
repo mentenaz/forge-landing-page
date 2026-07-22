@@ -1,0 +1,36 @@
+.card {
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: 10px;
+	padding: 1.75rem;
+	transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.card:hover {
+	border-color: var(--accent);
+	box-shadow: 0 0 20px rgba(147, 51, 234, 0.08);
+}
+
+.icon {
+	display: block;
+	margin-bottom: 0.75rem;
+}
+
+.iconImg {
+	width: 40px;
+	height: auto;
+}
+
+.title {
+	font-family: var(--font-heading);
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: var(--text-active);
+	margin-bottom: 0.5rem;
+}
+
+.description {
+	font-size: 0.875rem;
+	color: var(--text-secondary);
+	line-height: 1.6;
+}

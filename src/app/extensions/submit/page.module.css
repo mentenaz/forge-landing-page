@@ -1,0 +1,199 @@
+.page {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.content {
+	flex: 1;
+	padding: 3.5rem 1.5rem 5rem;
+}
+
+.container {
+	max-width: 560px;
+	margin: 0 auto;
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+.title {
+	font-family: var(--font-heading);
+	font-size: 2rem;
+	font-weight: 700;
+	color: var(--text-active);
+	margin-bottom: 0.35rem;
+}
+
+.subtitle {
+	font-size: 1rem;
+	color: var(--text-secondary);
+	margin-bottom: 2.5rem;
+}
+
+/* ── Status Messages ────────────────────────────────────── */
+.successMsg {
+	background: rgba(143, 176, 0, 0.12);
+	border: 1px solid var(--accent-green);
+	color: var(--accent-green);
+	border-radius: 8px;
+	padding: 0.85rem 1rem;
+	font-size: 14px;
+	margin-bottom: 1.5rem;
+}
+
+.errorMsg {
+	background: rgba(220, 50, 50, 0.12);
+	border: 1px solid #dc3232;
+	color: #f87171;
+	border-radius: 8px;
+	padding: 0.85rem 1rem;
+	font-size: 14px;
+	margin-bottom: 1.5rem;
+}
+
+/* ── Form ───────────────────────────────────────────────── */
+.form {
+	display: flex;
+	flex-direction: column;
+}
+
+.field {
+	margin-bottom: 1rem;
+}
+
+.label {
+	display: block;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.6px;
+	color: var(--text-muted);
+	margin-bottom: 6px;
+}
+
+.input {
+	width: 100%;
+	height: 40px;
+	background: var(--bg-input);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	padding: 0 12px;
+	color: var(--text-primary);
+	font-family: var(--font-body);
+	font-size: 14px;
+	transition: border-color var(--transition-fast);
+}
+
+.input::placeholder {
+	color: var(--text-muted);
+}
+
+.input:focus {
+	border-color: var(--accent);
+	outline: none;
+}
+
+.mono {
+	font-family: var(--font-mono);
+}
+
+.hint {
+	display: block;
+	font-size: 12px;
+	color: var(--text-muted);
+	margin-top: 4px;
+}
+
+/* ── Textarea ───────────────────────────────────────────── */
+.textareaWrap {
+	position: relative;
+}
+
+.textarea {
+	width: 100%;
+	min-height: 100px;
+	background: var(--bg-input);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	padding: 10px 12px;
+	color: var(--text-primary);
+	font-family: var(--font-body);
+	font-size: 14px;
+	resize: vertical;
+	transition: border-color var(--transition-fast);
+}
+
+.textarea::placeholder {
+	color: var(--text-muted);
+}
+
+.textarea:focus {
+	border-color: var(--accent);
+	outline: none;
+}
+
+.charCount {
+	position: absolute;
+	bottom: 8px;
+	right: 10px;
+	font-size: 11px;
+	color: var(--text-muted);
+	pointer-events: none;
+}
+
+/* ── Select ─────────────────────────────────────────────── */
+.select {
+	width: 100%;
+	height: 40px;
+	background: var(--bg-input);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	padding: 0 12px;
+	color: var(--text-primary);
+	font-family: var(--font-body);
+	font-size: 14px;
+	appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239a9a9a' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	cursor: pointer;
+	transition: border-color var(--transition-fast);
+}
+
+.select:focus {
+	border-color: var(--accent);
+	outline: none;
+}
+
+/* ── Submit Button ──────────────────────────────────────── */
+.submitBtn {
+	width: 100%;
+	height: 44px;
+	background: var(--accent);
+	color: #fff;
+	border: none;
+	border-radius: 8px;
+	font-family: var(--font-body);
+	font-size: 15px;
+	font-weight: 600;
+	padding: 0 24px;
+	cursor: pointer;
+	transition: background var(--transition-fast);
+	margin-top: 0.5rem;
+}
+
+.submitBtn:hover {
+	background: var(--accent-hover);
+}
+
+.submitBtn:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+/* ── Note ───────────────────────────────────────────────── */
+.note {
+	font-size: 12px;
+	color: var(--text-muted);
+	margin-top: 1.5rem;
+	line-height: 1.5;
+}

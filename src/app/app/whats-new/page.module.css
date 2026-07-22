@@ -1,0 +1,65 @@
+.page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2rem;
+	padding: 3rem 1.5rem;
+	animation: fadeInUp 0.5s ease both;
+	width: 100%;
+	max-width: 560px;
+}
+
+.heading {
+	font-family: var(--font-heading);
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: var(--text-active);
+}
+
+.timeline {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	width: 100%;
+}
+
+.versionBlock {
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	padding: 1.5rem;
+}
+
+.versionTitle {
+	font-family: var(--font-heading);
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--accent-light);
+	margin-bottom: 1rem;
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+}
+
+.item {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	font-size: 0.875rem;
+}
+
+.done {
+	color: var(--text-primary);
+}
+
+.planned {
+	color: var(--text-muted);
+}
+
+.icon {
+	flex-shrink: 0;
+	font-size: 0.9rem;
+}
