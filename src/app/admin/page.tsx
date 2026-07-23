@@ -50,7 +50,7 @@ interface SiteStat {
 
 export default function AdminPage() {
 	const router = useRouter();
-	const [user, setUser] = useState<{ id: string; email: string } | null>(null);
+	const [user] = useState<{ id: string; email: string } | null>(() => getUser());
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [activeTab, setActiveTab] = useState<Tab>("stats");
@@ -74,12 +74,10 @@ export default function AdminPage() {
 	const [profiles, setProfiles] = useState<Profile[]>([]);
 
 	useEffect(() => {
-		const u = getUser();
-		if (!u) {
+		if (!user) {
 			router.push("/login");
 			return;
 		}
-		setUser(u);
 
 		async function checkAdmin() {
 			const session = getCachedSession();
@@ -93,7 +91,7 @@ export default function AdminPage() {
 			const { data } = await twin
 				.from("profiles")
 				.select("is_admin")
-				.eq("id", u!.id)
+				.eq("id", user!.id)
 				.single();
 
 			if (data?.is_admin !== "true" && data?.is_admin !== true) {
@@ -105,7 +103,7 @@ export default function AdminPage() {
 		}
 
 		checkAdmin();
-	}, [router]);
+	}, [user, router]);
 
 	const loadStats = async () => {
 		const [statsRes, subsRes, submRes] = await Promise.all([

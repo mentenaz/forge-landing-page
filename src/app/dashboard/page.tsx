@@ -16,22 +16,18 @@ interface Profile {
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [user, setUser] = useState<{ id: string; email: string } | null>(null);
+  const [user] = useState<{ id: string; email: string } | null>(() => getUser());
   const [profile, setProfile] = useState<Profile | null>(null);
 
   useEffect(() => {
-    const u = getUser();
-    if (!u) {
+    if (!user) {
       router.push("/login");
       return;
     }
-    setUser(u);
 
     async function loadProfile() {
-      // Supabase client auto-restores session from localStorage
       const { data: { user: authUser } } = await twin.auth.getUser();
       if (!authUser) {
-        // Session expired, try to restore from cache
         const session = getCachedSession();
         if (!session) return;
         await twin.auth.setSession({
@@ -43,14 +39,14 @@ export default function DashboardPage() {
       const { data, error } = await twin
         .from("profiles")
         .select("name, is_admin")
-        .eq("id", u!.id)
+        .eq("id", user!.id)
         .single();
 
       if (!error && data) setProfile(data);
     }
 
     loadProfile();
-  }, [router]);
+  }, [user, router]);
 
   if (!user) return null;
 
