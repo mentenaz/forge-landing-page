@@ -81,6 +81,11 @@ export default function ProfilePage() {
 
 		async function loadProfile() {
 			try {
+				await twin.auth.setSession({
+					access_token: session!.access_token,
+					refresh_token: session!.refresh_token,
+				});
+
 				const { data, error: fetchError } = await twin
 					.from("profiles")
 					.select("*")

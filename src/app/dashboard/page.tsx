@@ -27,21 +27,25 @@ export default function DashboardPage() {
     }
     setUser(u);
 
-    const session = getCachedSession();
-    if (session) {
-      twin.auth.setSession({
+    async function loadProfile() {
+      const session = getCachedSession();
+      if (!session) return;
+
+      await twin.auth.setSession({
         access_token: session.access_token,
         refresh_token: session.refresh_token,
-      }).then(() => {
-        return twin
-          .from("profiles")
-          .select("name, is_admin")
-          .eq("id", u.id)
-          .single();
-      }).then(({ data }) => {
-        if (data) setProfile(data);
       });
+
+      const { data } = await twin
+        .from("profiles")
+        .select("name, is_admin")
+        .eq("id", u!.id)
+        .single();
+
+      if (data) setProfile(data);
     }
+
+    loadProfile();
   }, [router]);
 
   if (!user) return null;

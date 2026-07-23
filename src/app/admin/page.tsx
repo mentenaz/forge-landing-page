@@ -81,26 +81,30 @@ export default function AdminPage() {
 		}
 		setUser(u);
 
-		const session = getCachedSession();
-		if (session) {
-			twin.auth.setSession({
+		async function checkAdmin() {
+			const session = getCachedSession();
+			if (!session) return;
+
+			await twin.auth.setSession({
 				access_token: session.access_token,
 				refresh_token: session.refresh_token,
-			}).then(() => {
-				return twin
-					.from("profiles")
-					.select("is_admin")
-					.eq("id", u.id)
-					.single();
-			}).then(({ data }) => {
-				if (data?.is_admin !== "true") {
-					router.push("/dashboard");
-					return;
-				}
-				setIsAdmin(true);
-				loadStats();
 			});
+
+			const { data } = await twin
+				.from("profiles")
+				.select("is_admin")
+				.eq("id", u!.id)
+				.single();
+
+			if (data?.is_admin !== "true") {
+				router.push("/dashboard");
+				return;
+			}
+			setIsAdmin(true);
+			loadStats();
 		}
+
+		checkAdmin();
 	}, [router]);
 
 	const loadStats = async () => {
