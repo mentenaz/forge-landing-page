@@ -4,13 +4,20 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getUser } from "@/lib/twin-auth";
+import { twin } from "@/lib/twin";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import styles from "./page.module.css";
 
+interface Profile {
+  name: string | null;
+  is_admin: string;
+}
+
 export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState<{ id: string; email: string } | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
 
   useEffect(() => {
     const u = getUser();
@@ -19,9 +26,20 @@ export default function DashboardPage() {
       return;
     }
     setUser(u);
+
+    twin
+      .from("profiles")
+      .select("name, is_admin")
+      .eq("id", u.id)
+      .single()
+      .then(({ data }) => {
+        if (data) setProfile(data);
+      });
   }, [router]);
 
   if (!user) return null;
+
+  const displayName = profile?.name || user.email;
 
   return (
     <div className={styles.page}>
@@ -29,7 +47,7 @@ export default function DashboardPage() {
       <div className={styles.content}>
         <div className={styles.header}>
           <h1 className={styles.title}>Dashboard</h1>
-          <p className={styles.subtitle}>Welcome, {user.email}</p>
+          <p className={styles.subtitle}>Welcome, {displayName}</p>
         </div>
 
         <div className={styles.actions}>
@@ -48,6 +66,13 @@ export default function DashboardPage() {
             <span className={styles.actionLabel}>Profile</span>
             <span className={styles.actionDesc}>Manage your account</span>
           </Link>
+          {profile?.is_admin === "true" && (
+            <Link href="/admin" className={styles.actionCard}>
+              <span className={styles.actionIcon}>{ }</span>
+              <span className={styles.actionLabel}>Admin</span>
+              <span className={styles.actionDesc}>Manage newsletter, extensions, users</span>
+            </Link>
+          )}
         </div>
 
       </div>
