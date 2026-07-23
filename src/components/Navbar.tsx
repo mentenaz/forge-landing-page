@@ -84,7 +84,7 @@ export function Navbar() {
 
           {user ? (
             <div className={styles.authArea}>
-              <Link href="/profile" className={styles.userEmail}>
+              <Link href="/dashboard" className={styles.userEmail}>
                 {displayName}
               </Link>
               <button className={styles.authBtn} onClick={handleSignOut}>
@@ -122,7 +122,7 @@ export function Navbar() {
 
         {user ? (
           <div className={styles.mobileAuthArea}>
-            <Link href="/profile" className={styles.mobileUserEmail} onClick={() => setMobileMenuOpen(false)}>
+            <Link href="/dashboard" className={styles.mobileUserEmail} onClick={() => setMobileMenuOpen(false)}>
               {displayName}
             </Link>
             <button className={styles.mobileSignOutBtn} onClick={handleSignOut}>
