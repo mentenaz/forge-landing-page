@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { getUser } from "@/lib/twin-auth";
+import { getUser, getCachedSession } from "@/lib/twin-auth";
 import { supabase } from "@/lib/supabase";
 import { twin } from "@/lib/twin";
 import { Navbar } from "@/components/Navbar";
@@ -81,12 +81,18 @@ export default function AdminPage() {
 		}
 		setUser(u);
 
-		twin
-			.from("profiles")
-			.select("is_admin")
-			.eq("id", u.id)
-			.single()
-			.then(({ data }) => {
+		const session = getCachedSession();
+		if (session) {
+			twin.auth.setSession({
+				access_token: session.access_token,
+				refresh_token: session.refresh_token,
+			}).then(() => {
+				return twin
+					.from("profiles")
+					.select("is_admin")
+					.eq("id", u.id)
+					.single();
+			}).then(({ data }) => {
 				if (data?.is_admin !== "true") {
 					router.push("/dashboard");
 					return;
@@ -94,6 +100,7 @@ export default function AdminPage() {
 				setIsAdmin(true);
 				loadStats();
 			});
+		}
 	}, [router]);
 
 	const loadStats = async () => {
