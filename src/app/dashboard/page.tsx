@@ -11,7 +11,7 @@ import styles from "./page.module.css";
 
 interface Profile {
   name: string | null;
-  is_admin: string;
+  is_admin: string | boolean;
 }
 
 export default function DashboardPage() {
@@ -28,21 +28,25 @@ export default function DashboardPage() {
     setUser(u);
 
     async function loadProfile() {
-      const session = getCachedSession();
-      if (!session) return;
+      // Supabase client auto-restores session from localStorage
+      const { data: { user: authUser } } = await twin.auth.getUser();
+      if (!authUser) {
+        // Session expired, try to restore from cache
+        const session = getCachedSession();
+        if (!session) return;
+        await twin.auth.setSession({
+          access_token: session.access_token,
+          refresh_token: session.refresh_token,
+        });
+      }
 
-      await twin.auth.setSession({
-        access_token: session.access_token,
-        refresh_token: session.refresh_token,
-      });
-
-      const { data } = await twin
+      const { data, error } = await twin
         .from("profiles")
         .select("name, is_admin")
         .eq("id", u!.id)
         .single();
 
-      if (data) setProfile(data);
+      if (!error && data) setProfile(data);
     }
 
     loadProfile();
@@ -77,7 +81,7 @@ export default function DashboardPage() {
             <span className={styles.actionLabel}>Profile</span>
             <span className={styles.actionDesc}>Manage your account</span>
           </Link>
-          {profile?.is_admin === "true" && (
+          {(profile?.is_admin === "true" || profile?.is_admin === true) && (
             <Link href="/admin" className={styles.actionCard}>
               <span className={styles.actionIcon}>{ }</span>
               <span className={styles.actionLabel}>Admin</span>

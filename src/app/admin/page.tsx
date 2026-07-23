@@ -38,7 +38,7 @@ interface Profile {
 	name: string | null;
 	status: string;
 	plan: string;
-	is_admin: string;
+	is_admin: string | boolean;
 	messages_this_month: string;
 	created_at: string;
 }
@@ -96,7 +96,7 @@ export default function AdminPage() {
 				.eq("id", u!.id)
 				.single();
 
-			if (data?.is_admin !== "true") {
+			if (data?.is_admin !== "true" && data?.is_admin !== true) {
 				router.push("/dashboard");
 				return;
 			}
@@ -466,7 +466,7 @@ export default function AdminPage() {
 															{p.plan}
 														</span>
 													</td>
-													<td>{p.is_admin === "true" ? "Yes" : "No"}</td>
+													<td>{p.is_admin === "true" || p.is_admin === true ? "Yes" : "No"}</td>
 													<td>{p.messages_this_month}</td>
 													<td>{new Date(p.created_at).toLocaleDateString()}</td>
 												</tr>
