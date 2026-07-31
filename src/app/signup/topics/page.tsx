@@ -2,25 +2,25 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { getAccessToken } from "@/lib/twin-auth";
+import { twin } from "@/lib/twin";
 import styles from "./page.module.css";
 
 const PRESET_TOPICS = [
-  { name: "Security & CVEs", icon: "\uD83D\uDD12", cadence: "daily" },
-  { name: "Rust ecosystem", icon: "\uD83E\uDD80", cadence: "weekly" },
-  { name: "React / TypeScript", icon: "\u269B\uFE0F", cadence: "weekly" },
-  { name: "EU tech job market", icon: "\uD83C\uDDEA\uD83C\uDDFA", cadence: "daily" },
-  { name: "Cybersecurity news", icon: "\uD83D\uDEE1\uFE0F", cadence: "daily" },
-  { name: "German / Dutch language", icon: "\uD83D\uDDE3\uFE0F", cadence: "weekly" },
+  { name: "Security & CVEs",        icon: "🔒", cadence: "daily"  },
+  { name: "Rust ecosystem",          icon: "🦀", cadence: "weekly" },
+  { name: "React / TypeScript",      icon: "⚛️", cadence: "weekly" },
+  { name: "EU tech job market",      icon: "🇪🇺", cadence: "daily"  },
+  { name: "Cybersecurity news",      icon: "🛡️", cadence: "daily"  },
+  { name: "German / Dutch language", icon: "🗣️", cadence: "weekly" },
 ];
 
 export default function TopicsPage() {
   const router = useRouter();
-  const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [customName, setCustomName] = useState("");
+  const [selected,      setSelected]      = useState<Set<string>>(new Set());
+  const [customName,    setCustomName]    = useState("");
   const [customQueries, setCustomQueries] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [loading,       setLoading]       = useState(false);
+  const [error,         setError]         = useState("");
 
   const toggle = (name: string) => {
     setSelected((prev) => {
@@ -37,46 +37,69 @@ export default function TopicsPage() {
     setError("");
 
     try {
-      const token = getAccessToken();
-      const topics: Array<{ name: string; search_queries: string[]; cadence: string }> = [];
+      // Get session from Twin Supabase client
+      const { data: { session } } = await twin.auth.getSession();
+      const userId = session?.user?.id;
 
+      if (!userId) {
+        setError("Session expired — please sign in again.");
+        router.push("/login");
+        return;
+      }
+
+      // Build topics array
+      const topics: Array<{
+        user_id:               string;
+        name:                  string;
+        search_queries:        string[];
+        search_interval_hours: number;
+        active:                boolean;
+      }> = [];
+
+      // Add selected preset topics
       for (const name of selected) {
         const preset = PRESET_TOPICS.find((p) => p.name === name);
         topics.push({
+          user_id:               userId,
           name,
-          search_queries: [name.toLowerCase()],
-          cadence: preset?.cadence ?? "weekly",
+          search_queries:        [name.toLowerCase()],
+          search_interval_hours: preset?.cadence === "daily" ? 24 : 168,
+          active:                true,
         });
       }
 
+      // Add custom topic if provided
       if (customName.trim()) {
         topics.push({
-          name: customName.trim(),
-          search_queries: customQueries.split(",").map((q) => q.trim()).filter(Boolean),
-          cadence: "weekly",
+          user_id:               userId,
+          name:                  customName.trim(),
+          search_queries:        customQueries
+            .split(",")
+            .map((q) => q.trim())
+            .filter(Boolean),
+          search_interval_hours: 168, // weekly default for custom
+          active:                true,
         });
       }
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_TWIN_URL}/functions/v1/update-topic-weight`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ topics }),
-        }
-      );
+      // Insert directly into topics table
+      // trigger-learning cron picks these up automatically
+      const { error: insertError } = await twin
+        .from("topics")
+        .insert(topics);
 
-      if (!res.ok) {
-        const d = await res.text();
-        console.error("Topic save failed:", d);
+      if (insertError) {
+        console.error("[topics] Insert failed:", insertError);
+        setError(insertError.message || "Failed to save topics. Please try again.");
+        return;
       }
 
+      console.log(`[topics] ${topics.length} topics saved for user ${userId}`);
       router.push("/ai/chat");
-    } catch (err: any) {
-      setError(err.message || "Failed to save topics");
+
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to save topics";
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -85,20 +108,25 @@ export default function TopicsPage() {
   return (
     <div className={styles.page}>
       <div className={styles.content}>
+
         <div className={styles.header}>
           <h1 className={styles.title}>What should your Twin learn?</h1>
           <p className={styles.subtitle}>
             Pick topics your AI Twin will research and stay current on.
+            It searches them automatically — daily or weekly.
           </p>
         </div>
 
         {error && <div className={styles.error}>{error}</div>}
 
+        {/* Preset topics grid */}
         <div className={styles.grid}>
           {PRESET_TOPICS.map((topic) => (
             <button
               key={topic.name}
-              className={`${styles.topicCard} ${selected.has(topic.name) ? styles.selected : ""}`}
+              className={`${styles.topicCard} ${
+                selected.has(topic.name) ? styles.selected : ""
+              }`}
               onClick={() => toggle(topic.name)}
             >
               <span className={styles.topicIcon}>{topic.icon}</span>
@@ -108,6 +136,7 @@ export default function TopicsPage() {
           ))}
         </div>
 
+        {/* Custom topic */}
         <div className={styles.customSection}>
           <h3 className={styles.customTitle}>Custom topic</h3>
           <input
@@ -133,8 +162,9 @@ export default function TopicsPage() {
           onClick={handleContinue}
           disabled={loading || (selected.size === 0 && !customName.trim())}
         >
-          {loading ? "Saving..." : "Continue"}
+          {loading ? "Saving..." : "Continue →"}
         </button>
+
       </div>
     </div>
   );

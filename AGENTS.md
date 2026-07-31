@@ -67,9 +67,15 @@ Auth helpers: `import { ... } from "@/lib/twin-auth"` (uses AI Twin project).
 | `/extensions` | Static | Extension marketplace |
 | `/extensions/detail` | Client | Extension detail — reads `?id=` from search params |
 | `/extensions/submit` | Static | Extension submission form |
+| `/admin` | Client | Admin panel (auth-gated via AI Twin session) |
+| `/profile` | Client | User profile page |
+| `/newsletter` | Static | Newsletter page |
+| `/api/newsletter` | API | Newsletter API route |
 | `/app/shortcuts` | Static | Keyboard shortcuts reference |
 | `/app/welcome` | Static | Welcome / onboarding |
 | `/app/whats-new` | Static | Changelog |
+
+Note: `/app/` has a shared `layout.tsx` wrapping all sub-routes.
 
 ## Auth Flow
 
@@ -87,6 +93,7 @@ Deployed to **Forge** project (`daquiwsaqffoxtqijwzo`):
 - `guest-chat` — Forge knowledge base in system prompt, HuggingFace fallback, topic-aware responses
 - `ai-chat` — Proxies to AI Twin project, forwards user Bearer token
 - `github-webhook` — Processes GitHub release events → `github_releases` table
+- `newsletter-email` — Newsletter email sending (not in `config.toml` — may need manual deploy)
 
 Deployed to **AI Twin** project (in `../forge/supabase/functions/`):
 - `chat`, `code-assist`, `brainstorm` — AI modes with direct-answer rules

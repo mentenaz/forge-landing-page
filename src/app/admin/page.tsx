@@ -72,6 +72,8 @@ export default function AdminPage() {
 
 	// Users
 	const [profiles, setProfiles] = useState<Profile[]>([]);
+	const [updatingId, setUpdatingId] = useState<string | null>(null);
+	const [userUpdateError, setUserUpdateError] = useState("");
 
 	useEffect(() => {
 		if (!user) {
@@ -126,6 +128,20 @@ export default function AdminPage() {
 		if (data) setSubscribers(data);
 	};
 
+	const handleDeleteSubscriber = async (sub: Subscriber) => {
+		if (!window.confirm(`Delete subscriber ${sub.email}?`)) return;
+		const { error } = await supabase
+			.from("newsletter_subscribers")
+			.delete()
+			.eq("id", sub.id);
+		if (error) {
+			setUserUpdateError(error.message);
+			return;
+		}
+		setSubscribers((prev) => prev.filter((s) => s.id !== sub.id));
+		setSubscriberCount((c) => Math.max(0, c - 1));
+	};
+
 	const loadSubmissions = async () => {
 		const { data } = await supabase
 			.from("extension_submissions")
@@ -140,6 +156,71 @@ export default function AdminPage() {
 			.select("*")
 			.order("created_at", { ascending: false });
 		if (data) setProfiles(data);
+	};
+
+	const handlePlanChange = async (profile: Profile, plan: string) => {
+		setUpdatingId(profile.id);
+		setUserUpdateError("");
+		const { error } = await twin.from("profiles").update({ plan }).eq("id", profile.id);
+		setUpdatingId(null);
+		if (error) {
+			setUserUpdateError(error.message);
+			return;
+		}
+		setProfiles((prev) =>
+			prev.map((p) => (p.id === profile.id ? { ...p, plan } : p))
+		);
+	};
+
+	const handleAdminToggle = async (profile: Profile) => {
+		const next = profile.is_admin === "true" || profile.is_admin === true ? "false" : "true";
+		setUpdatingId(profile.id);
+		setUserUpdateError("");
+		const { error } = await twin
+			.from("profiles")
+			.update({ is_admin: next })
+			.eq("id", profile.id);
+		setUpdatingId(null);
+		if (error) {
+			setUserUpdateError(error.message);
+			return;
+		}
+		setProfiles((prev) =>
+			prev.map((p) => (p.id === profile.id ? { ...p, is_admin: next } : p))
+		);
+	};
+
+	const handleDeleteUser = async (profile: Profile) => {
+		if (!window.confirm(`Delete user ${profile.email}? This cannot be undone.`)) return;
+		setUpdatingId(profile.id);
+		setUserUpdateError("");
+
+		try {
+			const token = getCachedSession()?.access_token;
+			if (!token) {
+				setUserUpdateError("No active session");
+				return;
+			}
+
+			const res = await fetch("/api/admin/delete-user", {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ userId: profile.id }),
+			});
+			const data = await res.json();
+			if (!res.ok) {
+				setUserUpdateError(data.error || "Failed to delete user");
+				return;
+			}
+			setProfiles((prev) => prev.filter((p) => p.id !== profile.id));
+		} catch {
+			setUserUpdateError("Failed to delete user");
+		} finally {
+			setUpdatingId(null);
+		}
 	};
 
 	useEffect(() => {
@@ -336,30 +417,39 @@ export default function AdminPage() {
 								) : (
 									<div style={{ overflowX: "auto" }}>
 										<table className={styles.table}>
-											<thead>
-												<tr>
-													<th>Email</th>
-													<th>Name</th>
-													<th>Status</th>
-													<th>Subscribed</th>
+										<thead>
+											<tr>
+												<th>Email</th>
+												<th>Name</th>
+												<th>Status</th>
+												<th>Subscribed</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											{subscribers.map((sub) => (
+												<tr key={sub.id}>
+													<td>{sub.email}</td>
+													<td>{sub.name || "—"}</td>
+													<td>
+														<span
+															className={`${styles.badge} ${sub.status === "active" ? styles.badgeActive : styles.badgeRejected}`}
+														>
+															{sub.status}
+														</span>
+													</td>
+													<td>{new Date(sub.subscribed_at).toLocaleDateString()}</td>
+													<td>
+														<button
+															className={`${styles.btn} ${styles.btnDanger}`}
+															onClick={() => handleDeleteSubscriber(sub)}
+														>
+															Delete
+														</button>
+													</td>
 												</tr>
-											</thead>
-											<tbody>
-												{subscribers.map((sub) => (
-													<tr key={sub.id}>
-														<td>{sub.email}</td>
-														<td>{sub.name || "—"}</td>
-														<td>
-															<span
-																className={`${styles.badge} ${sub.status === "active" ? styles.badgeActive : styles.badgeRejected}`}
-															>
-																{sub.status}
-															</span>
-														</td>
-														<td>{new Date(sub.subscribed_at).toLocaleDateString()}</td>
-													</tr>
-												))}
-											</tbody>
+											))}
+										</tbody>
 										</table>
 									</div>
 								)}
@@ -439,6 +529,7 @@ export default function AdminPage() {
 							<div className={styles.cardHeader}>
 								<h2 className={styles.cardTitle}>Users ({profiles.length})</h2>
 							</div>
+							{userUpdateError && <div className={styles.error}>{userUpdateError}</div>}
 							{profiles.length === 0 ? (
 								<div className={styles.empty}>No users yet.</div>
 							) : (
@@ -452,6 +543,7 @@ export default function AdminPage() {
 												<th>Admin</th>
 												<th>Messages</th>
 												<th>Joined</th>
+												<th></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -460,13 +552,41 @@ export default function AdminPage() {
 													<td>{p.email}</td>
 													<td>{p.name || "—"}</td>
 													<td>
-														<span className={`${styles.badge} ${styles.badgeActive}`}>
-															{p.plan}
-														</span>
+														<select
+															className={styles.input}
+															style={{ width: "auto", padding: "0.3rem 0.5rem" }}
+															value={p.plan}
+															disabled={updatingId === p.id}
+															onChange={(e) => handlePlanChange(p, e.target.value)}
+														>
+															<option value="free">Free</option>
+															<option value="pro">Pro</option>
+														</select>
 													</td>
-													<td>{p.is_admin === "true" || p.is_admin === true ? "Yes" : "No"}</td>
+													<td>
+														<button
+															className={`${styles.btn} ${
+																p.is_admin === "true" || p.is_admin === true
+																	? styles.btnPrimary
+																	: styles.btnSecondary
+															}`}
+															disabled={updatingId === p.id}
+															onClick={() => handleAdminToggle(p)}
+														>
+															{p.is_admin === "true" || p.is_admin === true ? "Yes" : "No"}
+														</button>
+													</td>
 													<td>{p.messages_this_month}</td>
 													<td>{new Date(p.created_at).toLocaleDateString()}</td>
+													<td>
+														<button
+															className={`${styles.btn} ${styles.btnDanger}`}
+															disabled={updatingId === p.id}
+															onClick={() => handleDeleteUser(p)}
+														>
+															Delete
+														</button>
+													</td>
 												</tr>
 											))}
 										</tbody>
