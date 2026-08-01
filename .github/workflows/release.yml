@@ -11,6 +11,8 @@ on:
   # Triggered by forge private repo via repository_dispatch
   repository_dispatch:
     types: [new-release]
+permissions:        # ← ADD THIS
+  contents: write   # ← ADD THIS
 
   # Also allow manual trigger from GitHub UI
   workflow_dispatch:
