@@ -1,0 +1,17 @@
+{
+  "breakpoints": [
+    {
+      "id": "6361a9ba-a585-478b-81bf-cffb349774bc",
+      "path": "H:\\Persornal\\Mentenaz_forge\\@mentenaz\\Forge_LandingPage\\src\\app\\page.tsx",
+      "line": 9,
+      "enabled": true
+    },
+    {
+      "id": "7ff7426c-8632-4195-8ae1-cdb0a7535188",
+      "path": "H:\\Persornal\\Mentenaz_forge\\@mentenaz\\Forge_LandingPage\\src\\app\\page.tsx",
+      "line": 100,
+      "enabled": true
+    }
+  ],
+  "suspendAll": false
+}

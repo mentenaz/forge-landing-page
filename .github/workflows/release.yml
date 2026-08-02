@@ -190,7 +190,7 @@ jobs:
           tag_name: ${{ steps.info.outputs.TAG }}
           name: Mentenaz Forge v${{ steps.info.outputs.VERSION }}
           draft: false
-          prerelease: true
+          prerelease: false
           body: |
             ## Mentenaz Forge v${{ steps.info.outputs.VERSION }}
 
