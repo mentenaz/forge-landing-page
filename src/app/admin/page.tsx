@@ -74,7 +74,18 @@ export default function AdminPage() {
 	const [profiles, setProfiles] = useState<Profile[]>([]);
 	const [updatingId, setUpdatingId] = useState<string | null>(null);
 	const [userUpdateError, setUserUpdateError] = useState("");
+	const loadStats = async () => {
+		const [statsRes, subsRes, submRes] = await Promise.all([
+			supabase.from("site_stats").select("*"),
+			supabase.from("newsletter_subscribers").select("id", { count: "exact", head: true }),
+			supabase.from("extension_submissions").select("id", { count: "exact", head: true }),
+		]);
 
+		if (statsRes.data) setStats(statsRes.data);
+		setSubscriberCount(subsRes.count || 0);
+		setSubmissionCount(submRes.count || 0);
+		setLoading(false);
+	};
 	useEffect(() => {
 		if (!user) {
 			router.push("/login");
@@ -107,18 +118,7 @@ export default function AdminPage() {
 		checkAdmin();
 	}, [user, router]);
 
-	const loadStats = async () => {
-		const [statsRes, subsRes, submRes] = await Promise.all([
-			supabase.from("site_stats").select("*"),
-			supabase.from("newsletter_subscribers").select("id", { count: "exact", head: true }),
-			supabase.from("extension_submissions").select("id", { count: "exact", head: true }),
-		]);
 
-		if (statsRes.data) setStats(statsRes.data);
-		setSubscriberCount(subsRes.count || 0);
-		setSubmissionCount(submRes.count || 0);
-		setLoading(false);
-	};
 
 	const loadSubscribers = async () => {
 		const { data } = await supabase
@@ -223,12 +223,12 @@ export default function AdminPage() {
 		}
 	};
 
-	useEffect(() => {
-		if (!isAdmin) return;
-		if (activeTab === "newsletter") loadSubscribers();
-		if (activeTab === "extensions") loadSubmissions();
-		if (activeTab === "users") loadProfiles();
-	}, [activeTab, isAdmin]);
+	const handleTabChange = (tab: Tab) => {
+		setActiveTab(tab);
+		if (tab === "newsletter") loadSubscribers();
+		if (tab === "extensions") loadSubmissions();
+		if (tab === "users") loadProfiles();
+	};
 
 	const handleSendNewsletter = async () => {
 		if (!newsletterSubject.trim() || !newsletterContent.trim()) return;
@@ -319,25 +319,25 @@ export default function AdminPage() {
 					<div className={styles.tabs}>
 						<button
 							className={`${styles.tab} ${activeTab === "stats" ? styles.tabActive : ""}`}
-							onClick={() => setActiveTab("stats")}
+							onClick={() => handleTabChange("stats")}
 						>
 							Stats
 						</button>
 						<button
 							className={`${styles.tab} ${activeTab === "newsletter" ? styles.tabActive : ""}`}
-							onClick={() => setActiveTab("newsletter")}
+							onClick={() => handleTabChange("newsletter")}
 						>
 							Newsletter
 						</button>
 						<button
 							className={`${styles.tab} ${activeTab === "extensions" ? styles.tabActive : ""}`}
-							onClick={() => setActiveTab("extensions")}
+							onClick={() => handleTabChange("extensions")}
 						>
 							Extensions
 						</button>
 						<button
 							className={`${styles.tab} ${activeTab === "users" ? styles.tabActive : ""}`}
-							onClick={() => setActiveTab("users")}
+							onClick={() => handleTabChange("users")}
 						>
 							Users
 						</button>

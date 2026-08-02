@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -9,19 +10,23 @@ export const metadata: Metadata = {
 	description: "A personal AI assistant that knows your codebase, your style, and your workflow. Powered by 5 providers with automatic fallback.",
 };
 
+const Icon = ({ src, alt = "", w, h }: { src: string; alt?: string; w: number; h: number }) => (
+	<Image src={src} alt={alt} width={w} height={h} />
+);
+
 const modes = [
 	{
-		icon: <img src="/icons/AITwin.png" alt="" />,
+		icon: <Icon src="/icons/AITwin.png" w={1024} h={1024} />,
 		title: "Chat",
 		desc: "Natural conversation about your code. Ask questions, get explanations, brainstorm solutions.",
 	},
 	{
-		icon: <img src="/icons/AITwin.png" alt="" />,
+		icon: <Icon src="/icons/AITwin.png" w={1024} h={1024} />,
 		title: "Brainstorm",
 		desc: "Structured ideation sessions. Think through architecture decisions and design patterns with AI.",
 	},
 	{
-		icon: <img src="/icons/Code.png" alt="" />,
+		icon: <Icon src="/icons/Code.png" w={131} h={70} />,
 		title: "Code Assist",
 		desc: "Context-aware code suggestions. The AI sees your open files, LSP diagnostics, and git status.",
 	},
@@ -31,32 +36,32 @@ const providers = ["Gemini", "Groq", "HuggingFace", "Mistral", "OpenRouter"];
 
 const features = [
 	{
-		icon: <img src="/icons/SettingsGear.png" alt="" />,
+		icon: <Icon src="/icons/SettingsGear.png" w={1536} h={1024} />,
 		title: "Local Context",
 		desc: "AI only sees what you share. Your code stays on your machine.",
 	},
 	{
-		icon: <img src="/icons/Forge_Cockpit.png" alt="" />,
+		icon: <Icon src="/icons/Forge_Cockpit.png" w={1024} h={1024} />,
 		title: "Usage Tracking",
 		desc: "Monitor token usage across sessions. Know where your tokens go.",
 	},
 	{
-		icon: <img src="/icons/Successimg.png" alt="" />,
+		icon: <Icon src="/icons/Successimg.png" w={63} h={51} />,
 		title: "Fix It Mode",
 		desc: "Select an error, and AI Twin gathers context to suggest a fix.",
 	},
 	{
-		icon: <img src="/icons/ProblemsNBG.png" alt="" />,
+		icon: <Icon src="/icons/ProblemsNBG.png" w={1072} h={960} />,
 		title: "Context-Aware",
 		desc: "Builds context from your editor, git status, LSP diagnostics, and scripts.",
 	},
 	{
-		icon: <img src="/icons/AITwin.png" alt="" />,
+		icon: <Icon src="/icons/AITwin.png" w={1024} h={1024} />,
 		title: "Persistent Memory",
 		desc: "Conversations and decisions saved to Supabase for future reference.",
 	},
 	{
-		icon: <img src="/icons/Terminal.png" alt="" />,
+		icon: <Icon src="/icons/Terminal.png" w={1024} h={1536} />,
 		title: "Streaming Responses",
 		desc: "Real-time token-by-token streaming. See the AI think.",
 	},

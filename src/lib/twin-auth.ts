@@ -1,5 +1,5 @@
 import { twin } from "./twin";
-import type { Session, User } from "@supabase/supabase-js";
+import type { Session } from "@supabase/supabase-js";
 
 const STORAGE_KEY = "twin_session";
 

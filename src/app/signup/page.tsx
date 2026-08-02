@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -45,8 +46,8 @@ export default function SignupPage() {
 		try {
 			await signUp(data.email, data.password);
 			router.push("/signup/interview");
-		} catch (err: any) {
-			setServerError(err.message || "Signup failed");
+		} catch (err: unknown) {
+			setServerError(err instanceof Error ? err.message : "Signup failed");
 		}
 	};
 
@@ -54,7 +55,7 @@ export default function SignupPage() {
 		<div className={styles.page}>
 			<div className={styles.card}>
 				<div className={styles.header}>
-					<img src="/forge-logo.png" alt="" className={styles.logo} />
+					<Image src="/forge-logo.png" width={680} height={654} alt="" className={styles.logo} />
 					<h1 className={styles.title}>Create your account</h1>
 					<p className={styles.subtitle}>Build your AI Twin in a few minutes</p>
 				</div>

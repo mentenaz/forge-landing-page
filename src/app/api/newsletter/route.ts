@@ -59,7 +59,7 @@ export async function POST(request: Request) {
 		await triggerThankYouEmail(normalizedEmail, name);
 
 		return NextResponse.json({ message: "You're subscribed!" });
-	} catch (err: any) {
+	} catch (err: unknown) {
 		console.error("Newsletter subscribe error:", err);
 		return NextResponse.json(
 			{ error: "Something went wrong. Please try again." },

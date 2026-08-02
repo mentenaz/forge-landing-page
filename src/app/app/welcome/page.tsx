@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import styles from "./page.module.css";
 
 const features = [
@@ -23,8 +24,10 @@ const features = [
 export default function WelcomePage() {
 	return (
 		<div className={styles.page}>
-			<img
+			<Image
 				src="/forge-logo.png"
+				width={680}
+				height={654}
 				alt=""
 				className={styles.logo}
 				style={{ animation: "forgePulse 2s ease-in-out infinite" }}

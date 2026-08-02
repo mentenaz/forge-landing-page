@@ -58,12 +58,12 @@ const FEATURES = [
 	},
 ];
 
-const FALLBACK_STATS = [
-	{ value: "161", label: "Rust Commands" },
-	{ value: "28MB", label: "RAM Usage" },
-	{ value: "7", label: "LSP Languages" },
-	{ value: "19", label: "Panels" },
-];
+// const FALLBACK_STATS = [
+// 	{ value: "161", label: "Rust Commands" },
+// 	{ value: "28MB", label: "RAM Usage" },
+// 	{ value: "7", label: "LSP Languages" },
+// 	{ value: "19", label: "Panels" },
+// ];
 
 const FALLBACK_DOWNLOADS = [
 	{ platform: "Windows", filename: "Mentenaz.Forge_x64-setup.exe" },

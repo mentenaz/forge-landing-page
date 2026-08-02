@@ -2,6 +2,7 @@
 
 import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -17,13 +18,10 @@ function ExtensionDetailInner() {
 	const searchParams = useSearchParams();
 	const id = searchParams.get("id");
 	const [extension, setExtension] = useState<Extension | null>(null);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState<boolean>(() => !!id);
 
 	useEffect(() => {
-		if (!id) {
-			setLoading(false);
-			return;
-		}
+		if (!id) return;
 		supabase
 			.from("extensions")
 			.select("*")
@@ -82,7 +80,7 @@ function ExtensionDetailInner() {
 
 					<div className={styles.header}>
 						<div className={styles.headerIcon}>
-							<img src={extension.icon_url ?? "/icons/extentionsIcon.png"} alt="" />
+							<Image src={extension.icon_url ?? "/icons/extentionsIcon.png"} alt="" width={56} height={56} unoptimized />
 						</div>
 						<div className={styles.headerInfo}>
 							<h1 className={styles.headerName}>{extension.name}</h1>

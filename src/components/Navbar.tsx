@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { getUser, signOut } from "@/lib/twin-auth";
@@ -18,27 +19,22 @@ const navLinks = [
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [user, setUser] = useState<{ id: string; email: string } | null>(null);
+  const [user, setUser] = useState<{ id: string; email: string } | null>(() => getUser());
   const [displayName, setDisplayName] = useState<string>("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const u = getUser();
-    setUser(u);
-
-    if (u) {
+    if (user) {
       twin
         .from("profiles")
         .select("name")
-        .eq("id", u.id)
+        .eq("id", user.id)
         .single()
         .then(({ data }) => {
-          setDisplayName(data?.name || u.email);
+          setDisplayName(data?.name || user.email);
         });
-    } else {
-      setDisplayName("");
     }
-  }, [pathname]);
+  }, [user, pathname]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -56,8 +52,10 @@ export function Navbar() {
     <nav className={styles.nav}>
       <div className={styles.inner}>
         <Link href="/" className={styles.brand}>
-          <img
+          <Image
             src="/forge-logo.png"
+            width={680}
+            height={654}
             alt=""
             className={styles.logo}
             aria-hidden="true"

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -292,9 +293,11 @@ export default function ProfilePage() {
 							}}
 						>
 							{avatarSrc ? (
-								<img
+								<Image
 									src={avatarSrc}
 									alt="Profile"
+									fill
+									unoptimized
 									className={styles.avatarImg}
 								/>
 							) : (

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import styles from "./page.module.css";
@@ -108,12 +109,12 @@ export default function AiPage() {
 						Ready to experience Mentenaz AI?
 					</h2>
 					<div className={styles.heroCtas}>
-						<a className={styles.btnPrimary} href="/ai/chat">
+						<Link className={styles.btnPrimary} href="/ai/chat">
 							Try Web Chat →
-						</a>
-						<a className={styles.btnSecondary} href="/#download">
+						</Link>
+						<Link className={styles.btnSecondary} href="/#download">
 							Get Forge →
-						</a>
+						</Link>
 					</div>
 				</div>
 			</section>

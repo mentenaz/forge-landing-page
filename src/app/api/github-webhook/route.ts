@@ -2,6 +2,32 @@ import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase-admin";
 import crypto from "crypto";
 
+// ── GitHub webhook payload types ────────────────────────────
+interface GitHubAsset {
+  name: string;
+  size: number | null;
+  browser_download_url: string;
+}
+
+interface GitHubRelease {
+  tag_name: string | null;
+  name: string | null;
+  body: string | null;
+  published_at: string | null;
+  assets: GitHubAsset[] | null;
+}
+
+interface GitHubReleaseEvent {
+  action: string;
+  release: GitHubRelease | null;
+}
+
+type ReleaseEvent = Omit<GitHubReleaseEvent, "release"> & {
+  release: GitHubRelease;
+};
+
+type Platform = "windows" | "linux-deb" | "linux-rpm" | "linux-appimage" | "macos";
+
 // ── GitHub webhook signature verification ───────────────────
 function verifySignature(payload: string, signature: string | null): boolean {
   if (!signature) return false;
@@ -17,7 +43,7 @@ function verifySignature(payload: string, signature: string | null): boolean {
 }
 
 // ── Map GitHub asset filename → platform key ────────────────
-function detectPlatform(filename: string): string | null {
+function detectPlatform(filename: string): Platform | null {
   const lower = filename.toLowerCase();
   if (lower.endsWith(".exe")) return "windows";
   if (lower.endsWith(".deb")) return "linux-deb";
@@ -25,6 +51,17 @@ function detectPlatform(filename: string): string | null {
   if (lower.endsWith(".appimage")) return "linux-appimage";
   if (lower.endsWith(".dmg") || lower.endsWith(".app")) return "macos";
   return null;
+}
+
+function parseReleaseEvent(body: string): ReleaseEvent {
+  const raw = JSON.parse(body) as Partial<GitHubReleaseEvent>;
+  if (typeof raw.action !== "string") {
+    throw new Error("Payload is missing action");
+  }
+  if (!raw.release || typeof raw.release !== "object") {
+    throw new Error("Payload is missing release");
+  }
+  return { action: raw.action, release: raw.release };
 }
 
 export async function POST(request: Request): Promise<Response> {
@@ -38,15 +75,20 @@ export async function POST(request: Request): Promise<Response> {
     }
 
     const event = request.headers.get("x-github-event");
-    const payload = JSON.parse(body);
 
     // We only care about release events
     if (event !== "release") {
       return NextResponse.json({ ok: true, skipped: true });
     }
 
-    // Only handle published releases
-    if (payload.action !== "published" && payload.action !== "prereleased") {
+    const payload = parseReleaseEvent(body);
+
+    // Only handle published/prereleased releases (edited re-processes assets)
+    if (
+      payload.action !== "published" &&
+      payload.action !== "prereleased" &&
+      payload.action !== "edited"
+    ) {
       return NextResponse.json({
         ok: true,
         skipped: true,
@@ -55,13 +97,6 @@ export async function POST(request: Request): Promise<Response> {
     }
 
     const release = payload.release;
-    if (!release) {
-      return NextResponse.json(
-        { error: "No release in payload" },
-        { status: 400 },
-      );
-    }
-
     const version = release.tag_name?.replace(/^v/, "");
     if (!version) {
       return NextResponse.json({ error: "No version in tag" }, { status: 400 });
@@ -81,7 +116,7 @@ export async function POST(request: Request): Promise<Response> {
       console.error("[github-webhook] Failed to update releases:", updateError);
     }
 
-    // Insert new release
+    // Insert or update release (upsert on version)
     const releaseRow = {
       version,
       name: release.name || `Mentenaz Forge v${version}`,
@@ -92,35 +127,51 @@ export async function POST(request: Request): Promise<Response> {
 
     const { data: insertedRelease, error: insertError } = await admin
       .from("releases")
-      .insert(releaseRow)
+      .upsert(releaseRow, { onConflict: "version" })
       .select("id")
       .single();
 
     if (insertError) {
-      console.error("[github-webhook] Failed to insert release:", insertError);
+      console.error("[github-webhook] Failed to upsert release:", insertError);
       return NextResponse.json(
-        { error: "Failed to insert release" },
+        { error: "Failed to upsert release" },
         { status: 500 },
       );
     }
 
     // Insert release assets (installer files)
     const assets = release.assets ?? [];
-    const assetRows = assets
-      .map((asset: any) => {
-        const platform = detectPlatform(asset.name);
-        if (!platform) return null;
-        return {
-          release_id: insertedRelease.id,
-          platform,
-          filename: asset.name,
-          file_size: asset.size ?? null,
-          download_url: asset.browser_download_url,
-        };
-      })
-      .filter(Boolean);
+    const assetRows: Array<{
+      release_id: string;
+      platform: Platform;
+      filename: string;
+      file_size: number | null;
+      download_url: string;
+    }> = [];
+
+    for (const asset of assets) {
+      const platform = detectPlatform(asset.name);
+      if (!platform) continue;
+      assetRows.push({
+        release_id: insertedRelease.id,
+        platform,
+        filename: asset.name,
+        file_size: asset.size ?? null,
+        download_url: asset.browser_download_url,
+      });
+    }
 
     if (assetRows.length > 0) {
+      // Clear stale assets for this release before inserting fresh ones
+      const { error: deleteError } = await admin
+        .from("release_assets")
+        .delete()
+        .eq("release_id", insertedRelease.id);
+
+      if (deleteError) {
+        console.error("[github-webhook] Failed to clear assets:", deleteError);
+      }
+
       const { error: assetError } = await admin
         .from("release_assets")
         .insert(assetRows);

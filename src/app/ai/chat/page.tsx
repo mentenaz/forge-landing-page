@@ -2,9 +2,10 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { getAccessToken, getUser } from "@/lib/twin-auth";
+import { getAccessToken } from "@/lib/twin-auth";
 import styles from "./chat.module.css";
 
 interface Message {
@@ -48,14 +49,10 @@ export default function ForgeAIChat() {
   const streamingRef = useRef(false);
   const lastSendTime = useRef(0);
   const [guestCount, setGuestCount] = useState(0);
-  const [isAuthed, setIsAuthed] = useState(false);
+  const [isAuthed] = useState<boolean>(() => !!getAccessToken());
   const abortRef = useRef<AbortController | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const sseBufferRef = useRef("");
-
-  useEffect(() => {
-    setIsAuthed(!!getAccessToken());
-  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -189,10 +186,10 @@ export default function ForgeAIChat() {
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <Link href="/" className={styles.homeLink}>
-            <img src="/forge-logo.png" alt="" className={styles.homeLogo} />
+            <Image src="/forge-logo.png" width={680} height={654} alt="" className={styles.homeLogo} />
           </Link>
           <Link href="/ai" className={styles.brand}>
-            <img src="/icons/AITwin.png" alt="" className={styles.brandIcon} />
+            <Image src="/icons/AITwin.png" width={1024} height={1024} alt="" className={styles.brandIcon} />
           </Link>
         </div>
         <div className={styles.modes}>

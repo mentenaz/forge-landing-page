@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -39,8 +40,8 @@ export default function LoginPage() {
 		try {
 			await signIn(data.email, data.password);
 			router.push("/dashboard");
-		} catch (err: any) {
-			setServerError(err.message || "Invalid credentials");
+		} catch (err: unknown) {
+			setServerError(err instanceof Error ? err.message : "Invalid credentials");
 		}
 	};
 
@@ -48,7 +49,7 @@ export default function LoginPage() {
 		<div className={styles.page}>
 			<div className={styles.card}>
 				<div className={styles.header}>
-					<img src="/forge-logo.png" alt="" className={styles.logo} />
+					<Image src="/forge-logo.png" width={680} height={654} alt="" className={styles.logo} />
 					<h1 className={styles.title}>Welcome back</h1>
 					<p className={styles.subtitle}>Sign in to access your AI Twin</p>
 				</div>
