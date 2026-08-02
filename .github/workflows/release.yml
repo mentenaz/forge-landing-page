@@ -70,6 +70,7 @@ jobs:
         run: npm run tauri build -- --bundles nsis
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
@@ -137,12 +138,14 @@ jobs:
         run: npm run tauri build -- --bundles deb,rpm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
 
       - name: Build AppImage
         working-directory: forge-source
         run: npm run tauri build -- --bundles appimage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         continue-on-error: true
 
       - name: Upload Linux artifacts
