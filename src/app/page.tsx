@@ -28,13 +28,13 @@ const FEATURES = [
 	},
 	{
 		icon: <ForgeIcon src="/icons/GitOps_NBG.png" alt="Git operations" width={40} height={40} />,
-		title: "GitHub Desktop",
+		title: "Mentenaz Helm",
 		description:
 			"Clone, create PRs, manage repos, track issues, view deployments — all without leaving Forge.",
 	},
 	{
 		icon: <ForgeIcon src="/icons/AITwin.png" alt="AI Twin assistant" width={40} height={40} />,
-		title: "AI Twin",
+		title: "Mentenaz AI",
 		description:
 			"Personal AI assistant powered by 5 providers. Chat, brainstorm, code assist, and AI-powered error fixing.",
 	},
