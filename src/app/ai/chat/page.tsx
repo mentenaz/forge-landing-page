@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { getAccessToken } from "@/lib/twin-auth";
+import { twin } from "@/lib/twin";
 import styles from "./chat.module.css";
 
 interface Message {
@@ -16,6 +16,14 @@ interface Message {
 type Mode = "chat" | "brainstorm" | "code";
 
 const GUEST_LIMIT = 5;
+
+const TWIN_URL = process.env.NEXT_PUBLIC_TWIN_URL!;
+
+const MODE_FUNCTION: Record<Mode, string> = {
+  chat: "chat",
+  brainstorm: "brainstorm",
+  code: "code-assist",
+};
 
 const SUGGESTIONS: Record<Mode, string[]> = {
   chat: [
@@ -46,10 +54,27 @@ export default function ForgeAIChat() {
   const [input, setInput] = useState("");
   const [mode, setMode] = useState<Mode>("chat");
   const [streaming, setStreaming] = useState(false);
+  const [guestCount, setGuestCount] = useState(0);
+
+  // ── Fix hydration error #418 ──────────────────────────────
+  // Never initialise auth state during SSR — always start false
+  // and check in useEffect (client only)
+  const [isAuthed, setIsAuthed] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [authToken, setAuthToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    twin.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user?.id) {
+        setIsAuthed(true);
+        setUserId(session.user.id);
+        setAuthToken(session.access_token);
+      }
+    });
+  }, []);
+
   const streamingRef = useRef(false);
   const lastSendTime = useRef(0);
-  const [guestCount, setGuestCount] = useState(0);
-  const [isAuthed] = useState<boolean>(() => !!getAccessToken());
   const abortRef = useRef<AbortController | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const sseBufferRef = useRef("");
@@ -58,6 +83,43 @@ export default function ForgeAIChat() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // ── SSE helpers ───────────────────────────────────────────
+  const processSSELine = (line: string) => {
+    const data = line.slice(6); // strip "data: "
+    if (data === "[DONE]") return false;
+    try {
+      const parsed = JSON.parse(data);
+      const text = parsed.chunk ?? "";
+      if (text) {
+        setMessages((prev) => {
+          const updated = [...prev];
+          const last = updated[updated.length - 1];
+          updated[updated.length - 1] = {
+            ...last,
+            content: last.content + text,
+          };
+          return updated;
+        });
+      }
+    } catch {
+      /* skip malformed */
+    }
+    return true;
+  };
+
+  const processSSEBuffer = (raw: string) => {
+    const combined = sseBufferRef.current + raw;
+    const parts = combined.split("\n\n");
+    sseBufferRef.current = parts.pop() ?? "";
+    for (const part of parts) {
+      const line = part.trim();
+      if (line.startsWith("data: ")) {
+        if (!processSSELine(line)) break;
+      }
+    }
+  };
+
+  // ── Send ──────────────────────────────────────────────────
   const send = async () => {
     if (!input.trim() || streamingRef.current) return;
 
@@ -71,90 +133,80 @@ export default function ForgeAIChat() {
 
     const userMessage = input.trim();
     setInput("");
-    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
+
+    const historyBeforeSend: Message[] = [...messages];
+    setMessages((prev) => [
+      ...prev,
+      { role: "user", content: userMessage },
+      { role: "assistant", content: "" },
+    ]);
+
     streamingRef.current = true;
     setStreaming(true);
-    setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
 
-    if (!isAuthed) {
-      setGuestCount((c) => c + 1);
-    }
+    if (!isAuthed) setGuestCount((c) => c + 1);
 
     abortRef.current = new AbortController();
     sseBufferRef.current = "";
 
-    const processSSELine = (line: string) => {
-      const data = line.slice(6); // strip "data: "
-      if (data === "[DONE]") return false;
-      try {
-        const parsed = JSON.parse(data);
-        const text = parsed.chunk ?? "";
-        if (text) {
-          setMessages((prev) => {
-            const updated = [...prev];
-            const last = updated[updated.length - 1];
-            updated[updated.length - 1] = { ...last, content: last.content + text };
-            return updated;
-          });
-        }
-      } catch {}
-      return true;
-    };
-
-    const processSSEBuffer = (raw: string) => {
-      const combined = sseBufferRef.current + raw;
-      const parts = combined.split("\n\n");
-      sseBufferRef.current = parts.pop() ?? "";
-      for (const part of parts) {
-        const line = part.trim();
-        if (line.startsWith("data: ")) {
-          if (!processSSELine(line)) break;
-        }
-      }
-    };
-
     try {
-      const token = getAccessToken();
+      if (isAuthed && userId && authToken) {
+        // ── Authenticated: full twin with identity + memory ──
+        const fnName = MODE_FUNCTION[mode];
 
-      if (token) {
-        // Authenticated: use ai-chat Edge Function with user's JWT
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-        const res = await fetch(`${supabaseUrl}/functions/v1/ai-chat`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+        const res = await fetch(
+          `${TWIN_URL}/functions/v1/${fnName}`, // ← correct URL + name
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify({
+              message: userMessage,
+              user_id: userId, // ← required
+              conversation_history: historyBeforeSend, // ← required
+              mode,
+            }),
+            signal: abortRef.current.signal,
           },
-          body: JSON.stringify({ message: userMessage, mode }),
-          signal: abortRef.current.signal,
-        });
+        );
+
+        if (!res.ok) {
+          console.error(
+            "[chat] edge function error:",
+            res.status,
+            await res.text().catch(() => ""),
+          );
+          return;
+        }
 
         const reader = res.body?.getReader();
         const decoder = new TextDecoder();
-
         while (reader) {
           const { done, value } = await reader.read();
           if (done) break;
           processSSEBuffer(decoder.decode(value, { stream: true }));
         }
       } else {
-        // Guest: use guest-chat Edge Function (HuggingFace, no auth)
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-        const res = await fetch(`${supabaseUrl}/functions/v1/guest-chat`, {
+        // ── Guest: no auth, no identity, HuggingFace via guest-chat ──
+        const res = await fetch(`${TWIN_URL}/functions/v1/guest-chat`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             message: userMessage,
-            history: messages.slice(0, -1),
+            history: historyBeforeSend,
           }),
           signal: abortRef.current.signal,
         });
 
+        if (!res.ok) {
+          console.error("[guest-chat] error:", res.status);
+          return;
+        }
+
         const reader = res.body?.getReader();
         const decoder = new TextDecoder();
-
         while (reader) {
           const { done, value } = await reader.read();
           if (done) break;
@@ -186,12 +238,25 @@ export default function ForgeAIChat() {
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <Link href="/" className={styles.homeLink}>
-            <Image src="/forge-logo.png" width={680} height={654} alt="" className={styles.homeLogo} />
+            <Image
+              src="/forge-logo.png"
+              width={680}
+              height={654}
+              alt=""
+              className={styles.homeLogo}
+            />
           </Link>
           <Link href="/ai" className={styles.brand}>
-            <Image src="/icons/AITwin.png" width={1024} height={1024} alt="" className={styles.brandIcon} />
+            <Image
+              src="/icons/AITwin.png"
+              width={1024}
+              height={1024}
+              alt=""
+              className={styles.brandIcon}
+            />
           </Link>
         </div>
+
         <div className={styles.modes}>
           {(["chat", "brainstorm", "code"] as Mode[]).map((m) => (
             <button
@@ -199,10 +264,15 @@ export default function ForgeAIChat() {
               className={`${styles.modeBtn} ${mode === m ? styles.active : ""}`}
               onClick={() => setMode(m)}
             >
-              {m === "chat" ? "Chat" : m === "brainstorm" ? "Brainstorm" : "Code Assist"}
+              {m === "chat"
+                ? "Chat"
+                : m === "brainstorm"
+                  ? "Brainstorm"
+                  : "Code Assist"}
             </button>
           ))}
         </div>
+
         {!isAuthed && (
           <div className={styles.guestBadge}>
             Guest {guestCount}/{GUEST_LIMIT}
@@ -217,8 +287,8 @@ export default function ForgeAIChat() {
             <h2 className={styles.emptyTitle}>What can I help you with?</h2>
             <p className={styles.emptySub}>
               {isAuthed
-                ? "Powered by Mentenaz AI \u2014 the same intelligence inside Forge."
-                : `Try it free \u2014 ${GUEST_LIMIT - guestCount} messages left. Sign up for full access.`}
+                ? "Powered by Mentenaz AI — the same intelligence inside Forge."
+                : `Try it free — ${GUEST_LIMIT - guestCount} messages left. Sign up for full access.`}
             </p>
             <div className={styles.suggestions}>
               {SUGGESTIONS[mode].map((s, i) => (
@@ -233,13 +303,16 @@ export default function ForgeAIChat() {
             </div>
           </div>
         )}
+
         {messages.map((msg, i) => (
           <div
             key={i}
-            className={`${styles.message} ${msg.role === "user" ? styles.userMsg : styles.assistantMsg}`}
+            className={`${styles.message} ${
+              msg.role === "user" ? styles.userMsg : styles.assistantMsg
+            }`}
           >
             {msg.role === "assistant" && (
-              <span className={styles.avatar}>{"\u26A1"}</span>
+              <span className={styles.avatar}>⚡</span>
             )}
             <div className={styles.bubble}>
               {msg.role === "assistant" ? (
@@ -249,9 +322,10 @@ export default function ForgeAIChat() {
               ) : (
                 msg.content
               )}
-              {streaming && i === messages.length - 1 && !msg.content && (
-                <span className={styles.typing}>{"\u25CF\u25CF\u25CF"}</span>
-              )}
+              {streaming &&
+                i === messages.length - 1 &&
+                msg.role === "assistant" &&
+                !msg.content && <span className={styles.typing}>●●●</span>}
             </div>
           </div>
         ))}
@@ -263,7 +337,7 @@ export default function ForgeAIChat() {
         <div className={styles.limitBanner}>
           <p>You&apos;ve used all free messages.</p>
           <Link href="/signup" className={styles.limitLink}>
-            Create account for unlimited chat, brainstorming, and code assist {"\u2192"}
+            Create account for unlimited chat, brainstorming, and code assist →
           </Link>
         </div>
       )}
@@ -280,13 +354,15 @@ export default function ForgeAIChat() {
               send();
             }
           }}
-          placeholder={limitReached ? "Sign up to continue..." : PLACEHOLDERS[mode]}
+          placeholder={
+            limitReached ? "Sign up to continue..." : PLACEHOLDERS[mode]
+          }
           rows={2}
           disabled={streaming || limitReached}
         />
         {streaming ? (
           <button className={styles.stopBtn} onClick={stop}>
-            {"\u25A0"} Stop
+            ■ Stop
           </button>
         ) : (
           <button
@@ -294,7 +370,7 @@ export default function ForgeAIChat() {
             onClick={send}
             disabled={!input.trim() || streaming || limitReached}
           >
-            {"\u2191"} Send
+            ↑ Send
           </button>
         )}
       </div>
@@ -302,9 +378,11 @@ export default function ForgeAIChat() {
       {/* CTA */}
       {!isAuthed && (
         <div className={styles.cta}>
-          <span className={styles.ctaText}>Get Fix It, SQL AI, and Git AI inside your editor</span>
+          <span className={styles.ctaText}>
+            Get Fix It, SQL AI, and Git AI inside your editor
+          </span>
           <Link href="/#download" className={styles.ctaLink}>
-            Install Forge {"\u2192"}
+            Install Forge →
           </Link>
         </div>
       )}
