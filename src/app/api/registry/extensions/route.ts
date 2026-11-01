@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { registryAdminClient, toExtensionMetadata, RegistryExtensionRow } from "@/lib/registry";
+import {
+	registryAdminClient,
+	sanitizeFilterText,
+	toExtensionMetadata,
+	RegistryExtensionRow,
+} from "@/lib/registry";
 
 // GET /api/registry/extensions — list/search, called by extension_host.rs's
 // fetch_extensions. Query params: filter (search text), provides
@@ -21,9 +26,10 @@ export async function GET(req: NextRequest) {
 		}
 	}
 
-	if (filter) {
+	const sanitizedFilter = filter ? sanitizeFilterText(filter) : "";
+	if (sanitizedFilter) {
 		query = query.or(
-			`name.ilike.%${filter}%,description.ilike.%${filter}%,id.ilike.%${filter}%`,
+			`name.ilike.%${sanitizedFilter}%,description.ilike.%${sanitizedFilter}%,id.ilike.%${sanitizedFilter}%`,
 		);
 	}
 

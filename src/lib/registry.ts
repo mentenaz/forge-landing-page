@@ -56,3 +56,15 @@ export function toExtensionMetadata(row: RegistryExtensionRow): ExtensionMetadat
 export function registryAdminClient() {
 	return createAdminClient();
 }
+
+// PostgREST's or= filter syntax uses "," to separate conditions and "()" to
+// group them, so interpolating raw user search text straight into an
+// .or("name.ilike.%<text>%,...") call breaks (or, worse, manipulates) the
+// filter whenever the text contains any of those characters — Supabase then
+// returns a query error, which extension_host.rs can't parse (it always
+// expects {"data": [...]}), surfacing as "missing field `data`" on the Zed
+// side. Stripping them is simpler and safer than implementing PostgREST's
+// full quoting/escaping rules for a plain substring search.
+export function sanitizeFilterText(filter: string): string {
+	return filter.replace(/[,()"\\]/g, " ").trim();
+}
