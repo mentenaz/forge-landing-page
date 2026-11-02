@@ -26,6 +26,11 @@ export const docPages: DocPage[] = [
 		description: "How updates reach you, since the built-in updater is off.",
 	},
 	{
+		slug: "privacy",
+		title: "Privacy",
+		description: "What Forge Super contacts and when, and what it never sends.",
+	},
+	{
 		slug: "windows",
 		title: "Windows troubleshooting",
 		description: "Graphics, the software-emulated GPU warning, and file watching.",
