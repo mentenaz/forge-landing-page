@@ -1,8 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import ReactMarkdown from "react-markdown";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import DocMarkdown from "@/components/DocMarkdown";
 import styles from "../page.module.css";
 
 export const metadata: Metadata = {
@@ -98,7 +98,7 @@ export default async function ReleasesPage() {
 						</div>
 						<div className={styles.prose}>
 							{release.body?.trim() ? (
-								<ReactMarkdown>{release.body}</ReactMarkdown>
+								<DocMarkdown>{release.body}</DocMarkdown>
 							) : (
 								<p className={styles.empty}>No notes for this release.</p>
 							)}

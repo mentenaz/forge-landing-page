@@ -1,0 +1,40 @@
+.tableWrap {
+	margin: 0 0 1.25rem;
+	overflow-x: auto;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+}
+
+.tableWrap table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.875rem;
+	line-height: 1.55;
+}
+
+.tableWrap th,
+.tableWrap td {
+	padding: 0.65rem 0.9rem;
+	text-align: left;
+	vertical-align: top;
+	border-bottom: 1px solid var(--border);
+}
+
+.tableWrap th {
+	background: var(--bg-card);
+	color: var(--text-active);
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.tableWrap tbody tr:last-child td {
+	border-bottom: none;
+}
+
+.tableWrap tbody tr:nth-child(even) td {
+	background: rgba(255, 255, 255, 0.02);
+}
+
+.tableWrap td code {
+	white-space: nowrap;
+}

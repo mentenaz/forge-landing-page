@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import ReactMarkdown from "react-markdown";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import DocMarkdown from "@/components/DocMarkdown";
 import { docPages, findDoc, readDocBody } from "@/lib/docs";
 import styles from "../page.module.css";
 
@@ -39,7 +39,7 @@ export default async function DocPage({ params }: { params: Promise<Params> }) {
 				</Link>
 				<h1 className={styles.heading}>{page.title}</h1>
 				<div className={styles.prose}>
-					<ReactMarkdown>{body}</ReactMarkdown>
+					<DocMarkdown>{body}</DocMarkdown>
 				</div>
 			</main>
 			<Footer />
