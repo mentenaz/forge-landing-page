@@ -16,6 +16,11 @@ export const docPages: DocPage[] = [
 		description: "Get Forge Super on Windows or Debian-based Linux.",
 	},
 	{
+		slug: "ai-setup",
+		title: "AI setup",
+		description: "Connect a model provider for the agent and choose an edit prediction provider.",
+	},
+	{
 		slug: "updating",
 		title: "Updating",
 		description: "How updates reach you, since the built-in updater is off.",
