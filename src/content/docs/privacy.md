@@ -1,6 +1,6 @@
-Forge Super has no account and no sign-in, and it does not send usage data or crash reports anywhere by default. This page lists what the app does contact, and when, so you can check it yourself.
+Forge Super has no account and no sign-in, never sends usage data, and uploads no crash reports. This page lists what the app does contact, and when, so you can check it yourself.
 
-It describes the app as of release `dev-v47` (2 November 2026). If you ever see it connect somewhere that is not listed here, please [report it](https://github.com/mentenaz/mentenaz.Forge.Super/issues).
+It describes the app as of release `dev-v48` (2 November 2026). If you ever see it connect somewhere that is not listed here, please [report it](https://github.com/mentenaz/mentenaz.Forge.Super/issues).
 
 ## What stays on your computer
 
@@ -26,7 +26,7 @@ Forge Super does not contact Zed's servers for sign-in, collaboration or AI, bec
 
 ## Telemetry and crash reports
 
-- **Usage data** (`telemetry.metrics`) is **off**. While it is off, usage events are discarded inside the app and never sent. If you turn it on, the app would send them to Zed's telemetry endpoint, because that is where the editor's code sends them and we do not run a collector. We recommend leaving it off.
+- **Usage data** is **never sent**. The `telemetry.metrics` setting still exists, but it has no effect: uploading is switched off in the code, so turning the setting on does nothing. In `dev-v47` and earlier the setting was off by default, but turning it on would have sent usage data to Zed's telemetry endpoint, which is why it was made inert in `dev-v48`.
 - **Crash reports** (`telemetry.diagnostics`) show as on in the settings, but release builds of Forge Super have no crash-report destination configured, so nothing is uploaded. Crashes and errors are written to your local log file only.
 
 Your log files are here, and you can read or delete them at any time:
