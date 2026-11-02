@@ -16,6 +16,7 @@ export interface Extension {
 
 export interface Release {
 	id: string;
+	product: "forge-super" | "forge-legacy";
 	version: string;
 	name: string;
 	description: string | null;
@@ -47,4 +48,19 @@ export interface ExtensionSubmission {
 	description: string;
 	extension_id: string;
 	tier: number;
+}
+
+export interface InstallMethod {
+	platform: string;
+	label: string;
+	command: string;
+	note: string | null;
+	sort_order: number;
+}
+
+/** The latest release with its files, as the homepage reads it. */
+export interface LatestRelease {
+	version: string;
+	release_date: string;
+	release_assets: Pick<ReleaseAsset, "platform" | "filename" | "download_url">[];
 }

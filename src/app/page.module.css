@@ -212,3 +212,48 @@
 		padding: 4rem 1rem 3rem;
 	}
 }
+
+.methods {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	max-width: 640px;
+	margin: 2rem auto 0;
+}
+
+.methodsTitle {
+	font-family: var(--font-heading);
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--text-active);
+}
+
+.method {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.methodLabel {
+	font-size: 0.8rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--text-muted);
+}
+
+.methodCommand {
+	margin: 0;
+	padding: 0.85rem 1rem;
+	background: var(--bg-deepest);
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	overflow-x: auto;
+	font-size: 0.85rem;
+	color: var(--text-primary);
+}
+
+.methodNote {
+	font-size: 0.8rem;
+	color: var(--text-secondary);
+}

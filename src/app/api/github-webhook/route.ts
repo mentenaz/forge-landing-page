@@ -110,6 +110,7 @@ export async function POST(request: Request): Promise<Response> {
     const { error: updateError } = await admin
       .from("releases")
       .update({ is_latest: false })
+      .eq("product", "forge-legacy")
       .eq("is_latest", true);
 
     if (updateError) {
@@ -117,7 +118,10 @@ export async function POST(request: Request): Promise<Response> {
     }
 
     // Insert or update release (upsert on version)
+    // This webhook belongs to the legacy Tauri app. Forge Super releases come
+    // from /api/releases/sync, called by its own workflow.
     const releaseRow = {
+      product: "forge-legacy",
       version,
       name: release.name || `Mentenaz Forge v${version}`,
       description: release.body || null,

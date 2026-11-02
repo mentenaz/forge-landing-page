@@ -1,10 +1,11 @@
+import Link from "next/link";
 import FeatureCard, { ForgeIcon } from "@/components/FeatureCard";
 import StatCard from "@/components/StatCard";
 import DownloadButton from "@/components/DownloadButton";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from "@/lib/supabase";
-import type { SiteStat, ReleaseAsset } from "@/types/database";
+import type { SiteStat, InstallMethod, LatestRelease } from "@/types/database";
 import styles from "./page.module.css";
 
 const FEATURES = [
@@ -65,11 +66,15 @@ const FEATURES = [
 // 	{ value: "19", label: "Panels" },
 // ];
 
-const FALLBACK_DOWNLOADS = [
-	{ platform: "Windows", filename: "Mentenaz.Forge_x64-setup.exe" },
-	{ platform: "Linux (Debian/Ubuntu)", filename: "mentenaz-forge_0.1.0_amd64.deb" },
-	{ platform: "Linux (Universal)", filename: "Mentenaz.Forge.AppImage" },
-];
+const GITHUB_REPO = "https://github.com/mentenaz/mentenaz.Forge.Super";
+const LEGACY_RELEASES = "https://github.com/mentenaz/forge-landing-page/releases";
+
+const PLATFORM_LABEL: Record<string, string> = {
+	windows: "Windows",
+	"linux-deb": "Linux (.deb)",
+	"linux-tarball": "Linux (.tar.gz)",
+	macos: "macOS",
+};
 
 function formatStat(value: number): string {
 	if (value >= 1000) return `${(value / 1000).toFixed(1)}k`;
@@ -77,12 +82,19 @@ function formatStat(value: number): string {
 }
 
 export default async function Home() {
-	const [statsResult, assetsResult] = await Promise.all([
+	const [statsResult, releaseResult, methodsResult] = await Promise.all([
 		supabase.from("site_stats").select("key, value"),
 		supabase
-			.from("release_assets")
-			.select("platform, filename, download_url")
-			.order("created_at", { ascending: false }),
+			.from("releases")
+			.select("version, release_date, release_assets(platform, filename, download_url)")
+			.eq("product", "forge-super")
+			.eq("is_latest", true)
+			.maybeSingle(),
+		supabase
+			.from("install_methods")
+			.select("platform, label, command, note, sort_order")
+			.eq("product", "forge-super")
+			.order("sort_order"),
 	]);
 
 	const statsRows = (statsResult.data as SiteStat[]) ?? [];
@@ -95,37 +107,30 @@ export default async function Home() {
 		{ value: formatStat(statsMap["total_releases"] ?? 1), label: "Releases" },
 	];
 
-	const assets = (assetsResult.data as ReleaseAsset[]) ?? [];
+	const latest = (releaseResult.data as LatestRelease | null) ?? null;
+	const methods = (methodsResult.data as InstallMethod[]) ?? [];
 
-	const platformIcon: Record<string, string> = {
-		windows: "/icons/Forge_Cockpit.png",
-		"linux-deb": "/icons/Forge_Cockpit.png",
-		"linux-appimage": "/icons/Forge_Cockpit.png",
-		"linux-rpm": "/icons/Forge_Cockpit.png",
-		macos: "/icons/Forge_Cockpit.png",
+	// Direct downloads of the newest Forge Super release. Until one has been
+	// recorded, everything points at the GitHub releases page.
+	const downloads = (latest?.release_assets ?? []).map((a) => ({
+		icon: (
+			<ForgeIcon
+				src="/icons/Forge_Cockpit.png"
+				alt={PLATFORM_LABEL[a.platform] ?? a.platform}
+				width={48}
+				height={48}
+			/>
+		),
+		platform: PLATFORM_LABEL[a.platform] ?? a.platform,
+		filename: a.filename,
+		url: a.download_url,
+	}));
+	const windowsDownload = downloads.find((d) => d.platform === "Windows");
+	const heroDownloadUrl = windowsDownload?.url ?? `${GITHUB_REPO}/releases/latest`;
+	const methodsByPlatform = {
+		windows: methods.filter((m) => m.platform === "windows"),
+		linux: methods.filter((m) => m.platform === "linux"),
 	};
-
-	const platformLabel: Record<string, string> = {
-		windows: "Windows",
-		"linux-deb": "Linux (Debian/Ubuntu)",
-		"linux-appimage": "Linux (AppImage)",
-		"linux-rpm": "Linux (RPM)",
-		macos: "macOS",
-	};
-
-	const downloads = assets.length > 0
-		? assets.map((a) => ({
-				icon: <ForgeIcon src={platformIcon[a.platform] ?? "/icons/Forge_Cockpit.png"} alt={platformLabel[a.platform] ?? a.platform} width={48} height={48} />,
-				platform: platformLabel[a.platform] ?? a.platform,
-				filename: a.filename,
-				url: a.download_url,
-			}))
-		: FALLBACK_DOWNLOADS.map((d) => ({
-				icon: <ForgeIcon src="/icons/Forge_Cockpit.png" alt={d.platform} width={48} height={48} />,
-				platform: d.platform,
-				filename: d.filename,
-				url: `https://github.com/mentenaz/forge-landing-page/releases/latest/download/${d.filename}`,
-			}));
 
 	return (
 		<div className={styles.page}>
@@ -144,14 +149,13 @@ export default async function Home() {
 					<div className={styles.heroCtas}>
 						<a
 							className={styles.btnPrimary}
-							href={downloads[0]?.url ?? "#"}
-							download
+							href={heroDownloadUrl}
 						>
 							Download for Windows
 						</a>
 						<a
 							className={styles.btnSecondary}
-							href="https://github.com/mentenaz/forge-landing-page"
+							href={GITHUB_REPO}
 							target="_blank"
 							rel="noopener noreferrer"
 						>
@@ -159,8 +163,7 @@ export default async function Home() {
 						</a>
 					</div>
 					<p className={styles.heroPlatforms}>
-						Also available: Linux (.deb, .rpm, .AppImage) · macOS
-						(coming soon)
+						Also available for Debian, Ubuntu and Kali Linux.
 					</p>
 				</div>
 			</section>
@@ -197,23 +200,49 @@ export default async function Home() {
 			{/* ── Downloads ────────────────────────────────── */}
 			<section id="download" className="section">
 				<div className="container">
-					<h2 className="section-title">Download Forge</h2>
+					<h2 className="section-title">Download Forge Super</h2>
 					<p className="section-subtitle">
 						Free. Available for Windows and Linux.
 					</p>
-					<div className={styles.downloadRow}>
-						{downloads.map((d) => (
-							<DownloadButton
-								key={d.filename}
-								icon={d.icon}
-								platform={d.platform}
-								filename={d.filename}
-								href={d.url}
-							/>
-						))}
-					</div>
+					{downloads.length > 0 && (
+						<div className={styles.downloadRow}>
+							{downloads.map((d) => (
+								<DownloadButton
+									key={d.filename}
+									icon={d.icon}
+									platform={d.platform}
+									filename={d.filename}
+									href={d.url}
+								/>
+							))}
+						</div>
+					)}
+					{(["linux", "windows"] as const).map((platform) =>
+						methodsByPlatform[platform].length > 0 ? (
+							<div key={platform} className={styles.methods}>
+								<h3 className={styles.methodsTitle}>
+									{platform === "linux" ? "Linux" : "Windows"}
+								</h3>
+								{methodsByPlatform[platform].map((m) => (
+									<div key={m.command} className={styles.method}>
+										<span className={styles.methodLabel}>{m.label}</span>
+										<pre className={styles.methodCommand}>
+											<code>{m.command}</code>
+										</pre>
+										{m.note && <span className={styles.methodNote}>{m.note}</span>}
+									</div>
+								))}
+							</div>
+						) : null,
+					)}
 					<p className={styles.versionNote}>
-						v0.1.0 · Released July 2026
+						{latest
+							? `${latest.version} · Released ${new Date(latest.release_date).toLocaleDateString("en-GB", { year: "numeric", month: "long", timeZone: "UTC" })}`
+							: "See the releases page for the latest version."}
+						{" · "}
+						<Link href="/docs/releases">Release notes</Link>
+						{" · "}
+						<a href={LEGACY_RELEASES}>Previous version (Forge, Tauri)</a>
 					</p>
 				</div>
 			</section>
