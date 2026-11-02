@@ -1,0 +1,17 @@
+.notice {
+	width: 100%;
+	max-width: 960px;
+	margin: 5rem auto 0;
+	padding: 0.85rem 1.25rem;
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-left: 3px solid var(--accent);
+	border-radius: 8px;
+	color: var(--text-secondary);
+	font-size: 0.9rem;
+	line-height: 1.6;
+}
+
+.notice a {
+	color: var(--accent-light);
+}

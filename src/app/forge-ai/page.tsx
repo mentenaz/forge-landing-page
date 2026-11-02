@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import LegacyNotice from "@/components/LegacyNotice";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -71,6 +72,7 @@ export default function ForgeAIPage() {
 	return (
 		<div className={styles.page}>
 			<Navbar />
+			<LegacyNotice />
 
 			{/* Hero */}
 			<section className={styles.hero}>

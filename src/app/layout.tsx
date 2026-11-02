@@ -3,16 +3,16 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Mentenaz Forge — The Developer Cockpit",
+    default: "Mentenaz Forge Super — The Developer Cockpit",
     template: "%s | Mentenaz Forge",
   },
   description:
-    "System monitoring, multi-engine editor, LSP, Git/GitHub, databases, terminal, AI assistant, and task automation — all in ~28MB RAM.",
+    "A developer cockpit built on the Zed editor: database, GitHub, runtime and process tools in one native editor. No account required.",
   metadataBase: new URL("https://forge.mentenaz-server.com"),
   openGraph: {
-    title: "Mentenaz Forge — The Developer Cockpit",
+    title: "Mentenaz Forge Super — The Developer Cockpit",
     description:
-      "~28MB RAM, 161 Rust commands, 7-language LSP. The developer cockpit that fits on your desktop.",
+      "A developer cockpit built on the Zed editor, for Windows and Linux. No account required.",
     type: "website",
   },
 };

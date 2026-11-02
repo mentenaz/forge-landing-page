@@ -10,7 +10,7 @@ import styles from "./Navbar.module.css";
 
 const navLinks = [
   { label: "Features", href: "/#features" },
-  { label: "AI", href: "/ai" },
+  { label: "AI", href: "/docs/ai-setup" },
   { label: "Extensions", href: "/extensions" },
   { label: "Docs", href: "/docs" },
   { label: "Story", href: "/story" },

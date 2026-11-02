@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import LegacyNotice from "@/components/LegacyNotice";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -40,6 +41,7 @@ export default function AiPage() {
 	return (
 		<div className={styles.page}>
 			<Navbar />
+			<LegacyNotice />
 
 			{/* ── Hero ─────────────────────────────────────── */}
 			<section className={styles.hero}>

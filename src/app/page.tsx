@@ -5,57 +5,57 @@ import DownloadButton from "@/components/DownloadButton";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from "@/lib/supabase";
-import type { SiteStat, InstallMethod, LatestRelease } from "@/types/database";
+import type { InstallMethod, LatestRelease } from "@/types/database";
 import styles from "./page.module.css";
 
 const FEATURES = [
 	{
-		icon: <ForgeIcon src="/icons/Code.png" alt="Code editor" width={40} height={21} />,
-		title: "Multi-Engine Editor",
+		icon: <ForgeIcon src="/icons/Code.png" alt="Editor" width={40} height={21} />,
+		title: "Built on Zed",
 		description:
-			"Monaco, CodeMirror, or Minimal. Syntax highlighting for 80+ languages with full LSP integration.",
+			"A fast, GPU-accelerated native editor with tree-sitter highlighting, multi-cursor editing and Zed's extension system.",
 	},
 	{
-		icon: <ForgeIcon src="/icons/ProblemsNBG.png" alt="LSP diagnostics" width={40} height={36} />,
-		title: "7-Language LSP",
+		icon: <ForgeIcon src="/icons/ProblemsNBG.png" alt="Language support" width={40} height={36} />,
+		title: "Language support",
 		description:
-			"TypeScript, C#, Rust, Python, Deno, and more. Hover, autocomplete, go-to-definition, and diagnostics.",
+			"Language servers for the languages you use, installed when a project needs them. Diagnostics, go to definition and formatting.",
 	},
 	{
 		icon: <ForgeIcon src="/icons/SQLWorkBenchNDG.png" alt="Database workbench" width={40} height={35} />,
-		title: "Database Workbench",
+		title: "Database workbench",
 		description:
-			"SQLite, PostgreSQL, MySQL, and MSSQL. Query editor, schema graph, and export tools.",
+			"SQLite, PostgreSQL, MySQL and SQL Server in the editor. Browse schemas and run queries without opening a separate admin tool.",
 	},
 	{
-		icon: <ForgeIcon src="/icons/GitOps_NBG.png" alt="Git operations" width={40} height={40} />,
-		title: "Mentenaz Helm",
+		icon: <ForgeIcon src="/icons/GitOps_NBG.png" alt="GitHub" width={40} height={40} />,
+		title: "Helm",
 		description:
-			"Clone, create PRs, manage repos, track issues, view deployments — all without leaving Forge.",
+			"GitHub management in the editor, plus a read-only repository workspace for files, commits, comparisons and code search.",
 	},
 	{
-		icon: <ForgeIcon src="/icons/AITwin.png" alt="AI Twin assistant" width={40} height={40} />,
-		title: "Mentenaz AI",
+		icon: <ForgeIcon src="/icons/AITwin.png" alt="AI" width={40} height={40} />,
+		title: "Your AI, or none",
 		description:
-			"Personal AI assistant powered by 5 providers. Chat, brainstorm, code assist, and AI-powered error fixing.",
+			"Connect Anthropic, OpenAI, Google, Ollama or any compatible endpoint. Nothing is switched on until you set it up.",
 	},
 	{
-		icon: <ForgeIcon src="/icons/Forge_Cockpit.png" alt="System monitor cockpit" width={40} height={40} />,
-		title: "System Monitor",
+		icon: <ForgeIcon src="/icons/Forge_Cockpit.png" alt="Cockpit" width={40} height={40} />,
+		title: "Cockpit and processes",
 		description:
-			"Real-time CPU, RAM, disk, and network metrics with per-process breakdowns.",
+			"See what is running and what is slow, and kill what is stuck, without opening the Task Manager.",
 	},
 	{
-		icon: <ForgeIcon src="/icons/TaskRunner.png" alt="Task chain runner" width={40} height={29} />,
-		title: "Task Chains",
+		icon: <ForgeIcon src="/icons/TaskRunner.png" alt="Task flows" width={40} height={29} />,
+		title: "Task flows",
 		description:
-			"Visual pipeline builder. Chain scripts, wait for ports, run migrations, and validate with AI.",
+			"Chain scripts into branching workflows and run them from an interactive graph.",
 	},
 	{
-		icon: <ForgeIcon src="/icons/Terminal.png" alt="Terminal" width={27} height={40} />,
-		title: "Terminal + Script Runner",
+		icon: <ForgeIcon src="/icons/Terminal.png" alt="Runtimes and packages" width={27} height={40} />,
+		title: "Runtimes and packages",
 		description:
-			"Full PTY terminal with xterm.js. Script runner with ANSI colors and real-time streaming.",
+			"Node, .NET, Python and Rust panels with npm, NuGet, pip and Cargo: registry search, outdated views and security advisories.",
 	},
 ];
 
@@ -66,8 +66,12 @@ const FEATURES = [
 // 	{ value: "19", label: "Panels" },
 // ];
 
+// The downloads, stats and install methods come from the database. Without
+// this the page is built once and keeps showing what existed at that moment,
+// so a new release would not appear until the next deploy.
+export const revalidate = 300;
+
 const GITHUB_REPO = "https://github.com/mentenaz/mentenaz.Forge.Super";
-const LEGACY_RELEASES = "https://github.com/mentenaz/forge-landing-page/releases";
 
 const PLATFORM_LABEL: Record<string, string> = {
 	windows: "Windows",
@@ -82,8 +86,15 @@ function formatStat(value: number): string {
 }
 
 export default async function Home() {
-	const [statsResult, releaseResult, methodsResult] = await Promise.all([
-		supabase.from("site_stats").select("key, value"),
+	const [extensionCount, releaseCount, releaseResult, methodsResult] = await Promise.all([
+		supabase
+			.from("registry_extensions")
+			.select("id", { count: "exact", head: true })
+			.eq("is_latest", true),
+		supabase
+			.from("releases")
+			.select("id", { count: "exact", head: true })
+			.eq("product", "forge-super"),
 		supabase
 			.from("releases")
 			.select("version, release_date, release_assets(platform, filename, download_url)")
@@ -97,15 +108,15 @@ export default async function Home() {
 			.order("sort_order"),
 	]);
 
-	const statsRows = (statsResult.data as SiteStat[]) ?? [];
-	const statsMap = Object.fromEntries(statsRows.map((s) => [s.key, s.value]));
-
+	// A count of zero would read as a mistake (no release has been recorded
+	// yet, or the query failed), so those stats are left out until they have a
+	// real number.
 	const stats = [
-		{ value: formatStat(statsMap["total_extensions"] ?? 0), label: "Extensions" },
-		{ value: "28MB", label: "RAM Usage" },
-		{ value: "7", label: "LSP Languages" },
-		{ value: formatStat(statsMap["total_releases"] ?? 1), label: "Releases" },
-	];
+		{ value: formatStat(extensionCount.count ?? 0), label: "Extensions", show: (extensionCount.count ?? 0) > 0 },
+		{ value: formatStat(releaseCount.count ?? 0), label: "Releases", show: (releaseCount.count ?? 0) > 0 },
+		{ value: "2", label: "Platforms", show: true },
+		{ value: "0", label: "Accounts needed", show: true },
+	].filter((s) => s.show);
 
 	const latest = (releaseResult.data as LatestRelease | null) ?? null;
 	const methods = (methodsResult.data as InstallMethod[]) ?? [];
@@ -142,9 +153,9 @@ export default async function Home() {
 				<div className={styles.heroContent}>
 					<h1 className={styles.heroTitle}>The Developer Cockpit</h1>
 					<p className={styles.heroSubtitle}>
-						System monitoring, multi-engine editor, LSP, Git/GitHub,
-						databases, terminal, AI assistant, and task automation —
-						all in ~28MB RAM.
+						Mentenaz Forge Super brings your database, GitHub, runtimes,
+						scripts and processes into one native editor, built on Zed.
+						No account. Your AI, if you want it.
 					</p>
 					<div className={styles.heroCtas}>
 						<a
@@ -242,7 +253,7 @@ export default async function Home() {
 						{" · "}
 						<Link href="/docs/releases">Release notes</Link>
 						{" · "}
-						<a href={LEGACY_RELEASES}>Previous version (Forge, Tauri)</a>
+						<Link href="/legacy">Previous version (Forge, Tauri)</Link>
 					</p>
 				</div>
 			</section>

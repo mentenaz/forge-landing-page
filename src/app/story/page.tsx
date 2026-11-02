@@ -105,8 +105,9 @@ export default function StoryPage() {
 				</ol>
 
 				<p className={styles.closing}>
-					Follow along on the <Link href="/docs/releases">release notes</Link>, or read
-					the <Link href="/docs">docs</Link> to get started.
+					Follow along on the <Link href="/docs/releases">release notes</Link>, read
+					the <Link href="/docs">docs</Link> to get started, or look back at{" "}
+					<Link href="/legacy">the previous version</Link>.
 				</p>
 			</main>
 			<Footer />
