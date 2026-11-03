@@ -5,7 +5,8 @@ import { registryAdminClient } from "@/lib/registry";
 // The README backfill. Extensions published before READMEs were captured have none, and the
 // sync skips an extension whose version has not changed, so a one-off job fills them in:
 //
-//   GET  /api/registry/readmes?limit=200   ids of the latest versions with no README captured yet
+//   GET  /api/registry/readmes?limit=200&after=<id>   ids of the latest versions with no README captured yet,
+//                                                     in id order, starting after the given id
 //   POST /api/registry/readmes             { readmes: [{ id, readme, readme_raw_base, readme_blob_base }] }
 //
 // Same shared secret as /api/registry/sync (FORGE_REGISTRY_SYNC_SECRET): this is our own
@@ -56,14 +57,18 @@ export async function GET(req: NextRequest) {
 	const requested = Number(req.nextUrl.searchParams.get("limit") ?? MAX_BATCH);
 	const limit = Number.isFinite(requested) ? Math.min(Math.max(1, Math.floor(requested)), 500) : MAX_BATCH;
 
+	// A cursor, so a pass can walk past an extension that cannot be read right now
+	// instead of being handed the same one first every time.
+	const after = req.nextUrl.searchParams.get("after") ?? "";
+
 	const admin = registryAdminClient();
-	const { data, error, count } = await admin
+	let query = admin
 		.from("registry_extensions")
 		.select("id", { count: "exact" })
 		.eq("is_latest", true)
-		.is("readme", null)
-		.order("id")
-		.limit(limit);
+		.is("readme", null);
+	if (after) query = query.gt("id", after);
+	const { data, error, count } = await query.order("id").limit(limit);
 
 	if (error) {
 		console.error("[registry-readmes] list failed:", error);
