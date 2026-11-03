@@ -4,6 +4,7 @@ import {
 	sanitizeFilterText,
 	toExtensionMetadata,
 	RegistryExtensionRow,
+	REGISTRY_ROW_COLUMNS,
 } from "@/lib/registry";
 
 // GET /api/registry/extensions — list/search, called by extension_host.rs's
@@ -16,7 +17,7 @@ export async function GET(req: NextRequest) {
 	const providesParam = params.get("provides");
 
 	const admin = registryAdminClient();
-	let query = admin.from("registry_extensions").select("*").eq("is_latest", true);
+	let query = admin.from("registry_extensions").select(REGISTRY_ROW_COLUMNS).eq("is_latest", true);
 
 	if (maxSchemaVersion !== null) {
 		const parsed = Number(maxSchemaVersion);

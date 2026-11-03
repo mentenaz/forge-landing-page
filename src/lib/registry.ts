@@ -20,6 +20,12 @@ export type RegistryExtensionRow = {
 	artifact_url: string;
 };
 
+// The columns the app's API reads. They are listed explicitly because the table also
+// holds each extension's README (up to 100 KB), which the app never uses and which
+// `select("*")` would send for every row of the list.
+export const REGISTRY_ROW_COLUMNS =
+	"id, version, is_latest, name, description, authors, repository, schema_version, wasm_api_version, provides, published_at, download_count, artifact_url";
+
 export type ExtensionMetadata = {
 	id: string;
 	name: string;

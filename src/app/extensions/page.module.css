@@ -23,16 +23,6 @@
 	color: var(--text-secondary);
 }
 
-.notice {
-	margin-top: 1.5rem;
-	padding: 0.75rem 1.25rem;
-	background: rgba(147, 51, 234, 0.1);
-	border: 1px solid rgba(147, 51, 234, 0.3);
-	border-radius: 8px;
-	font-size: 14px;
-	color: var(--accent-light);
-}
-
 /* ── Content ────────────────────────────────────────────── */
 .content {
 	flex: 1;
@@ -170,32 +160,9 @@
 .cardMeta {
 	display: flex;
 	align-items: center;
-	gap: 10px;
-}
-
-.tierBadge {
-	padding: 2px 8px;
-	border-radius: 4px;
-	font-size: 11px;
-	font-weight: 600;
-	text-transform: uppercase;
-	letter-spacing: 0.3px;
-}
-
-.tierSchema {
-	background: rgba(147, 51, 234, 0.15);
-	color: var(--accent-light);
-}
-
-.tierCode {
-	background: rgba(143, 176, 0, 0.15);
-	color: var(--accent-green);
-}
-
-.downloadCount {
-	font-size: 12px;
-	color: var(--text-muted);
-	margin-left: auto;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin-top: auto;
 }
 
 /* ── Submit CTA ─────────────────────────────────────────── */
@@ -233,4 +200,118 @@
 	padding: 3rem 1rem;
 	color: var(--text-muted);
 	font-size: 15px;
+}
+
+/* ── Search ─────────────────────────────────────────────── */
+.searchRow {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 1.25rem;
+	flex-wrap: wrap;
+}
+
+.searchInput {
+	flex: 1 1 260px;
+	min-width: 0;
+	padding: 10px 14px;
+	border-radius: 8px;
+	font-size: 14px;
+	font-family: var(--font-body);
+	background: var(--bg-card);
+	color: var(--text-primary);
+	border: 1px solid var(--border);
+}
+
+.searchInput:focus,
+.sortSelect:focus {
+	outline: none;
+	border-color: var(--accent);
+}
+
+.sortSelect {
+	padding: 10px 12px;
+	border-radius: 8px;
+	font-size: 14px;
+	font-family: var(--font-body);
+	background: var(--bg-card);
+	color: var(--text-primary);
+	border: 1px solid var(--border);
+}
+
+.searchButton {
+	padding: 10px 20px;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	font-family: var(--font-body);
+	background: var(--accent);
+	color: #fff;
+	border: 1px solid var(--accent);
+	cursor: pointer;
+	transition: background var(--transition-fast);
+}
+
+.searchButton:hover {
+	background: var(--accent-hover);
+}
+
+.filterBtn {
+	text-decoration: none;
+}
+
+.resultLine {
+	margin: 0 0 1rem;
+	font-size: 13px;
+	color: var(--text-muted);
+}
+
+/* ── Card badges ────────────────────────────────────────── */
+.typeBadge {
+	padding: 2px 8px;
+	border-radius: 10px;
+	font-size: 11px;
+	background: rgba(147, 51, 234, 0.12);
+	color: var(--accent-light);
+	border: 1px solid rgba(147, 51, 234, 0.3);
+}
+
+.versionTag {
+	margin-left: auto;
+	font-size: 12px;
+	color: var(--text-muted);
+}
+
+/* ── Pagination ─────────────────────────────────────────── */
+.pagination {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1.25rem;
+	margin-top: 2.5rem;
+}
+
+.pageLink {
+	padding: 8px 16px;
+	border-radius: 8px;
+	font-size: 14px;
+	text-decoration: none;
+	background: var(--bg-card);
+	color: var(--text-primary);
+	border: 1px solid var(--border);
+	transition: border-color var(--transition-fast);
+}
+
+.pageLink:hover {
+	border-color: var(--accent);
+}
+
+.pageLinkOff {
+	color: var(--text-muted);
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.pageInfo {
+	font-size: 13px;
+	color: var(--text-secondary);
 }

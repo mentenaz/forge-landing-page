@@ -6,7 +6,7 @@ import DownloadButton from "@/components/DownloadButton";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from "@/lib/supabase";
-import type { SiteStat, LatestRelease } from "@/types/database";
+import type { SiteStat, LatestRelease, Extension } from "@/types/database";
 import styles from "../page.module.css";
 
 export const metadata: Metadata = {
@@ -88,7 +88,7 @@ function formatStat(value: number): string {
 }
 
 export default async function LegacyPage() {
-	const [statsResult, releaseCount, releaseResult] = await Promise.all([
+	const [statsResult, releaseCount, releaseResult, legacyExtensionsResult] = await Promise.all([
 		supabase.from("site_stats").select("key, value"),
 		supabase
 			.from("releases")
@@ -101,7 +101,15 @@ export default async function LegacyPage() {
 			.order("release_date", { ascending: false })
 			.limit(1)
 			.maybeSingle(),
+		// The previous version's own small marketplace, kept here as it was.
+		supabase
+			.from("extensions")
+			.select("id, name, author, description")
+			.order("downloads", { ascending: false }),
 	]);
+
+	const legacyExtensions =
+		(legacyExtensionsResult.data as Pick<Extension, "id" | "name" | "author" | "description">[] | null) ?? [];
 
 	const statsRows = (statsResult.data as SiteStat[]) ?? [];
 	const statsMap = Object.fromEntries(statsRows.map((s) => [s.key, s.value]));
@@ -197,6 +205,25 @@ export default async function LegacyPage() {
 					</p>
 				</div>
 			</section>
+
+			{legacyExtensions.length > 0 && (
+				<section className="section">
+					<div className="container">
+						<h2 className="section-title">Its extensions</h2>
+						<p className="section-subtitle">
+							The previous version had its own small marketplace. These cannot be installed in
+							Forge Super; its catalogue is on the <Link href="/extensions">Extensions page</Link>.
+						</p>
+						<ul className={styles.versionNote}>
+							{legacyExtensions.map((ext) => (
+								<li key={ext.id}>
+									<strong>{ext.name}</strong>, by {ext.author}: {ext.description}
+								</li>
+							))}
+						</ul>
+					</div>
+				</section>
+			)}
 
 			<section className="section">
 				<div className="container">

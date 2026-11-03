@@ -24,7 +24,25 @@ type SyncExtension = {
 	wasm_api_version: string | null;
 	provides: string[];
 	artifact_url: string;
+	// The README, captured from the extension's source folder at the pinned commit.
+	// Optional: an older workflow does not send it. "" means there is none.
+	readme?: string | null;
+	readme_raw_base?: string | null;
+	readme_blob_base?: string | null;
 };
+
+// Postgres text cannot hold a NUL, and the page only needs the start of a very long README.
+const MAX_README_CHARS = 100_000;
+
+function cleanReadme(value: unknown): string | null {
+	if (typeof value !== "string") return null;
+	return value.replace(/\u0000/g, "").slice(0, MAX_README_CHARS);
+}
+
+// Only plain https addresses are kept as the base for relative links.
+function cleanBase(value: unknown): string | null {
+	return typeof value === "string" && value.startsWith("https://") ? value.slice(0, 500) : null;
+}
 
 type SyncBody = {
 	extensions: SyncExtension[];
@@ -102,6 +120,13 @@ export async function POST(req: NextRequest) {
 				provides: ext.provides,
 				published_at: new Date().toISOString(),
 				artifact_url: ext.artifact_url,
+				// Left out when the caller sent no README, so a re-sync from an older
+				// workflow does not wipe one that was captured earlier.
+				...(ext.readme !== undefined && {
+					readme: cleanReadme(ext.readme),
+					readme_raw_base: cleanBase(ext.readme_raw_base),
+					readme_blob_base: cleanBase(ext.readme_blob_base),
+				}),
 			},
 			{ onConflict: "id,version" },
 		);

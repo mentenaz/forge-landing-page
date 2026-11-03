@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { registryAdminClient, toExtensionMetadata, RegistryExtensionRow } from "@/lib/registry";
+import {
+	registryAdminClient,
+	toExtensionMetadata,
+	RegistryExtensionRow,
+	REGISTRY_ROW_COLUMNS,
+} from "@/lib/registry";
 
 // GET /api/registry/extensions/updates — called by extension_host.rs's
 // fetch_extensions_with_update_available. Returns latest known metadata for
@@ -21,7 +26,7 @@ export async function GET(req: NextRequest) {
 	}
 
 	const admin = registryAdminClient();
-	let query = admin.from("registry_extensions").select("*").eq("is_latest", true).in("id", ids);
+	let query = admin.from("registry_extensions").select(REGISTRY_ROW_COLUMNS).eq("is_latest", true).in("id", ids);
 
 	if (maxSchemaVersion !== null) {
 		const parsed = Number(maxSchemaVersion);

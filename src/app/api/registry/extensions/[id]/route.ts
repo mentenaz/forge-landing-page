@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { registryAdminClient, toExtensionMetadata, RegistryExtensionRow } from "@/lib/registry";
+import {
+	registryAdminClient,
+	toExtensionMetadata,
+	RegistryExtensionRow,
+	REGISTRY_ROW_COLUMNS,
+} from "@/lib/registry";
 
 // GET /api/registry/extensions/{id} — single extension's latest version.
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -8,7 +13,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 	const admin = registryAdminClient();
 	const { data, error } = await admin
 		.from("registry_extensions")
-		.select("*")
+		.select(REGISTRY_ROW_COLUMNS)
 		.eq("id", id)
 		.eq("is_latest", true)
 		.maybeSingle();

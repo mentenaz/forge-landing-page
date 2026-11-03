@@ -21,6 +21,11 @@ export const docPages: DocPage[] = [
 		description: "Connect a model provider for the agent and choose an edit prediction provider.",
 	},
 	{
+		slug: "add-an-extension",
+		title: "Add an extension",
+		description: "How an extension gets into the catalogue, and how to add one only Forge Super carries.",
+	},
+	{
 		slug: "updating",
 		title: "Updating",
 		description: "How updates reach you, since the built-in updater is off.",
