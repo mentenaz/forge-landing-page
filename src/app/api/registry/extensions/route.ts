@@ -7,6 +7,9 @@ import {
 	REGISTRY_ROW_COLUMNS,
 } from "@/lib/registry";
 
+const PAGE_SIZE = 1000; // the most PostgREST returns per request
+const MAX_PAGES = 20; // 20,000 extensions; a guard against a loop that never ends
+
 // GET /api/registry/extensions — list/search, called by extension_host.rs's
 // fetch_extensions. Query params: filter (search text), provides
 // (comma-separated, e.g. "languages,grammars"), max_schema_version.
@@ -17,37 +20,50 @@ export async function GET(req: NextRequest) {
 	const providesParam = params.get("provides");
 
 	const admin = registryAdminClient();
-	let query = admin.from("registry_extensions").select(REGISTRY_ROW_COLUMNS).eq("is_latest", true);
-
-	if (maxSchemaVersion !== null) {
-		const parsed = Number(maxSchemaVersion);
-		if (!Number.isNaN(parsed)) {
-			// schema_version is nullable; nulls are treated as always-compatible.
-			query = query.or(`schema_version.is.null,schema_version.lte.${parsed}`);
-		}
-	}
-
+	const maxSchema = maxSchemaVersion !== null ? Number(maxSchemaVersion) : Number.NaN;
 	const sanitizedFilter = filter ? sanitizeFilterText(filter) : "";
-	if (sanitizedFilter) {
-		query = query.or(
-			`name.ilike.%${sanitizedFilter}%,description.ilike.%${sanitizedFilter}%,id.ilike.%${sanitizedFilter}%`,
-		);
-	}
+	const requestedProvides = providesParam ? providesParam.split(",").filter(Boolean) : [];
 
-	if (providesParam) {
-		const requested = providesParam.split(",").filter(Boolean);
-		if (requested.length > 0) {
-			query = query.overlaps("provides", requested);
+	// A fresh query per page: the builder is consumed when it is awaited.
+	const pageQuery = (from: number) => {
+		let query = admin.from("registry_extensions").select(REGISTRY_ROW_COLUMNS).eq("is_latest", true);
+
+		if (!Number.isNaN(maxSchema)) {
+			// schema_version is nullable; nulls are treated as always-compatible.
+			query = query.or(`schema_version.is.null,schema_version.lte.${maxSchema}`);
 		}
-	}
 
-	const { data, error } = await query.order("published_at", { ascending: false });
-	if (error) {
-		return NextResponse.json({ error: error.message }, { status: 500 });
+		if (sanitizedFilter) {
+			query = query.or(
+				`name.ilike.%${sanitizedFilter}%,description.ilike.%${sanitizedFilter}%,id.ilike.%${sanitizedFilter}%`,
+			);
+		}
+
+		if (requestedProvides.length > 0) {
+			query = query.overlaps("provides", requestedProvides);
+		}
+
+		// id breaks ties, so a row cannot move between pages while they are read.
+		return query
+			.order("published_at", { ascending: false })
+			.order("id", { ascending: true })
+			.range(from, from + PAGE_SIZE - 1);
+	};
+
+	// PostgREST returns at most 1000 rows per request, which silently cut the list
+	// short once the registry grew past it. Read every page.
+	const rows: RegistryExtensionRow[] = [];
+	for (let page = 0; page < MAX_PAGES; page += 1) {
+		const { data, error } = await pageQuery(page * PAGE_SIZE);
+		if (error) {
+			return NextResponse.json({ error: error.message }, { status: 500 });
+		}
+		rows.push(...(data as unknown as RegistryExtensionRow[]));
+		if (data.length < PAGE_SIZE) break;
 	}
 
 	return NextResponse.json({
-		data: (data as RegistryExtensionRow[]).map(toExtensionMetadata),
+		data: rows.map(toExtensionMetadata),
 	});
 }
 
