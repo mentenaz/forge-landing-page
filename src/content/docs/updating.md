@@ -21,7 +21,14 @@ Download the installer from the [latest release](https://github.com/mentenaz/men
 sudo apt-get update && sudo apt-get upgrade
 ```
 
-Every release has a higher package version than the one before it, so apt offers it as a normal upgrade.
+Every release has a higher package version than the one before it, so apt offers it as a normal upgrade. A new release reaches the stable channel after it has been tried, which can be a day or so after it is announced; the [edge channel](/docs/install) gets it straight away.
+
+The repository keeps the last few versions, so if an update does not suit you, you can go back to an earlier one:
+
+```sh
+apt list -a forge-super
+sudo apt-get install forge-super=1.28.0.47
+```
 
 ## What changed
 

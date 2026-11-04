@@ -26,6 +26,16 @@ forge-super
 
 Because Forge Super comes from an apt repository, it is updated with the rest of your system. See [Updating](/docs/updating).
 
+### Stable and edge
+
+The repository has two channels. The installer sets you up on **stable**, which only receives a build after it has been tried and approved. If you would like every build as soon as it is made, and do not mind the occasional rough one, register **edge** instead:
+
+```sh
+curl -fsSL https://downloads.mentenaz-server.com/install.sh | sudo sh -s -- --edge
+```
+
+To go back, run the installer again without `--edge`.
+
 ## If it does not start
 
 On Linux, the most common cause is graphics. See [Linux and graphics troubleshooting](/docs/linux).
