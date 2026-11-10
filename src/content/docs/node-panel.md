@@ -70,7 +70,7 @@ Three sections show the state of the active project's packages:
 - **Outdated** lists packages that have a newer version. **Update all (patch)** applies only the safe bug-fix updates, and **Update all (minor)** also takes the new features. Neither one touches a major version.
 - **Vulnerabilities** shows what `npm audit` found. It is empty for a project with no known advisories.
 
-For anything more, such as searching the registry or installing a single package, click **Package Manager** under **Quick Actions**. It opens the Node Package Manager in its own tab.
+For anything more, such as searching the registry or installing a single package, click **Package Manager** under **Quick Actions**. It opens the Node Package Manager in its own tab. See [Manage npm packages](/docs/npm-manager).
 
 [//]: # (TODO screenshot node-panel-4-outdated.png: The Outdated section with Update all (patch) and Update all (minor).)
 

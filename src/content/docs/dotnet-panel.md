@@ -60,7 +60,7 @@ Neither touches a major version. Each update runs `dotnet add package` for the p
 
 ## 7. Use the NuGet Manager
 
-For anything beyond updating, click **NuGet Manager** under **Quick Actions**, or press `Ctrl+K` then `G`. It opens in its own tab, with five pages on the left:
+There is a tutorial for this tab on its own: [Manage NuGet packages](/docs/nuget-manager). For anything beyond updating, click **NuGet Manager** under **Quick Actions**, or press `Ctrl+K` then `G`. It opens in its own tab, with five pages on the left:
 
 | Page | What you do there |
 | --- | --- |

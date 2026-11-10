@@ -82,7 +82,7 @@ Three sections show the state of the active project's packages:
 - **Outdated** lists packages with a newer version. **Update all (patch)** applies only bug-fix updates, and **Update all (minor)** also applies new-feature updates. Neither touches a major version. The updates use the Python shown at the top of the panel.
 - **Vulnerabilities** shows known advisories for the installed packages. It does not scan by itself: click **Scan for vulnerabilities**. PyPI has no single audit service, so the scan checks one package at a time and takes longer for a large project.
 
-For anything more, such as looking up a package or installing one, click **Package Manager** under **Quick Actions**. It opens the Python Package Manager in its own tab. It looks a package up on PyPI by its exact name, and installs, updates or uninstalls it, with the output in the Script Runner.
+For anything more, such as looking up a package or installing one, click **Package Manager** under **Quick Actions**. It opens the Python Package Manager in its own tab. It looks a package up on PyPI by its exact name, and installs, updates or uninstalls it, with the output in the Script Runner. See [Manage Python packages](/docs/python-manager).
 
 [//]: # (TODO screenshot python-panel-3-outdated.png: The Outdated section with Update all (patch) and Update all (minor), and the Scan for vulnerabilities button.)
 

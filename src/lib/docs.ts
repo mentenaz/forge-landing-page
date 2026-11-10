@@ -66,6 +66,12 @@ export const docFeatures: DocFeature[] = [
 		description: "Live system readings, and one view of every runtime's packages, security and git state.",
 		icon: { src: "/icons/Forge_Cockpit.png", alt: "Cockpit and Dashboard", width: 40, height: 40 },
 	},
+	{
+		slug: "script-runner",
+		title: "Script Runner",
+		description: "Run commands and read their output live, in the panel the other panels share.",
+		icon: { src: "/icons/RunnerNoBG.png", alt: "Script Runner", width: 40, height: 37 },
+	},
 ];
 
 // The order here is the order on the docs hub. The body of each page is
@@ -106,6 +112,14 @@ export const docPages: DocPage[] = [
 		minutes: 8,
 	},
 	{
+		slug: "npm-manager",
+		title: "Manage npm packages",
+		description: "Search, install, update and remove npm packages, and open the manager from your code.",
+		kind: "tutorial",
+		features: ["node"],
+		minutes: 6,
+	},
+	{
 		slug: "python-panel",
 		title: "Get around the Python panel",
 		description: "Get a Python, set up an environment, run your project and keep its packages up to date.",
@@ -114,12 +128,28 @@ export const docPages: DocPage[] = [
 		minutes: 8,
 	},
 	{
+		slug: "python-manager",
+		title: "Manage Python packages",
+		description: "Look up packages on PyPI, install and update them, and scan for vulnerabilities.",
+		kind: "tutorial",
+		features: ["python"],
+		minutes: 6,
+	},
+	{
 		slug: "dotnet-panel",
 		title: "Get around the .NET panel",
 		description: "Build, run and test a project, and manage its NuGet packages.",
 		kind: "tutorial",
 		features: ["dotnet"],
 		minutes: 8,
+	},
+	{
+		slug: "nuget-manager",
+		title: "Manage NuGet packages",
+		description: "Search nuget.org, and install, update and remove the packages of a .NET project.",
+		kind: "tutorial",
+		features: ["dotnet"],
+		minutes: 6,
 	},
 	{
 		slug: "database-panel",
@@ -138,11 +168,27 @@ export const docPages: DocPage[] = [
 		minutes: 10,
 	},
 	{
+		slug: "cargo-manager",
+		title: "Manage Cargo dependencies",
+		description: "Add, update and remove a crate's dependencies, with every change confirmed first.",
+		kind: "tutorial",
+		features: ["rust"],
+		minutes: 8,
+	},
+	{
 		slug: "dashboard-panel",
 		title: "See your whole project on the Dashboard",
 		description: "Open the Dashboard to check runtimes, outdated packages, vulnerabilities, git and system load at once.",
 		kind: "tutorial",
 		features: ["dashboard"],
+		minutes: 5,
+	},
+	{
+		slug: "script-runner",
+		title: "Run commands in the Script Runner",
+		description: "Run a command, watch its output live, stop it, and open the links it prints.",
+		kind: "tutorial",
+		features: ["script-runner"],
 		minutes: 5,
 	},
 	{

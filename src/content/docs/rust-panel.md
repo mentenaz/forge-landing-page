@@ -79,6 +79,8 @@ The scan reads `Cargo.lock`, which covers every platform, so it can mention a pa
 
 ## 8. Change dependencies in the Cargo Manager
 
+There is a tutorial for this tab on its own: [Manage Cargo dependencies](/docs/cargo-manager).
+
 Click **Package Manager** under **Quick Actions**. The Cargo Manager opens in its own tab, on the crate you selected. To work on another crate, select it in the panel and click **Package Manager** again.
 
 It has five pages on the left:
