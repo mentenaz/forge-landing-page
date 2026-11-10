@@ -100,6 +100,11 @@ export const docPages: DocPage[] = [
 		description: "Connect a model provider for the agent and choose an edit prediction provider.",
 	},
 	{
+		slug: "designer-reference",
+		title: "Designer reference",
+		description: "Every action, setting and state in the workflow Designer, and how steps connect and share results.",
+	},
+	{
 		slug: "first-flow",
 		title: "Your first flow",
 		description: "Build a small flow in the Designer, run it, and see what it did.",
