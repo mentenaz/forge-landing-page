@@ -60,6 +60,12 @@ export const docFeatures: DocFeature[] = [
 		description: "Toolchains, crates, dependencies and advisories from the Rust panel and the Cargo Manager.",
 		icon: { src: "/icons/Rust.png", alt: "Rust", width: 40, height: 36 },
 	},
+	{
+		slug: "dashboard",
+		title: "Cockpit and Dashboard",
+		description: "Live system readings, and one view of every runtime's packages, security and git state.",
+		icon: { src: "/icons/Forge_Cockpit.png", alt: "Cockpit and Dashboard", width: 40, height: 40 },
+	},
 ];
 
 // The order here is the order on the docs hub. The body of each page is
@@ -130,6 +136,14 @@ export const docPages: DocPage[] = [
 		kind: "tutorial",
 		features: ["rust"],
 		minutes: 10,
+	},
+	{
+		slug: "dashboard-panel",
+		title: "See your whole project on the Dashboard",
+		description: "Open the Dashboard to check runtimes, outdated packages, vulnerabilities, git and system load at once.",
+		kind: "tutorial",
+		features: ["dashboard"],
+		minutes: 5,
 	},
 	{
 		slug: "add-an-extension",
