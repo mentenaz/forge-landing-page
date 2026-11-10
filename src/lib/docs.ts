@@ -17,6 +17,8 @@ export type DocFeature = {
 	slug: string;
 	title: string;
 	description: string;
+	/** The same icon the feature has on the home page, from /public/icons. */
+	icon: { src: string; alt: string; width: number; height: number };
 };
 
 // The features that tutorials are grouped under. One that has no tutorial yet
@@ -26,6 +28,7 @@ export const docFeatures: DocFeature[] = [
 		slug: "workflows",
 		title: "Workflows",
 		description: "Build, run and stop flows in the Designer and the Flows panel.",
+		icon: { src: "/icons/TaskRunner.png", alt: "Workflows", width: 40, height: 29 },
 	},
 ];
 

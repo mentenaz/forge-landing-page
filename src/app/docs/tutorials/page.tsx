@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { ForgeIcon } from "@/components/FeatureCard";
 import { featuresWithTutorials } from "@/lib/docs";
 import styles from "../page.module.css";
 
@@ -25,11 +26,21 @@ export default function TutorialsPage() {
 				<p className={styles.lede}>
 					Step-by-step guides, one task at a time. Pick a feature to see its tutorials.
 				</p>
-				<div className={styles.badges}>
+				<div className={styles.cards}>
 					{features.map((feature) => (
-						<Link key={feature.slug} href={`/docs/tutorials/${feature.slug}`} className={styles.badge}>
-							{feature.title}
-							<span className={styles.badgeCount}>{feature.count}</span>
+						<Link
+							key={feature.slug}
+							href={`/docs/tutorials/${feature.slug}`}
+							className={`${styles.card} ${styles.featureCard}`}
+						>
+							<ForgeIcon {...feature.icon} />
+							<span className={styles.featureTitleRow}>
+								<span className={styles.cardTitle}>{feature.title}</span>
+								<span className={styles.badgeCount}>
+									{feature.count} {feature.count === 1 ? "tutorial" : "tutorials"}
+								</span>
+							</span>
+							<span className={styles.cardText}>{feature.description}</span>
 						</Link>
 					))}
 				</div>
