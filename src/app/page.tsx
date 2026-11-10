@@ -46,8 +46,8 @@ const FEATURES = [
 			"See what is running and what is slow, and kill what is stuck, without opening the Task Manager.",
 	},
 	{
-		icon: <ForgeIcon src="/icons/TaskRunner.png" alt="Task flows" width={40} height={29} />,
-		title: "Task flows",
+		icon: <ForgeIcon src="/icons/TaskRunner.png" alt="Workflows" width={40} height={29} />,
+		title: "Workflows",
 		description:
 			"Chain scripts into branching workflows and run them from an interactive graph.",
 	},
