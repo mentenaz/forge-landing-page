@@ -42,6 +42,12 @@ export const docFeatures: DocFeature[] = [
 		description: "Python versions, environments, packages and processes from the Python panel.",
 		icon: { src: "/icons/Python.png", alt: "Python", width: 40, height: 39 },
 	},
+	{
+		slug: "dotnet",
+		title: ".NET",
+		description: "The .NET SDK, projects, NuGet packages and processes from the .NET panel.",
+		icon: { src: "/icons/CSharp.png", alt: ".NET", width: 40, height: 36 },
+	},
 ];
 
 // The order here is the order on the docs hub. The body of each page is
@@ -87,6 +93,14 @@ export const docPages: DocPage[] = [
 		description: "Get a Python, set up an environment, run your project and keep its packages up to date.",
 		kind: "tutorial",
 		features: ["python"],
+		minutes: 8,
+	},
+	{
+		slug: "dotnet-panel",
+		title: "Get around the .NET panel",
+		description: "Build, run and test a project, and manage its NuGet packages.",
+		kind: "tutorial",
+		features: ["dotnet"],
 		minutes: 8,
 	},
 	{
