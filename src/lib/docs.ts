@@ -30,6 +30,12 @@ export const docFeatures: DocFeature[] = [
 		description: "Build, run and stop flows in the Designer and the Flows panel.",
 		icon: { src: "/icons/TaskRunner.png", alt: "Workflows", width: 40, height: 29 },
 	},
+	{
+		slug: "node",
+		title: "Node",
+		description: "Node.js versions, scripts, packages and processes from the Node panel.",
+		icon: { src: "/icons/Terminal.png", alt: "Node", width: 27, height: 40 },
+	},
 ];
 
 // The order here is the order on the docs hub. The body of each page is
@@ -58,7 +64,15 @@ export const docPages: DocPage[] = [
 		title: "Add a task chain",
 		description: "Let Forge Super find the servers in your project and build a flow that starts them all.",
 		kind: "tutorial",
-		features: ["workflows"],
+		features: ["workflows", "node"],
+		minutes: 8,
+	},
+	{
+		slug: "node-panel",
+		title: "Get around the Node panel",
+		description: "Choose a Node version, run scripts, keep packages up to date and stop stray processes.",
+		kind: "tutorial",
+		features: ["node"],
 		minutes: 8,
 	},
 	{
