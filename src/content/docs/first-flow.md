@@ -91,4 +91,4 @@ Run is disabled while something is missing, for example a required setting left 
 
 ## Where next
 
-You have built, run and saved a flow. Next, [add a task chain](/docs/task-chain) to start all of your project's servers from one flow. For every action and setting in the Designer, see the [Designer reference](/docs/designer-reference). More tutorials will be added under [Workflows](/docs/tutorials/workflows).
+You have built, run and saved a flow. Next, [manage and run your flows](/docs/flows-panel), or [add a task chain](/docs/task-chain) to start all of your project's servers from one flow. For every action and setting in the Designer, see the [Designer reference](/docs/designer-reference). More tutorials will be added under [Workflows](/docs/tutorials/workflows).

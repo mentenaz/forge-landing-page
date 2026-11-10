@@ -113,6 +113,14 @@ export const docPages: DocPage[] = [
 		minutes: 5,
 	},
 	{
+		slug: "flows-panel",
+		title: "Manage and run your flows",
+		description: "Create, run and stop flows from the list, see how each last ended, and open the links of the servers they start.",
+		kind: "tutorial",
+		features: ["workflows"],
+		minutes: 6,
+	},
+	{
 		slug: "task-chain",
 		title: "Add a task chain",
 		description: "Let Forge Super find the servers in your project and build a flow that starts them all.",
