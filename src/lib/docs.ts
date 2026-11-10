@@ -72,6 +72,12 @@ export const docFeatures: DocFeature[] = [
 		description: "Run commands and read their output live, in the panel the other panels share.",
 		icon: { src: "/icons/RunnerNoBG.png", alt: "Script Runner", width: 40, height: 37 },
 	},
+	{
+		slug: "processes",
+		title: "Processes",
+		description: "Find, mark and end the processes running on your machine, from the Processes panel.",
+		icon: { src: "/icons/Proccessors_NBG.png", alt: "Processes", width: 40, height: 34 },
+	},
 ];
 
 // The order here is the order on the docs hub. The body of each page is
@@ -189,6 +195,14 @@ export const docPages: DocPage[] = [
 		description: "Run a command, watch its output live, stop it, and open the links it prints.",
 		kind: "tutorial",
 		features: ["script-runner"],
+		minutes: 5,
+	},
+	{
+		slug: "processes-panel",
+		title: "Find and stop a process",
+		description: "Find a process in the live table, mark the ones you care about, and end the ones you do not.",
+		kind: "tutorial",
+		features: ["processes"],
 		minutes: 5,
 	},
 	{
