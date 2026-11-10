@@ -48,7 +48,7 @@ const CHAPTERS: Chapter[] = [
 				theirs. The Rust backend carried over, the interface was rebuilt on Zed&apos;s own
 				GPUI framework, and then the cockpit moved into a fork of the editor itself.
 			</>,
-			"On top of it we ported the Forge panels natively, so they are part of the editor and not a second app next to it: the cockpit, database workbench, Helm, script runner, process monitor, task flows, and project panels for Node, .NET, Python and Rust with their package managers.",
+			"On top of it we ported the Forge panels natively, so they are part of the editor and not a second app next to it: the cockpit, database workbench, Helm, script runner, process monitor, workflows, and project panels for Node, .NET, Python and Rust with their package managers.",
 			"Then we made it independent. Forge Super has no account and no sign-in. Its extension registry, package repository, documentation and release notes are ours. AI is bring-your-own: you connect the provider you choose, or none. Telemetry is off unless you turn it on.",
 		],
 		points: [
