@@ -36,6 +36,12 @@ export const docFeatures: DocFeature[] = [
 		description: "Node.js versions, scripts, packages and processes from the Node panel.",
 		icon: { src: "/icons/Terminal.png", alt: "Node", width: 27, height: 40 },
 	},
+	{
+		slug: "python",
+		title: "Python",
+		description: "Python versions, environments, packages and processes from the Python panel.",
+		icon: { src: "/icons/Python.png", alt: "Python", width: 40, height: 39 },
+	},
 ];
 
 // The order here is the order on the docs hub. The body of each page is
@@ -64,7 +70,7 @@ export const docPages: DocPage[] = [
 		title: "Add a task chain",
 		description: "Let Forge Super find the servers in your project and build a flow that starts them all.",
 		kind: "tutorial",
-		features: ["workflows", "node"],
+		features: ["workflows", "node", "python"],
 		minutes: 8,
 	},
 	{
@@ -73,6 +79,14 @@ export const docPages: DocPage[] = [
 		description: "Choose a Node version, run scripts, keep packages up to date and stop stray processes.",
 		kind: "tutorial",
 		features: ["node"],
+		minutes: 8,
+	},
+	{
+		slug: "python-panel",
+		title: "Get around the Python panel",
+		description: "Get a Python, set up an environment, run your project and keep its packages up to date.",
+		kind: "tutorial",
+		features: ["python"],
 		minutes: 8,
 	},
 	{
