@@ -21,6 +21,11 @@ export const docPages: DocPage[] = [
 		description: "Connect a model provider for the agent and choose an edit prediction provider.",
 	},
 	{
+		slug: "first-flow",
+		title: "Tutorial: your first flow",
+		description: "Build a small flow in the Designer, run it, and see what it did.",
+	},
+	{
 		slug: "add-an-extension",
 		title: "Add an extension",
 		description: "How an extension gets into the catalogue, and how to add one only Forge Super carries.",

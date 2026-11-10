@@ -1,0 +1,19 @@
+.figure {
+	margin: 0 0 1.25rem;
+}
+
+.media {
+	display: block;
+	width: 100%;
+	height: auto;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	background: var(--bg-card);
+}
+
+.caption {
+	margin-top: 0.5rem;
+	color: var(--text-muted);
+	font-size: 0.825rem;
+	line-height: 1.5;
+}

@@ -45,10 +45,20 @@ Local: `.env.local` (gitignored). Vercel: set in dashboard → Settings → Envi
 Auth helpers: `import { ... } from "@/lib/twin-auth"` (uses AI Twin project).
 
 ### Forge project tables
-`extensions`, `extension_submissions`, `extension_installs`, `releases`, `release_assets`, `download_events`, `contact_submissions`, `page_views`, `site_stats`
+`extensions`, `extension_submissions`, `extension_installs`, `releases`, `release_assets`, `download_events`, `contact_submissions`, `page_views`, `site_stats`, `doc_media`
 
 ### AI Twin project tables
 `identity`, `topic`, `messages`, `session_messages`, `profiles`
+
+## Docs and their media
+
+The text of a docs page is Markdown in `src/content/docs/<slug>.md`, listed in `src/lib/docs.ts`. A page's steps are its `## N. Title` sections. Screenshots and clips are not in the repo: they are files in the `doc-media` storage bucket with a row in the `doc_media` table (Forge project), shown after the step they belong to. Add one without a deploy:
+
+```bash
+node scripts/upload-doc-media.mjs first-flow 2 ./log-inspector.png --alt "The Log node selected" --caption "Set level and message"
+```
+
+Needs `SUPABASE_SERVICE_KEY` (in `.env.local`). The page picks it up within about five minutes (`revalidate = 300` in `src/app/docs/[slug]/page.tsx`). A step with no row shows no media; the page text never depends on the lookup. `[//]: # (TODO screenshot …)` lines in a page are unrendered notes of media still to capture.
 
 ## Pages (`src/app/`)
 
