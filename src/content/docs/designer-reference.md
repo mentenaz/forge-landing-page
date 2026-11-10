@@ -248,7 +248,7 @@ Outputs: `level` and `message`.
 | `key` | The variable's name, such as `DATABASE_URL` |
 | `value` | Its value |
 
-It sets the variable for the whole of Forge Super, not just this run, so it also applies to other flows and to anything you start afterwards.
+It sets the variable for the rest of the run: the scripts and Start Process nodes that start after it see it, including those inside loops. It does not reach other runs, other flows, or anything you start afterwards, and it ends with the run. The `key` must be a name without an `=`, and the `value` can be text or an expression. If you set `PATH` this way, it is used as it is, instead of Forge Super's built-in Node and Python going first on it. This applies from release `dev-v53`: earlier releases set the variable for the whole of Forge Super.
 
 ## What blocks Run
 

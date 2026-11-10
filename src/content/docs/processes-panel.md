@@ -78,13 +78,13 @@ Kill ends that one process. A program it started can keep running on its own. Fo
 | A flow | **Stop** in the Designer or on the flow's row in the Flows panel |
 | Somewhere else, or you are not sure | **Kill** here |
 
-If the process is no longer there, the panel says so under the header (`Failed to kill process 1234: Process 1234 not found`). If it is still in the list after the next refresh, the system did not let it end. See below.
+If something stops the kill, the panel says so under the header. If the process is no longer there, it says `Failed to kill process 1234: Process 1234 not found`. If the system refuses, it says so and why. See below.
 
 ## If something goes wrong
 
 **The table says "No processes found" or is empty.** If the filter box has text in it, clear it. A filter that matches nothing leaves the table empty.
 
-**The process is still in the list after you Kill it.** It belongs to another user or to the system, or it was started with administrator rights, and the system refused. Only Forge Super running with the same rights can end it. The panel does not show an error for this, so check the list after the next refresh.
+**"Failed to kill process … the system refused".** The process belongs to another user or to the system, or it was started with administrator rights. Only Forge Super running with the same rights can end it. Before release `dev-v53` the panel showed no message for this, and the process just stayed in the list.
 
 **"Process … not found".** It had already ended by the time you clicked Kill.
 
