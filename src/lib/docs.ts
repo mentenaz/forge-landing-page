@@ -48,6 +48,12 @@ export const docFeatures: DocFeature[] = [
 		description: "The .NET SDK, projects, NuGet packages and processes from the .NET panel.",
 		icon: { src: "/icons/CSharp.png", alt: ".NET", width: 40, height: 36 },
 	},
+	{
+		slug: "database",
+		title: "Databases",
+		description: "Connect to SQLite and server databases, run SQL and see the schema in the Database panel.",
+		icon: { src: "/icons/SQLWorkBenchNDG.png", alt: "Databases", width: 40, height: 35 },
+	},
 ];
 
 // The order here is the order on the docs hub. The body of each page is
@@ -102,6 +108,14 @@ export const docPages: DocPage[] = [
 		kind: "tutorial",
 		features: ["dotnet"],
 		minutes: 8,
+	},
+	{
+		slug: "database-panel",
+		title: "Connect to a database and run a query",
+		description: "Add a connection, explore a schema, run SQL in the workbench and see the schema graph.",
+		kind: "tutorial",
+		features: ["database"],
+		minutes: 10,
 	},
 	{
 		slug: "add-an-extension",
