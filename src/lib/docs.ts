@@ -54,6 +54,14 @@ export const docPages: DocPage[] = [
 		minutes: 5,
 	},
 	{
+		slug: "task-chain",
+		title: "Add a task chain",
+		description: "Let Forge Super find the servers in your project and build a flow that starts them all.",
+		kind: "tutorial",
+		features: ["workflows"],
+		minutes: 8,
+	},
+	{
 		slug: "add-an-extension",
 		title: "Add an extension",
 		description: "How an extension gets into the catalogue, and how to add one only Forge Super carries.",
