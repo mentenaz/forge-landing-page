@@ -6,7 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import DocMarkdown from "@/components/DocMarkdown";
 import DocMedia from "@/components/DocMedia";
-import { docPages, findDoc, readDocBody } from "@/lib/docs";
+import { docPages, findDoc, findFeature, readDocBody } from "@/lib/docs";
 import { getDocMedia } from "@/lib/docMedia";
 import { splitSections } from "@/lib/docSteps";
 import styles from "../page.module.css";
@@ -36,6 +36,7 @@ export default async function DocPage({ params }: { params: Promise<Params> }) {
 	const page = findDoc((await params).slug);
 	if (!page) notFound();
 
+	const feature = page.features?.[0] ? findFeature(page.features[0]) : undefined;
 	const [body, media] = await Promise.all([readDocBody(page.slug), getDocMedia(page.slug)]);
 	// A page with no media is rendered whole, so Markdown that refers across
 	// sections (reference links, footnotes) keeps working.
@@ -45,9 +46,23 @@ export default async function DocPage({ params }: { params: Promise<Params> }) {
 		<div className={styles.page}>
 			<Navbar />
 			<main className={styles.main}>
-				<Link href="/docs" className={styles.back}>
-					&larr; Docs
-				</Link>
+				{page.kind === "tutorial" ? (
+					<nav className={styles.crumbs} aria-label="Breadcrumb">
+						<Link href="/docs">Docs</Link>
+						<span aria-hidden="true">&rsaquo;</span>
+						<Link href="/docs/tutorials">Tutorials</Link>
+						{feature && (
+							<>
+								<span aria-hidden="true">&rsaquo;</span>
+								<Link href={`/docs/tutorials/${feature.slug}`}>{feature.title}</Link>
+							</>
+						)}
+					</nav>
+				) : (
+					<Link href="/docs" className={styles.back}>
+						&larr; Docs
+					</Link>
+				)}
 				<h1 className={styles.heading}>{page.title}</h1>
 				<div className={styles.prose}>
 					{sections ? (

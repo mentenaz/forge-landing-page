@@ -68,6 +68,67 @@
 	line-height: 1.5;
 }
 
+.cardMeta {
+	margin-top: 0.25rem;
+	font-size: 0.8rem;
+	color: var(--text-muted);
+}
+
+.crumbs {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 0.875rem;
+	color: var(--text-secondary);
+}
+
+.crumbs a {
+	color: var(--text-secondary);
+	text-decoration: none;
+}
+
+.crumbs a:hover {
+	color: var(--accent-light);
+}
+
+.badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+}
+
+.badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.55rem 1rem;
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: 999px;
+	font-family: var(--font-heading);
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: var(--accent-light);
+	text-decoration: none;
+	transition: border-color 0.15s ease;
+}
+
+.badge:hover {
+	border-color: var(--accent);
+}
+
+.badgeCount {
+	min-width: 1.4rem;
+	padding: 0.05rem 0.4rem;
+	border-radius: 999px;
+	background: var(--bg-deepest);
+	font-size: 0.75rem;
+	font-weight: 600;
+	color: var(--text-secondary);
+	text-align: center;
+}
+
 .back {
 	font-size: 0.875rem;
 	color: var(--text-secondary);

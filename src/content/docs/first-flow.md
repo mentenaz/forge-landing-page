@@ -91,6 +91,4 @@ Run is disabled while something is missing, for example a required setting left 
 
 ## Where next
 
-- **Call an API and use the answer**: add an HTTP Request and feed its result to the next step.
-- **Start your dev servers from one flow**: start a backend and a frontend, get their links, and stop them with one click.
-- **Add Task Chain**: let Forge Super find the servers in your project and build that flow for you.
+You have built, run and saved a flow. Further tutorials, such as calling an API and starting your dev servers, will be added under [Workflows](/docs/tutorials/workflows).
