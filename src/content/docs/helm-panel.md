@@ -132,7 +132,7 @@ To change an existing repository, click the settings icon (**Edit repository**) 
 
 ## If something goes wrong
 
-**An organisation's repositories are missing.** The organisation restricts third-party apps. An owner has to approve Helm. The sign-in screen links to where you can request it.
+**An organisation's repositories are missing.** The organisation restricts third-party apps. An owner has to approve Helm. The sign-in screen links to where you can request it. Owners can read what to approve in [Helm for administrators](/docs/helm-admin).
 
 **An "Authorize … scope" prompt appears.** GitHub refused a change because the sign-in lacks a permission, such as `repo` or `user`. Click the button, sign in again, and Helm returns you to where you were and tries the change once more.
 

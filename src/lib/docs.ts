@@ -248,6 +248,11 @@ export const docPages: DocPage[] = [
 		description: "What Forge Super contacts and when, and what it never sends.",
 	},
 	{
+		slug: "helm-admin",
+		title: "Helm for administrators",
+		description: "What Helm can reach, where it keeps credentials, and what a GitHub organisation owner controls.",
+	},
+	{
 		slug: "windows",
 		title: "Windows troubleshooting",
 		description: "Graphics, the software-emulated GPU warning, and file watching.",
