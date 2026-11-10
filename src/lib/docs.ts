@@ -54,6 +54,12 @@ export const docFeatures: DocFeature[] = [
 		description: "Connect to SQLite and server databases, run SQL and see the schema in the Database panel.",
 		icon: { src: "/icons/SQLWorkBenchNDG.png", alt: "Databases", width: 40, height: 35 },
 	},
+	{
+		slug: "rust",
+		title: "Rust",
+		description: "Toolchains, crates, dependencies and advisories from the Rust panel and the Cargo Manager.",
+		icon: { src: "/icons/Rust.png", alt: "Rust", width: 40, height: 36 },
+	},
 ];
 
 // The order here is the order on the docs hub. The body of each page is
@@ -115,6 +121,14 @@ export const docPages: DocPage[] = [
 		description: "Add a connection, explore a schema, run SQL in the workbench and see the schema graph.",
 		kind: "tutorial",
 		features: ["database"],
+		minutes: 10,
+	},
+	{
+		slug: "rust-panel",
+		title: "Get around the Rust panel",
+		description: "Check, build and test a crate, read what is out of date, and manage its dependencies.",
+		kind: "tutorial",
+		features: ["rust"],
 		minutes: 10,
 	},
 	{
