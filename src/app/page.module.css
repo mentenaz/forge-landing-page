@@ -129,6 +129,82 @@
 	color: var(--text-muted);
 }
 
+/* ── Getting started ───────────────────────────────── */
+.steps {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.step {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding: 1.75rem;
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: 10px;
+	transition: border-color var(--transition-fast);
+}
+
+.step:hover {
+	border-color: var(--accent);
+}
+
+.stepNumber {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+	background: var(--bg-deepest);
+	border: 1px solid var(--border);
+	font-family: var(--font-heading);
+	font-size: 0.95rem;
+	font-weight: 700;
+	color: var(--accent-light);
+}
+
+.stepTitle {
+	font-family: var(--font-heading);
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: var(--text-active);
+}
+
+.stepText {
+	flex: 1;
+	font-size: 0.875rem;
+	color: var(--text-secondary);
+	line-height: 1.6;
+}
+
+.stepLink {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--accent-light);
+	text-decoration: none;
+}
+
+.stepLink:hover {
+	text-decoration: underline;
+}
+
+.stepsNote {
+	margin-top: 1.25rem;
+	text-align: center;
+	font-size: 0.875rem;
+	color: var(--text-muted);
+}
+
+.stepsNote a {
+	color: var(--accent-light);
+}
+
 /* ── Feature Grid ──────────────────────────────────── */
 .featureGrid {
 	display: grid;
@@ -188,6 +264,10 @@
 	}
 
 	.featureGrid {
+		grid-template-columns: 1fr;
+	}
+
+	.steps {
 		grid-template-columns: 1fr;
 	}
 

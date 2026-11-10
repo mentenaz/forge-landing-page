@@ -59,6 +59,27 @@ const FEATURES = [
 	},
 ];
 
+const GETTING_STARTED = [
+	{
+		title: "Install",
+		text: "Use the Windows installer, winget or apt. It takes about a minute.",
+		href: "/docs/install",
+		linkLabel: "Install guide",
+	},
+	{
+		title: "Open a project",
+		text: "Open a folder. The panels for Node, Python, .NET, Rust, databases and GitHub are one key press away.",
+		href: "/docs/tutorials",
+		linkLabel: "Browse the tutorials",
+	},
+	{
+		title: "Try a flow",
+		text: "Build a small workflow, run it, and see what it did. About five minutes.",
+		href: "/docs/first-flow",
+		linkLabel: "Your first flow",
+	},
+];
+
 // const FALLBACK_STATS = [
 // 	{ value: "161", label: "Rust Commands" },
 // 	{ value: "28MB", label: "RAM Usage" },
@@ -175,6 +196,35 @@ export default async function Home() {
 					</div>
 					<p className={styles.heroPlatforms}>
 						Also available for Debian, Ubuntu and Kali Linux.
+					</p>
+				</div>
+			</section>
+
+			{/* ── Getting started ──────────────────────────── */}
+			<section id="get-started" className="section">
+				<div className="container">
+					<h2 className="section-title">Getting Started</h2>
+					<p className="section-subtitle">
+						From download to your first result in a few minutes.
+					</p>
+					<ol className={styles.steps}>
+						{GETTING_STARTED.map((step, index) => (
+							<li key={step.title} className={styles.step}>
+								<span className={styles.stepNumber} aria-hidden="true">
+									{index + 1}
+								</span>
+								<h3 className={styles.stepTitle}>{step.title}</h3>
+								<p className={styles.stepText}>{step.text}</p>
+								<Link href={step.href} className={styles.stepLink}>
+									{step.linkLabel} &rarr;
+								</Link>
+							</li>
+						))}
+					</ol>
+					<p className={styles.stepsNote}>
+						No account, no sign-in and no usage data:{" "}
+						<Link href="/docs/privacy">see what it contacts</Link>. Built on
+						Zed: <Link href="/docs/different-from-zed">see what is different</Link>.
 					</p>
 				</div>
 			</section>
