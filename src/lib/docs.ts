@@ -95,6 +95,11 @@ export const docPages: DocPage[] = [
 		description: "Get Forge Super on Windows or Debian-based Linux.",
 	},
 	{
+		slug: "different-from-zed",
+		title: "What's different from Zed",
+		description: "What Forge Super removed, changed and added, and when Zed's own documentation applies.",
+	},
+	{
 		slug: "ai-setup",
 		title: "AI setup",
 		description: "Connect a model provider for the agent and choose an edit prediction provider.",
