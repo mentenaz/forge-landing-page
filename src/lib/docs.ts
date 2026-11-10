@@ -78,6 +78,12 @@ export const docFeatures: DocFeature[] = [
 		description: "Find, mark and end the processes running on your machine, from the Processes panel.",
 		icon: { src: "/icons/Proccessors_NBG.png", alt: "Processes", width: 40, height: 34 },
 	},
+	{
+		slug: "helm",
+		title: "Helm",
+		description: "Sign in to GitHub, read repositories without cloning, and handle everyday GitHub chores in the editor.",
+		icon: { src: "/icons/GitOps_NBG.png", alt: "Helm", width: 40, height: 40 },
+	},
 ];
 
 // The order here is the order on the docs hub. The body of each page is
@@ -204,6 +210,14 @@ export const docPages: DocPage[] = [
 		kind: "tutorial",
 		features: ["processes"],
 		minutes: 5,
+	},
+	{
+		slug: "helm-panel",
+		title: "Sign in to GitHub and explore a repository",
+		description: "Sign in with Helm, find a repository, read its code without cloning, clone it, and use more than one account.",
+		kind: "tutorial",
+		features: ["helm"],
+		minutes: 10,
 	},
 	{
 		slug: "add-an-extension",
