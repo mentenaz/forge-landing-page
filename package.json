@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prebuild": "node scripts/check-docs.mjs",
+    "check:docs": "node scripts/check-docs.mjs",
     "start": "next start",
     "lint": "eslint"
   },

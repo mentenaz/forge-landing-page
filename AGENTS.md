@@ -14,6 +14,8 @@ npx tsc --noEmit     # TS type-check
 npm run lint         # ESLint (eslint-config-next)
 ```
 
+`npm run build` first runs `scripts/check-docs.mjs` (also `npm run check:docs`), which fails the build for a docs page without a file, a file not listed in `src/lib/docs.ts`, an unknown tutorial feature, or an internal link that goes nowhere. It also counts the screenshots still marked to do.
+
 No test framework. SCSS via `sass` v1.101. **Tabs** for indentation. React 19 compiler enabled (`reactCompiler: true` in `next.config.ts`).
 
 ## Environment Variables
