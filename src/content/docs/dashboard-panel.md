@@ -43,7 +43,7 @@ Rust     1.88.0         12 crates    4 outdated   not scanned
 
 Each row shows the version found, how many projects (or crates, for Rust) were detected, and two coloured tags: an amber **outdated** count and a red **vulnerable** count. A tag only appears when its count is more than zero. A language that was not found says **not detected**.
 
-The grey **not scanned** tag means nothing has been checked yet, so the absence of a red tag is not good news. Rust is scanned only when you ask, and an unscanned crate must not look clean.
+The grey **not scanned** tag means nothing has been checked yet, so the absence of a red tag is not good news. A row shows it until its first scan has finished, and an unscanned project must not look clean. In releases before `dev-v54`, only Rust showed this tag, and the others showed no red tag until a scan had run.
 
 [//]: # (TODO screenshot dashboard-panel-2-runtimes.png: The Runtimes section with all four rows and their tags.)
 

@@ -76,6 +76,10 @@ A click on a row does the same as `Enter`. Lists such as branches, commits and t
 | `Enter` on an action in the list | Adds it as the next step after the selected node, or near the middle of the canvas |
 | `Delete` or `Backspace` | Deletes the selected nodes and connections. The canvas must be focused, so that typing in a node's field does not delete the node |
 | `Tab` and `Shift+Tab` | Move the selection to the next or previous node |
+| `Ctrl+Z` and `Ctrl+Shift+Z` | Undo and redo a change on the canvas (`Cmd` on macOS). From release `dev-v54`; before it, these keys did nothing on Windows and Linux |
+| `Ctrl+A` | Selects every node, when the canvas is focused (`Cmd` on macOS) |
+| `Ctrl`+click | Adds a node to the selection, or takes it out (`Cmd` on macOS) |
+| `Shift`+drag | Draws a box and selects what is inside it |
 | `Ctrl+S` | Saves the flow, like any other file |
 | Scroll | Pans the canvas |
 | `Ctrl`+scroll (`Cmd`+scroll on macOS) | Zooms towards the pointer |

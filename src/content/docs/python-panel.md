@@ -72,7 +72,7 @@ If the missing count is not zero, install the requirements as in step 3.
 
 Both run in the **Script Runner** panel, which opens and shows the output as it runs.
 
-One thing to know: these buttons run the command with the Python that Forge Super finds first (the built-in version you chose, or the system one), and they do not switch to your project's virtual environment. If your packages are in a virtual environment, you can see an error such as `No module named django`. To start the server with the environment's Python, use a task chain, which does use it: [Add a task chain](/docs/task-chain). Or start it from a terminal with the environment active.
+If the panel is using your project's virtual environment (the line at the top says `(venv)`), the command runs as if that environment were switched on: its `Scripts` folder (`bin` on Linux) comes first on the path, so `python`, `flask` and `uvicorn` are the project's. If there is no virtual environment, the command uses the Python that Forge Super finds first, the built-in version you chose or the system one. This applies from release `dev-v54`. In earlier releases the buttons did not switch to the virtual environment, and a project that kept its packages there failed with an error such as `No module named django`.
 
 ## 7. Keep your packages healthy
 
@@ -96,7 +96,7 @@ To stop one, click **Stop** and confirm in the row. It stops the process and eve
 
 ## If something goes wrong
 
-**`No module named …` when you run the project.** The command ran with a Python that does not have your packages. See the note in step 6, and run the project from a task chain or from a terminal with the virtual environment active.
+**`No module named …` when you run the project.** The command ran with a Python that does not have your packages. Check that the line at the top of the panel says `(venv)`. If it says `(built-in)` or `(system)`, there is no virtual environment for the project, so create one as in step 3 and click **Refresh**. If you are on a release before `dev-v54`, run the project from a task chain or from a terminal with the environment active.
 
 **The panel says "Using the global interpreter (no project venv found)".** There is no `.venv` or `venv` folder in the project. Create one as in step 3.
 
