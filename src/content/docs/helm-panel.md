@@ -29,18 +29,26 @@ If you belong to an organisation that restricts third-party apps, its repositori
 
 ## 3. Find your way around
 
-After signing in you see your profile and a menu:
+After signing in you see your name and a menu:
 
 | Menu item | What it does |
 | --- | --- |
+| **View Profile** | Opens your profile, with the items below |
+| **Organizations** | The organisations you belong to. It is shown only if you belong to any |
 | **Repositories** | Your repositories |
 | **Search GitHub** | Search every public repository on GitHub |
-| **Organizations** | The organisations you belong to |
-| **Invitations** | Invitations to repositories and organisations |
-| **Edit Profile** | Change your GitHub profile |
-| **Account Security** | Your account's security details |
 | **Create Repository** | Make a new repository |
 | **Logout** | Sign out |
+
+**View Profile** shows your details and a short list of its own:
+
+| Item | What it does |
+| --- | --- |
+| **Edit Profile** | Change your GitHub profile |
+| **Repositories** | Your repositories, with how many there are |
+| **Organizations** | Your organisations. Shown only if you belong to any |
+| **Invitations** | Invitations to repositories and organisations. Shown only while you have some waiting |
+| **Account Security** | Opens GitHub's own security settings page in your browser. Helm does not show your security details itself |
 
 A back arrow at the top takes you to the screen you were on before.
 

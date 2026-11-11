@@ -33,11 +33,11 @@ Helm does not go around any GitHub rule. If a refusal is not a missing scope, fo
 
 ## For GitHub organisation owners
 
-### Third-party application access
+### Access for OAuth apps
 
 If your organisation restricts OAuth App access, members who sign in to Helm see their personal repositories, but not the organisation's. Its private repositories stay hidden until an owner approves **Helm for Forge**. The sign-in screen has a link to Helm's page in the member's GitHub settings, where they can request approval from the organisation.
 
-To allow it, approve the request in the organisation's settings under third-party access. To keep Helm out, leave the request denied. Either way, Helm shows no error: the organisation simply does not appear.
+To allow it, approve Helm in your organisation's settings for OAuth app access, where pending requests are listed. GitHub moves and renames these pages from time to time, so look for the organisation's policy on OAuth or third-party apps. To keep Helm out, leave it unapproved. Either way, Helm shows no error: the organisation simply does not appear.
 
 ### Single sign-on
 
@@ -65,11 +65,11 @@ Tokens from Helm's OAuth App do not expire on their own.
 
 Helm cannot revoke a token by itself. GitHub only allows that with the OAuth App's client secret, and an application installed on users' machines cannot keep a secret, so Helm has none. The revoke page depends on how the account was signed in:
 
-- **Helm's own sign-in:** Helm's entry under **Authorized OAuth Apps** in the user's GitHub settings.
+- **Helm's own sign-in:** Helm's entry in the list of authorised OAuth apps in the user's GitHub settings.
 - **A pasted token:** the token settings page, where it was created.
 - **Imported from the GitHub CLI:** the GitHub CLI's entry. Revoking it signs `gh` out too.
 
-To remove Helm's access to an organisation without involving each member, change the organisation's third-party application access so that Helm is not approved.
+To remove Helm's access to an organisation without involving each member, make sure Helm is not approved in the organisation's OAuth app access policy.
 
 ## Where a token goes
 
@@ -115,7 +115,7 @@ Commits are written with a name and email chosen for each account. Helm writes t
 | Where is the token stored? | The operating system's credential store, as `helm://github.com/<login>` |
 | Is it in a settings file or a log? | No |
 | Which servers receive it? | `api.github.com` and `github.com` (Git over HTTPS) |
-| Can an organisation block it? | Yes, with its third-party application access policy and single sign-on |
+| Can an organisation block it? | Yes, with its policy for OAuth apps and with single sign-on |
 | Does the token expire? | Not by itself. Sign out deletes the local copy, and revoking ends it everywhere |
 | Can Helm revoke the token itself? | No. The user or an owner does it on GitHub |
 | Does it change the global Git configuration? | No. Commit identity is written to each repository's own configuration |
