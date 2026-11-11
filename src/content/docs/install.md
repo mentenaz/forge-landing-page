@@ -4,6 +4,18 @@ Mentenaz Forge Super runs on Windows and on Debian-based Linux (Debian, Ubuntu, 
 
 Download `Mentenaz-Forge-Super-x86_64.exe` from the [latest release](https://github.com/mentenaz/mentenaz.Forge.Super/releases/latest) and run it. The installer puts Forge Super in your user profile, so it does not need administrator rights.
 
+### winget (pending)
+
+A winget package, `Mentenaz.Forge.Super`, has been submitted to the Windows Package Manager community repository, and is waiting to be accepted ([see its status on GitHub](https://github.com/microsoft/winget-pkgs/pull/468737), pull request 468737). Until it is, `winget install Mentenaz.Forge.Super` will not find it, so use the installer above.
+
+Once it is accepted, this will work:
+
+```powershell
+winget install Mentenaz.Forge.Super
+```
+
+The submission is for release `dev-v47`, so the first version winget offers will be that one, and newer releases reach winget in later submissions. The installer from the [latest release](https://github.com/mentenaz/mentenaz.Forge.Super/releases/latest) is always the newest.
+
 ## Linux
 
 Run the installer script as root:

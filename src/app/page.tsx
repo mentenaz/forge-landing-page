@@ -62,7 +62,7 @@ const FEATURES = [
 const GETTING_STARTED = [
 	{
 		title: "Install",
-		text: "Use the Windows installer, winget or apt. It takes about a minute.",
+		text: "Use the Windows installer or apt. It takes about a minute.",
 		href: "/docs/install",
 		linkLabel: "Install guide",
 	},

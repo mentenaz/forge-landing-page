@@ -7,7 +7,7 @@ Forge Super is an independent project. It is not made, endorsed or supported by 
 - **The editor is Zed's.** Editing, languages, themes, the terminal, the project and outline panels, the Git panel, search, tasks, the debugger and key bindings are Zed's, and we have not changed them on purpose.
 - **Nothing needs an account.** There is no sign-in, no collaboration service and no Zed-hosted AI. Forge Super does not contact Zed's servers for those.
 - **No usage data is ever sent.** See [Privacy](/docs/privacy).
-- **It does not update itself.** Updates come from winget or the apt repository. See [Updating](/docs/updating).
+- **It does not update itself.** Updates come from the installer on GitHub or the apt repository. See [Updating](/docs/updating).
 - **It adds panels,** such as Node, Python, .NET, Rust, Database, Flows and Helm, each with a key to open it. See the [tutorials](/docs/tutorials).
 - **It has its own names,** folders and link scheme, so it can be installed beside Zed without touching it.
 
@@ -111,7 +111,7 @@ Forge Super uses its own names so it can sit beside Zed.
 | Logs, Linux | `~/.local/share/zed` | `~/.local/share/forgesuper` |
 | Link scheme | `zed://` | `forgesuper://`. `zed://` links still open here |
 | Stored credentials | Under the bare address | Under `forgesuper:<address>`. Earlier entries are copied across when first read |
-| winget package | `ZedIndustries.Zed` | `Mentenaz.Forge.Super` |
+| winget package | `ZedIndustries.Zed` | `Mentenaz.Forge.Super`, once its submission is accepted. See [Install](/docs/install) |
 
 In the command palette, the names of commands that begin with `zed:` are shown as `forge:`. Only the label changes, and the command does the same thing.
 
