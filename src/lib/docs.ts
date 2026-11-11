@@ -105,6 +105,11 @@ export const docPages: DocPage[] = [
 		description: "The keys that open each Forge Super panel, the keys inside the panels, and how to change them.",
 	},
 	{
+		slug: "using-zed-features",
+		title: "Using Zed's own features",
+		description: "Zed's documentation, section by section: which pages apply to Forge Super, which differ, and which do not.",
+	},
+	{
 		slug: "ai-setup",
 		title: "AI setup",
 		description: "Connect a model provider for the agent and choose an edit prediction provider.",
