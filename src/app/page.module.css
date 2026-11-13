@@ -5,6 +5,13 @@
 	min-height: 100vh;
 }
 
+/* The page's main content, laid out as its sections were before it was wrapped. */
+.main {
+	display: flex;
+	flex: 1 0 auto;
+	flex-direction: column;
+}
+
 /* ── Hero ──────────────────────────────────────────── */
 .hero {
 	position: relative;
@@ -261,7 +268,7 @@
 .stepLink {
 	font-size: 0.875rem;
 	font-weight: 600;
-	color: var(--accent-light);
+	color: var(--accent-text);
 	text-decoration: none;
 }
 

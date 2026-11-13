@@ -198,171 +198,172 @@ export default async function Home() {
 	return (
 		<div className={styles.page}>
 			<Navbar />
-
-			{/* ── Hero ─────────────────────────────────────── */}
-			<section className={styles.hero}>
-				<div className={styles.heroOrb} aria-hidden="true" />
-				<div className={styles.heroInner}>
-					<div className={styles.heroContent}>
-						<h1 className={styles.heroTitle}>The Developer Cockpit</h1>
-						<p className={styles.heroSubtitle}>
-							Database, GitHub, runtimes and processes. One native window, one
-							keypress away.
-						</p>
-						<div className={styles.heroCtas}>
-							<a
-								className={styles.btnPrimary}
-								href={heroDownloadUrl}
-							>
-								Download for Windows
-							</a>
-							<a
-								className={styles.btnSecondary}
-								href={GITHUB_REPO}
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								View on GitHub
-							</a>
+			<main className={styles.main}>
+				{/* ── Hero ─────────────────────────────────────── */}
+				<section className={styles.hero}>
+					<div className={styles.heroOrb} aria-hidden="true" />
+					<div className={styles.heroInner}>
+						<div className={styles.heroContent}>
+							<h1 className={styles.heroTitle}>The Developer Cockpit</h1>
+							<p className={styles.heroSubtitle}>
+								Database, GitHub, runtimes and processes. One native window, one
+								keypress away.
+							</p>
+							<div className={styles.heroCtas}>
+								<a
+									className={styles.btnPrimary}
+									href={heroDownloadUrl}
+								>
+									Download for Windows
+								</a>
+								<a
+									className={styles.btnSecondary}
+									href={GITHUB_REPO}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									View on GitHub
+								</a>
+							</div>
+							<p className={styles.heroPlatforms}>
+								Also available for Debian, Ubuntu and Kali Linux.
+							</p>
+							<p className={styles.heroTrust}>No account. Your AI, if you want it.</p>
+							{heroChipList.length > 0 && (
+								<>
+									<ul className={styles.heroChips} aria-label="Highlights">
+										{heroChipList.map((chip) => (
+											<li key={chip} className={styles.heroChip}>
+												{chip}
+											</li>
+										))}
+									</ul>
+									{heroChips.memory && (
+										<p className={styles.heroChipsNote}>{heroChipsNote}</p>
+									)}
+								</>
+							)}
 						</div>
-						<p className={styles.heroPlatforms}>
-							Also available for Debian, Ubuntu and Kali Linux.
+						<HeroMedia />
+						<div className={styles.heroEngines}>
+							<p className={styles.heroEnginesLabel}>Works with</p>
+							<ul className={styles.heroEngineList}>
+								{heroEngines.map((engine) => (
+									<li key={engine}>{engine}</li>
+								))}
+							</ul>
+						</div>
+					</div>
+				</section>
+
+				{/* ── Getting started ──────────────────────────── */}
+				<section id="get-started" className="section">
+					<div className="container">
+						<h2 className="section-title">Getting Started</h2>
+						<p className="section-subtitle">
+							From download to your first result in a few minutes.
 						</p>
-						<p className={styles.heroTrust}>No account. Your AI, if you want it.</p>
-						{heroChipList.length > 0 && (
-							<>
-								<ul className={styles.heroChips} aria-label="Highlights">
-									{heroChipList.map((chip) => (
-										<li key={chip} className={styles.heroChip}>
-											{chip}
-										</li>
-									))}
-								</ul>
-								{heroChips.memory && (
-									<p className={styles.heroChipsNote}>{heroChipsNote}</p>
-								)}
-							</>
-						)}
-					</div>
-					<HeroMedia />
-					<div className={styles.heroEngines}>
-						<p className={styles.heroEnginesLabel}>Works with</p>
-						<ul className={styles.heroEngineList}>
-							{heroEngines.map((engine) => (
-								<li key={engine}>{engine}</li>
+						<ol className={styles.steps}>
+							{GETTING_STARTED.map((step, index) => (
+								<li key={step.title} className={styles.step}>
+									<span className={styles.stepNumber} aria-hidden="true">
+										{index + 1}
+									</span>
+									<h3 className={styles.stepTitle}>{step.title}</h3>
+									<p className={styles.stepText}>{step.text}</p>
+									<Link href={step.href} className={styles.stepLink}>
+										{step.linkLabel} &rarr;
+									</Link>
+								</li>
 							))}
-						</ul>
+						</ol>
+						<p className={styles.stepsNote}>
+							No account, no sign-in and no usage data:{" "}
+							<Link href="/docs/privacy">see what it contacts</Link>. Built on
+							Zed: <Link href="/docs/different-from-zed">see what is different</Link>.
+						</p>
 					</div>
-				</div>
-			</section>
+				</section>
 
-			{/* ── Getting started ──────────────────────────── */}
-			<section id="get-started" className="section">
-				<div className="container">
-					<h2 className="section-title">Getting Started</h2>
-					<p className="section-subtitle">
-						From download to your first result in a few minutes.
-					</p>
-					<ol className={styles.steps}>
-						{GETTING_STARTED.map((step, index) => (
-							<li key={step.title} className={styles.step}>
-								<span className={styles.stepNumber} aria-hidden="true">
-									{index + 1}
-								</span>
-								<h3 className={styles.stepTitle}>{step.title}</h3>
-								<p className={styles.stepText}>{step.text}</p>
-								<Link href={step.href} className={styles.stepLink}>
-									{step.linkLabel} &rarr;
-								</Link>
-							</li>
-						))}
-					</ol>
-					<p className={styles.stepsNote}>
-						No account, no sign-in and no usage data:{" "}
-						<Link href="/docs/privacy">see what it contacts</Link>. Built on
-						Zed: <Link href="/docs/different-from-zed">see what is different</Link>.
-					</p>
-				</div>
-			</section>
-
-			{/* ── Features ─────────────────────────────────── */}
-			<section id="features" className="section">
-				<div className="container">
-					<h2 className="section-title">Everything You Need</h2>
-					<p className="section-subtitle">
-						One app. No bloat. Every tool a developer needs.
-					</p>
-					<div className={styles.featureGrid}>
-						{FEATURES.map((f) => (
-							<FeatureCard
-								key={f.title}
-								icon={f.icon}
-								title={f.title}
-								description={f.description}
-							/>
-						))}
-					</div>
-				</div>
-			</section>
-
-			{/* ── Stats Bar ────────────────────────────────── */}
-			<section className={styles.statsBar}>
-				<div className={styles.statsInner}>
-					{stats.map((s) => (
-						<StatCard key={s.label} value={s.value} label={s.label} />
-					))}
-				</div>
-			</section>
-
-			{/* ── Downloads ────────────────────────────────── */}
-			<section id="download" className="section">
-				<div className="container">
-					<h2 className="section-title">Download Forge Super</h2>
-					<p className="section-subtitle">
-						Free. Available for Windows and Linux.
-					</p>
-					{downloads.length > 0 && (
-						<div className={styles.downloadRow}>
-							{downloads.map((d) => (
-								<DownloadButton
-									key={d.filename}
-									icon={d.icon}
-									platform={d.platform}
-									filename={d.filename}
-									href={d.url}
+				{/* ── Features ─────────────────────────────────── */}
+				<section id="features" className="section">
+					<div className="container">
+						<h2 className="section-title">Everything You Need</h2>
+						<p className="section-subtitle">
+							One app. No bloat. Every tool a developer needs.
+						</p>
+						<div className={styles.featureGrid}>
+							{FEATURES.map((f) => (
+								<FeatureCard
+									key={f.title}
+									icon={f.icon}
+									title={f.title}
+									description={f.description}
 								/>
 							))}
 						</div>
-					)}
-					{(["linux", "windows"] as const).map((platform) =>
-						methodsByPlatform[platform].length > 0 ? (
-							<div key={platform} className={styles.methods}>
-								<h3 className={styles.methodsTitle}>
-									{platform === "linux" ? "Linux" : "Windows"}
-								</h3>
-								{methodsByPlatform[platform].map((m) => (
-									<div key={m.command} className={styles.method}>
-										<span className={styles.methodLabel}>{m.label}</span>
-										<pre className={styles.methodCommand}>
-											<code>{m.command}</code>
-										</pre>
-										{m.note && <span className={styles.methodNote}>{m.note}</span>}
-									</div>
+					</div>
+				</section>
+
+				{/* ── Stats Bar ────────────────────────────────── */}
+				<section className={styles.statsBar}>
+					<div className={styles.statsInner}>
+						{stats.map((s) => (
+							<StatCard key={s.label} value={s.value} label={s.label} />
+						))}
+					</div>
+				</section>
+
+				{/* ── Downloads ────────────────────────────────── */}
+				<section id="download" className="section">
+					<div className="container">
+						<h2 className="section-title">Download Forge Super</h2>
+						<p className="section-subtitle">
+							Free. Available for Windows and Linux.
+						</p>
+						{downloads.length > 0 && (
+							<div className={styles.downloadRow}>
+								{downloads.map((d) => (
+									<DownloadButton
+										key={d.filename}
+										icon={d.icon}
+										platform={d.platform}
+										filename={d.filename}
+										href={d.url}
+									/>
 								))}
 							</div>
-						) : null,
-					)}
-					<p className={styles.versionNote}>
-						{latest
-							? `${latest.version} · Released ${new Date(latest.release_date).toLocaleDateString("en-GB", { year: "numeric", month: "long", timeZone: "UTC" })}`
-							: "See the releases page for the latest version."}
-						{" · "}
-						<Link href="/docs/releases">Release notes</Link>
-						{" · "}
-						<Link href="/legacy">Previous version (Forge, Tauri)</Link>
-					</p>
-				</div>
-			</section>
+						)}
+						{(["linux", "windows"] as const).map((platform) =>
+							methodsByPlatform[platform].length > 0 ? (
+								<div key={platform} className={styles.methods}>
+									<h3 className={styles.methodsTitle}>
+										{platform === "linux" ? "Linux" : "Windows"}
+									</h3>
+									{methodsByPlatform[platform].map((m) => (
+										<div key={m.command} className={styles.method}>
+											<span className={styles.methodLabel}>{m.label}</span>
+											<pre className={styles.methodCommand}>
+												<code>{m.command}</code>
+											</pre>
+											{m.note && <span className={styles.methodNote}>{m.note}</span>}
+										</div>
+									))}
+								</div>
+							) : null,
+						)}
+						<p className={styles.versionNote}>
+							{latest
+								? `${latest.version} · Released ${new Date(latest.release_date).toLocaleDateString("en-GB", { year: "numeric", month: "long", timeZone: "UTC" })}`
+								: "See the releases page for the latest version."}
+							{" · "}
+							<Link href="/docs/releases">Release notes</Link>
+							{" · "}
+							<Link href="/legacy">Previous version (Forge, Tauri)</Link>
+						</p>
+					</div>
+				</section>
+			</main>
 
 			{/* ── Footer ───────────────────────────────────── */}
 			<Footer />

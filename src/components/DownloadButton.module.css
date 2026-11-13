@@ -38,7 +38,7 @@
 .filename {
 	font-family: var(--font-mono);
 	font-size: 0.7rem;
-	color: var(--text-muted);
+	color: var(--text-secondary);
 	word-break: break-all;
 	text-align: center;
 }

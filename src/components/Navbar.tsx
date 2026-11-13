@@ -58,6 +58,7 @@ export function Navbar() {
             src="/forge-logo.png"
             width={680}
             height={654}
+            sizes="40px"
             alt=""
             className={styles.logo}
             aria-hidden="true"

@@ -10,6 +10,8 @@
 	/* Accent — purple */
 	--accent: #9333ea;
 	--accent-light: #a855f7;
+	/* For small text on the dark cards, where --accent-light is only about 3.6:1; this is about 5.4:1. */
+	--accent-text: #c084fc;
 	--accent-hover: #7a27d1;
 	--accent-green: #8fb000;
 	--accent-green-hover: #729000;
