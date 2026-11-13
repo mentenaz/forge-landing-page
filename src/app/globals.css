@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@700;800&family=Outfit:wght@400;600;700&family=Cascadia+Code&display=swap');
-
 :root {
 	/* Backgrounds */
 	--bg-body: #0a0a0f;
@@ -39,9 +37,11 @@
 	--card-border-accent: rgba(147, 51, 234, 0.3);
 
 	/* Fonts */
-	--font-heading: 'Oxanium', sans-serif;
-	--font-body: 'Outfit', sans-serif;
-	--font-mono: 'Cascadia Code', Consolas, monospace;
+	/* The fonts are loaded in layout.tsx with next/font, which serves them from
+	   this site, and sets --font-oxanium, --font-outfit and --font-cascadia. */
+	--font-heading: var(--font-oxanium), 'Oxanium', sans-serif;
+	--font-body: var(--font-outfit), 'Outfit', sans-serif;
+	--font-mono: var(--font-cascadia), 'Cascadia Code', Consolas, monospace;
 
 	/* Transitions */
 	--transition-fast: 0.15s ease;

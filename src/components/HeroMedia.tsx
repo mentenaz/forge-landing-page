@@ -95,6 +95,7 @@ export default function HeroMedia() {
 					height={heroMedia.height}
 					sizes="(max-width: 1040px) 100vw, 960px"
 					priority
+					fetchPriority="high"
 					className={styles.picture}
 				/>
 				{showVideo && (
