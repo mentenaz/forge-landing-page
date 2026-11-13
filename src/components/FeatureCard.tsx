@@ -10,9 +10,11 @@ interface FeatureCardProps {
 
 export function ForgeIcon(props: ImageProps) {
 	return (
+		// Resized by Next to the size it is shown at. These icons are 40 to 48 pixels
+		// wide, and the files in public/icons are up to 2 MB each: serving them as they
+		// are (`unoptimized`) made the home page about 6 MB.
 		<Image
 			{...props}
-			unoptimized
 			className={`${styles.iconImg} ${props.className ?? ""}`}
 		/>
 	);
