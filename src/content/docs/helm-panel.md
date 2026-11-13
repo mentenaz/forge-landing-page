@@ -1,6 +1,6 @@
-Helm is the GitHub client built into Forge Super. It lets you find a repository, read its code and history, check an Actions run, clone it, and handle everyday chores such as accepting an invitation, without opening a browser. This tutorial signs you in, finds a repository, reads it without cloning, and then clones it.
+Helm is the GitHub client built into Forge Super. It lets you find a repository, read its code and history, check an Actions run, clone it, work on its pull requests, and handle everyday chores such as accepting an invitation, without opening a browser. This tutorial signs you in, finds a repository, works on a pull request, reads the code without cloning, and then clones it.
 
-It takes about ten minutes. You need a GitHub account, and `git` installed if you want to clone.
+It takes about fifteen minutes. You need a GitHub account, and `git` installed if you want to clone.
 
 ## 1. Open the panel
 
@@ -68,8 +68,8 @@ Click a repository to open it. Its page lists what it holds:
 | --- | --- |
 | **Branches** | The branches |
 | **Collaborators** | Who has access, and you can add or remove people |
-| **Issues** | Issues and their comments |
-| **Pull requests** | Pull requests, and a way to create one |
+| **Issues** | Issues and their comments, and a box to post a comment |
+| **Pull requests** | Pull requests: read, create, edit, close, reopen, merge and comment on them |
 | **Releases** | Releases, and a way to create one |
 | **Packages** | Published packages and their versions |
 | **Commits** | Recent commits |
@@ -83,7 +83,42 @@ Click a run under **Actions** and it opens as its own tab, with the run's jobs d
 
 [//]: # (TODO screenshot helm-panel-2-repository.png: A repository page with its sections.)
 
-## 6. Read the code without cloning
+## 6. Work on a pull request
+
+Click **Pull requests** on a repository's page. The list has an **Open**, **Closed** and **All** switch, and **New pull request** creates one. Click a pull request to open it. You see:
+
+- a badge (Open, Closed or Merged, and Draft if it is one), its number, who opened it, and `branch → base`;
+- under the buttons, a line that says whether it can be merged;
+- the checks that ran on its latest commit;
+- the description and the comments, with a box to write a comment.
+
+[//]: # (TODO screenshot helm-panel-4-pull-request.png: A pull request open in Helm with the merge line, the checks and the comment box.)
+
+**The merge line.** GitHub decides whether a pull request can be merged, and Helm shows its answer: **Ready to merge**, **Can be merged** with a caution (some checks that are not required are failing), or the reason it cannot be: it has merge conflicts, its branch is behind the base, a required review or check is missing, or it is a draft. While GitHub is still working it out the line says so, and Helm asks again a few times by itself.
+
+**Checks.** Each check is listed with its result: Passed, Failed, Running, Queued, Skipped, Cancelled or Neutral. Click one to open its page in your browser. Older-style commit statuses are not shown.
+
+**Comment.** Type in the box under the thread and click **Comment**. The box empties once GitHub has accepted the comment, so one that failed to send is still there to try again. Issues have the same box.
+
+**Edit, Close and Reopen.** **Edit** changes the title and the description. **Close** closes the pull request, and a closed one offers **Reopen**. A merged pull request has none of these, because GitHub does not let it be reopened.
+
+**Merge.** **Merge…** is greyed out unless GitHub says the pull request can be merged. Click it and a dialog names the pull request and the branch it goes into, and asks for:
+
+- the method: a merge commit, a squash or a rebase. If the repository says which it allows, only those are offered;
+- the commit title, which a rebase does not have;
+- whether to delete the branch afterwards. This is offered only for a branch in the repository itself, never for the default branch or a fork's. If the branch cannot be deleted, the merge still stands.
+
+A merge cannot be undone from here. Helm sends the commit you were looking at, so if someone pushes to the branch in the meantime GitHub refuses the merge and you can look again.
+
+[//]: # (TODO screenshot helm-panel-5-merge.png: The merge dialog with the method, the commit title and the delete-branch switch.)
+
+**Staying current.** While a pull request or an issue is open, Helm checks it for news every 30 seconds, or every 15 while its checks are still running, so a reply or a finished check appears by itself. If that check fails it says nothing and keeps what is on screen. **Refresh** does the same at once. Neither touches what you are typing.
+
+**What is not here.** Marking a draft ready for review, reviews and approvals, and the changed files and diff are not in Helm yet. The **Open in Browser** button takes you to GitHub for those.
+
+These actions need the `repo` permission. If GitHub refuses one because the sign-in lacks it, the authorize prompt described under "If something goes wrong" appears.
+
+## 7. Read the code without cloning
 
 Click **Open Workspace** on the repository's page. A tab opens that shows the whole repository, read-only:
 
@@ -103,7 +138,7 @@ The header also shows whether you have a local copy of the repository open and h
 
 [//]: # (TODO screenshot helm-panel-3-workspace.png: The workspace tab on the Code page with a file open.)
 
-## 7. Clone it
+## 8. Clone it
 
 Click **Clone repository** on the repository's page. A dialog opens that says where the clone will go: **Clones into** followed by a folder named after the repository. By default that is inside the folder you have open. To put it somewhere else, click **Choose folder…** and pick a different parent folder. Then click **Clone repository** in the dialog.
 
@@ -113,7 +148,7 @@ When it finishes, the dialog says you have successfully cloned the repository an
 
 If the project has a `package.json` and no `node_modules`, Helm offers to run `npm install`.
 
-## 8. Use more than one account
+## 9. Use more than one account
 
 You can be signed in to several GitHub accounts. The account button next to **Helm** in the panel header (its tooltip is **Switch GitHub account**) lets you:
 
@@ -127,7 +162,7 @@ Commits made from the Git panel are written with a name and email you choose for
 
 Push, pull and fetch from the Git panel log in as the workspace's account, so two windows can push as two different accounts. If the workspace's account cannot push to the repository but another signed-in account can, a notification offers **Switch to …**.
 
-## 9. Create a repository
+## 10. Create a repository
 
 Click **Create Repository** in the menu and fill in the form:
 
@@ -143,6 +178,10 @@ To change an existing repository, click the settings icon (**Edit repository**) 
 **An organisation's repositories are missing.** The organisation restricts third-party apps. An owner has to approve Helm. The sign-in screen links to where you can request it. Owners can read what to approve in [Helm for administrators](/docs/helm-admin).
 
 **An "Authorize … scope" prompt appears.** GitHub refused a change because the sign-in lacks a permission, such as `repo` or `user`. Click the button, sign in again, and Helm returns you to where you were and tries the change once more.
+
+**Merge… is greyed out.** Read the line under the buttons: it says why GitHub will not merge the pull request yet. Fix that on the branch or on GitHub, then click **Refresh**.
+
+**Your comment did not send.** The text stays in the box. Fix the cause, such as a lost connection, and click **Comment** again.
 
 **You get "Failed to …".** Your account has no rights on that resource, or the organisation blocks the change. Signing in again cannot fix that.
 

@@ -90,7 +90,7 @@ Click `books`. You should see its three columns and the foreign key to `authors`
 
 Click **Schema Graph** in the header. A new tab draws each table as a box and each foreign key as a line between them, laid out for you, on a canvas you can pan and zoom. For the practice database you see `books` joined to `authors`.
 
-Workbench and Schema Graph tabs are remembered, and are reopened and reconnected the next time you start Forge Super.
+Workbench and Schema Graph tabs are remembered. Step 8 says what you see when you start Forge Super again.
 
 [//]: # (TODO screenshot database-panel-4-graph.png: The Schema Graph tab with the authors and books tables joined.)
 
@@ -109,20 +109,34 @@ For PostgreSQL, MySQL / MariaDB, SQL Server or Oracle, open that type's tab, cli
 
 Click **Connect**. If it cannot, the reason is shown above the form so you can correct a field and try again.
 
-Once connected, a strip of tabs under the header lists the databases you have open on that server.
+Once connected, a strip of tabs under the header lists the databases you have open on that server. A workbench or graph tab belongs to one database: with several open on a server, **Run** runs on the database of the tab you are in, not on whichever you chose last.
 
 - **Open existing ▾** lists the databases found on the server that you have not opened yet. Pick one to open it.
 - **+ Create database** takes a name. **Create** makes a new database on the server, and **Add** opens one that already exists, for a name the list did not show. **Cancel** closes it.
 
 An Oracle connection is a single service, so it has neither.
 
-## 8. Disconnect and tidy up
+## 8. Pick up where you left off
 
-**Disconnect** closes the session but keeps the connection, so **Connect** brings it back. The red bin button deletes the connection. You are asked first, and the question says what it does: it removes the saved connection and its stored schema, and does not change the database itself.
+Close Forge Super and start it again. Your workbench and graph tabs come back at once, and so does the list of databases each workspace had open.
+
+- **Only one database per server connects at startup:** the one the connection was on last. The others stay in the strip, marked **not connected**.
+- **A tab for a database that is not connected** says so, with a **Connect** button. It also connects by itself the first time you look at it, so having many tabs open does not mean many connections at startup. While it connects it says **Connecting to …**. If that fails it says **Could not connect to …**, gives the reason, and offers **Retry**.
+- **Choosing a not-connected database in the strip** connects it too.
+- **The list belongs to the workspace.** Two workspaces that use the same server each get back their own databases.
+- **The x on a database tab** closes it and takes it off the list, connected or not. **Disconnect** (next step) keeps the databases listed.
+- **A SQLite file or an Oracle service** is the whole connection, so it reconnects at startup.
+- **A tab whose connection you have since deleted** cannot be restored, and a message says so.
+
+## 9. Disconnect and tidy up
+
+**Disconnect** closes the session but keeps the connection, so **Connect** brings it back. The databases you had open stay in the strip, marked **not connected**. The red bin button deletes the connection. You are asked first, and the question says what it does: it removes the saved connection and its stored schema, and does not change the database itself.
 
 ## If something goes wrong
 
 **"Could not connect".** Read the reason that follows. The usual causes are a wrong host, port, username or password, a server that is not running, or an SSL setting that does not match the server.
+
+**A tab says the database is not connected.** It was open last time and has not been connected yet. Click **Connect**, or choose it in the strip. If it says **Could not connect**, read the reason: usually the server is off or the database has been dropped.
 
 **"Failed to load schema".** The connection worked but reading the tables did not. Click **Retry**.
 

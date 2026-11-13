@@ -194,7 +194,7 @@ export const docPages: DocPage[] = [
 	{
 		slug: "database-panel",
 		title: "Connect to a database and run a query",
-		description: "Add a connection, explore a schema, run SQL in the workbench and see the schema graph.",
+		description: "Add a connection, explore a schema, run SQL in the workbench, see the schema graph, and pick up where you left off.",
 		kind: "tutorial",
 		features: ["database"],
 		minutes: 10,
@@ -242,10 +242,10 @@ export const docPages: DocPage[] = [
 	{
 		slug: "helm-panel",
 		title: "Sign in to GitHub and explore a repository",
-		description: "Sign in with Helm, find a repository, read its code without cloning, clone it, and use more than one account.",
+		description: "Sign in with Helm, find a repository, work on a pull request, read its code without cloning, clone it, and use more than one account.",
 		kind: "tutorial",
 		features: ["helm"],
-		minutes: 10,
+		minutes: 15,
 	},
 	{
 		slug: "add-an-extension",
