@@ -9,19 +9,30 @@
 .hero {
 	position: relative;
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: center;
-	min-height: 100vh;
 	overflow: hidden;
-	padding: 6rem 1.5rem 4rem;
+	padding: 7rem 1.5rem 4rem;
+}
+
+/* The copy, the clip and the engine row, in one column. */
+.heroInner {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 3rem;
+	width: 100%;
+	max-width: 960px;
 }
 
 .heroOrb {
 	position: absolute;
-	top: 50%;
+	top: 62%;
 	left: 50%;
-	width: 700px;
-	height: 700px;
+	width: 900px;
+	height: 900px;
 	transform: translate(-50%, -50%);
 	background: radial-gradient(
 		circle,
@@ -55,6 +66,13 @@
 	text-align: center;
 	max-width: 720px;
 	animation: fadeInUp 0.7s ease both;
+}
+
+/* Keyboard focus on the two buttons. */
+.btnPrimary:focus-visible,
+.btnSecondary:focus-visible {
+	outline: 2px solid var(--accent-light);
+	outline-offset: 3px;
 }
 
 .heroTitle {
@@ -125,8 +143,65 @@
 }
 
 .heroPlatforms {
+	font-size: 14px;
+	color: var(--text-secondary);
+}
+
+.heroTrust {
+	margin: 0.25rem 0 1.5rem;
+	font-size: 15px;
+	color: var(--text-secondary);
+}
+
+/* The proof chips: only those with a value are rendered. */
+.heroChips {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.5rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.heroChip {
+	padding: 0.4rem 0.85rem;
+	font-size: 14px;
+	color: var(--text-primary);
+	background: var(--card-bg-accent);
+	border: 1px solid var(--card-border-accent);
+	border-radius: 999px;
+}
+
+.heroChipsNote {
+	margin-top: 0.6rem;
 	font-size: 13px;
-	color: var(--text-muted);
+	color: var(--text-secondary);
+}
+
+/* The databases it works with, under the clip. */
+.heroEngines {
+	text-align: center;
+}
+
+.heroEnginesLabel {
+	margin-bottom: 0.6rem;
+	font-size: 13px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--text-secondary);
+}
+
+.heroEngineList {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.5rem 1.5rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 15px;
+	color: var(--text-primary);
 }
 
 /* ── Getting started ───────────────────────────────── */
@@ -289,7 +364,19 @@
 	}
 
 	.hero {
-		padding: 4rem 1rem 3rem;
+		padding: 5.5rem 1rem 3rem;
+	}
+
+	.heroInner {
+		gap: 2rem;
+	}
+}
+
+/* No pulsing glow and no fade-in for people who ask for less motion. */
+@media (prefers-reduced-motion: reduce) {
+	.heroOrb,
+	.heroContent {
+		animation: none;
 	}
 }
 
