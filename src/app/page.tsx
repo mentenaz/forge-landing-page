@@ -106,10 +106,6 @@ function formatStat(value: number): string {
 	return String(value);
 }
 
-// The stars are left out until there are enough for the number to help, the
-// same way a count of zero is left out of the other stats.
-const MIN_STARS_SHOWN = 25;
-
 // The repository's star count, from GitHub. Fetched here on the server, so no
 // visitor's browser contacts GitHub, and refreshed with the rest of the page.
 // GITHUB_TOKEN is optional: without it GitHub allows 60 requests an hour per
@@ -163,7 +159,7 @@ export default async function Home() {
 	const stats = [
 		{ value: formatStat(extensionCount.count ?? 0), label: "Extensions", show: (extensionCount.count ?? 0) > 0 },
 		{ value: formatStat(releaseCount.count ?? 0), label: "Releases", show: (releaseCount.count ?? 0) > 0 },
-		{ value: formatStat(stars ?? 0), label: "GitHub stars", show: (stars ?? 0) >= MIN_STARS_SHOWN },
+		{ value: formatStat(stars ?? 0), label: "GitHub stars", show: (stars ?? 0) > 0 },
 		{ value: "2", label: "Platforms", show: true },
 		{ value: "0", label: "Accounts needed", show: true },
 	].filter((s) => s.show);
