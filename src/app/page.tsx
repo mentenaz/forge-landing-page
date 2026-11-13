@@ -4,6 +4,8 @@ import StatCard from "@/components/StatCard";
 import DownloadButton from "@/components/DownloadButton";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import HeroMedia from "@/components/HeroMedia";
+import { heroChips, heroChipsNote, heroEngines } from "@/config/hero";
 import { supabase } from "@/lib/supabase";
 import type { InstallMethod, LatestRelease } from "@/types/database";
 import styles from "./page.module.css";
@@ -182,6 +184,10 @@ export default async function Home() {
 		filename: a.filename,
 		url: a.download_url,
 	}));
+	// Only the chips that have a value; an empty one is left out, not shown blank.
+	const heroChipList = [heroChips.memory, heroChips.startup, heroChips.accounts].filter(
+		(chip): chip is string => Boolean(chip),
+	);
 	const windowsDownload = downloads.find((d) => d.platform === "Windows");
 	const heroDownloadUrl = windowsDownload?.url ?? `${GITHUB_REPO}/releases/latest`;
 	const methodsByPlatform = {
@@ -196,32 +202,57 @@ export default async function Home() {
 			{/* ── Hero ─────────────────────────────────────── */}
 			<section className={styles.hero}>
 				<div className={styles.heroOrb} aria-hidden="true" />
-				<div className={styles.heroContent}>
-					<h1 className={styles.heroTitle}>The Developer Cockpit</h1>
-					<p className={styles.heroSubtitle}>
-						Mentenaz Forge Super brings your database, GitHub, runtimes,
-						scripts and processes into one native editor, built on Zed.
-						No account. Your AI, if you want it.
-					</p>
-					<div className={styles.heroCtas}>
-						<a
-							className={styles.btnPrimary}
-							href={heroDownloadUrl}
-						>
-							Download for Windows
-						</a>
-						<a
-							className={styles.btnSecondary}
-							href={GITHUB_REPO}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							View on GitHub
-						</a>
+				<div className={styles.heroInner}>
+					<div className={styles.heroContent}>
+						<h1 className={styles.heroTitle}>The Developer Cockpit</h1>
+						<p className={styles.heroSubtitle}>
+							Database, GitHub, runtimes and processes. One native window, one
+							keypress away.
+						</p>
+						<div className={styles.heroCtas}>
+							<a
+								className={styles.btnPrimary}
+								href={heroDownloadUrl}
+							>
+								Download for Windows
+							</a>
+							<a
+								className={styles.btnSecondary}
+								href={GITHUB_REPO}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								View on GitHub
+							</a>
+						</div>
+						<p className={styles.heroPlatforms}>
+							Also available for Debian, Ubuntu and Kali Linux.
+						</p>
+						<p className={styles.heroTrust}>No account. Your AI, if you want it.</p>
+						{heroChipList.length > 0 && (
+							<>
+								<ul className={styles.heroChips} aria-label="Highlights">
+									{heroChipList.map((chip) => (
+										<li key={chip} className={styles.heroChip}>
+											{chip}
+										</li>
+									))}
+								</ul>
+								{heroChips.memory && (
+									<p className={styles.heroChipsNote}>{heroChipsNote}</p>
+								)}
+							</>
+						)}
 					</div>
-					<p className={styles.heroPlatforms}>
-						Also available for Debian, Ubuntu and Kali Linux.
-					</p>
+					<HeroMedia />
+					<div className={styles.heroEngines}>
+						<p className={styles.heroEnginesLabel}>Works with</p>
+						<ul className={styles.heroEngineList}>
+							{heroEngines.map((engine) => (
+								<li key={engine}>{engine}</li>
+							))}
+						</ul>
+					</div>
 				</div>
 			</section>
 

@@ -1,0 +1,21 @@
+/* The framed "app window" under the hero copy. */
+.frame {
+	margin: 0;
+	width: 100%;
+	max-width: 960px;
+}
+
+.window {
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	background: var(--bg-deepest);
+}
+
+.picture {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
