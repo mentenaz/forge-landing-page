@@ -37,6 +37,8 @@ export const heroEngines: readonly string[] = [
 export const heroMedia = {
 	// The poster is the first frame of the clip: the schema graph.
 	poster: "/hero/hero-poster.jpg",
+	mp4: "/hero/hero-db.mp4",
+	webm: "/hero/hero-db.webm",
 	width: 1280,
 	height: 720,
 	// Read by screen readers in place of the picture.
