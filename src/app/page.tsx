@@ -106,8 +106,35 @@ function formatStat(value: number): string {
 	return String(value);
 }
 
+// The stars are left out until there are enough for the number to help, the
+// same way a count of zero is left out of the other stats.
+const MIN_STARS_SHOWN = 25;
+
+// The repository's star count, from GitHub. Fetched here on the server, so no
+// visitor's browser contacts GitHub, and refreshed with the rest of the page.
+// GITHUB_TOKEN is optional: without it GitHub allows 60 requests an hour per
+// IP address, which a host shared with other sites can use up. Any failure
+// returns null, which leaves the stat out instead of breaking the page.
+async function getStars(): Promise<number | null> {
+	const headers: Record<string, string> = { Accept: "application/vnd.github+json" };
+	if (process.env.GITHUB_TOKEN) {
+		headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+	}
+	try {
+		const response = await fetch("https://api.github.com/repos/mentenaz/mentenaz.Forge.Super", {
+			headers,
+			next: { revalidate },
+		});
+		if (!response.ok) return null;
+		const repository = (await response.json()) as { stargazers_count?: number };
+		return typeof repository.stargazers_count === "number" ? repository.stargazers_count : null;
+	} catch {
+		return null;
+	}
+}
+
 export default async function Home() {
-	const [extensionCount, releaseCount, releaseResult, methodsResult] = await Promise.all([
+	const [extensionCount, releaseCount, releaseResult, methodsResult, stars] = await Promise.all([
 		supabase
 			.from("registry_extensions")
 			.select("id", { count: "exact", head: true })
@@ -127,6 +154,7 @@ export default async function Home() {
 			.select("platform, label, command, note, sort_order")
 			.eq("product", "forge-super")
 			.order("sort_order"),
+		getStars(),
 	]);
 
 	// A count of zero would read as a mistake (no release has been recorded
@@ -135,6 +163,7 @@ export default async function Home() {
 	const stats = [
 		{ value: formatStat(extensionCount.count ?? 0), label: "Extensions", show: (extensionCount.count ?? 0) > 0 },
 		{ value: formatStat(releaseCount.count ?? 0), label: "Releases", show: (releaseCount.count ?? 0) > 0 },
+		{ value: formatStat(stars ?? 0), label: "GitHub stars", show: (stars ?? 0) >= MIN_STARS_SHOWN },
 		{ value: "2", label: "Platforms", show: true },
 		{ value: "0", label: "Accounts needed", show: true },
 	].filter((s) => s.show);
