@@ -103,6 +103,16 @@ const PLATFORM_LABEL: Record<string, string> = {
 	macos: "macOS",
 };
 
+// The Apple Silicon and Intel disk images share one platform, so the filename
+// says which Mac a button is for.
+function platformLabel(platform: string, filename: string): string {
+	if (platform === "macos") {
+		if (filename.includes("aarch64")) return "macOS (Apple Silicon)";
+		if (filename.includes("x86_64")) return "macOS (Intel)";
+	}
+	return PLATFORM_LABEL[platform] ?? platform;
+}
+
 function formatStat(value: number): string {
 	if (value >= 1000) return `${(value / 1000).toFixed(1)}k`;
 	return String(value);
@@ -155,6 +165,13 @@ export default async function Home() {
 		getStars(),
 	]);
 
+	// The platform count and the download line follow what the latest release
+	// really has, so macOS is only claimed once a disk image is published.
+	const latestAssets = (releaseResult.data as LatestRelease | null)?.release_assets ?? [];
+	const platformCount =
+		new Set(latestAssets.map((a) => (a.platform.startsWith("linux") ? "linux" : a.platform))).size || 2;
+	const hasMacDownload = latestAssets.some((a) => a.platform === "macos");
+
 	// A count of zero would read as a mistake (no release has been recorded
 	// yet, or the query failed), so those stats are left out until they have a
 	// real number.
@@ -162,7 +179,7 @@ export default async function Home() {
 		{ value: formatStat(extensionCount.count ?? 0), label: "Extensions", show: (extensionCount.count ?? 0) > 0 },
 		{ value: formatStat(releaseCount.count ?? 0), label: "Releases", show: (releaseCount.count ?? 0) > 0 },
 		{ value: formatStat(stars ?? 0), label: "GitHub stars", show: (stars ?? 0) > 0 },
-		{ value: "2", label: "Platforms", show: true },
+		{ value: String(platformCount), label: "Platforms", show: true },
 		{ value: "0", label: "Accounts needed", show: true },
 	].filter((s) => s.show);
 
@@ -175,12 +192,12 @@ export default async function Home() {
 		icon: (
 			<ForgeIcon
 				src="/icons/Forge_Cockpit.png"
-				alt={PLATFORM_LABEL[a.platform] ?? a.platform}
+				alt={platformLabel(a.platform, a.filename)}
 				width={48}
 				height={48}
 			/>
 		),
-		platform: PLATFORM_LABEL[a.platform] ?? a.platform,
+		platform: platformLabel(a.platform, a.filename),
 		filename: a.filename,
 		url: a.download_url,
 	}));
@@ -193,6 +210,7 @@ export default async function Home() {
 	const methodsByPlatform = {
 		windows: methods.filter((m) => m.platform === "windows"),
 		linux: methods.filter((m) => m.platform === "linux"),
+		macos: methods.filter((m) => m.platform === "macos"),
 	};
 
 	return (
@@ -319,7 +337,9 @@ export default async function Home() {
 					<div className="container">
 						<h2 className="section-title">Download Forge Super</h2>
 						<p className="section-subtitle">
-							Free. Available for Windows and Linux.
+							{hasMacDownload
+								? "Free. Available for Windows, Linux and macOS."
+								: "Free. Available for Windows and Linux."}
 						</p>
 						{downloads.length > 0 && (
 							<div className={styles.downloadRow}>
@@ -334,11 +354,11 @@ export default async function Home() {
 								))}
 							</div>
 						)}
-						{(["linux", "windows"] as const).map((platform) =>
+						{(["linux", "windows", "macos"] as const).map((platform) =>
 							methodsByPlatform[platform].length > 0 ? (
 								<div key={platform} className={styles.methods}>
 									<h3 className={styles.methodsTitle}>
-										{platform === "linux" ? "Linux" : "Windows"}
+										{platform === "linux" ? "Linux" : platform === "windows" ? "Windows" : "macOS"}
 									</h3>
 									{methodsByPlatform[platform].map((m) => (
 										<div key={m.command} className={styles.method}>

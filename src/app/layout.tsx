@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Mentenaz Forge Super — The Developer Cockpit",
     description:
-      "A developer cockpit built on the Zed editor, for Windows and Linux. No account required.",
+      "A developer cockpit built on the Zed editor, for Windows, Linux and macOS. No account required.",
     type: "website",
   },
 };
