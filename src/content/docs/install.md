@@ -1,4 +1,4 @@
-Mentenaz Forge Super runs on Windows and on Debian-based Linux (Debian, Ubuntu, Kali) on 64-bit x86.
+Mentenaz Forge Super runs on Windows and on Debian-based Linux (Debian, Ubuntu, Kali) on 64-bit x86. There is also an early build for Macs with Apple silicon, described in the macOS section below.
 
 ## Windows
 
@@ -48,6 +48,24 @@ curl -fsSL https://downloads.mentenaz-server.com/install.sh | sudo sh -s -- --ed
 
 To go back, run the installer again without `--edge`.
 
+## macOS
+
+macOS support is new. The build is not code-signed or notarized by Apple, and it has had very little testing on real Macs, so expect rough edges. For now there is a disk image for Macs with Apple silicon (M1 or newer). An Intel build is not published yet.
+
+1. Download `Mentenaz-Forge-Super-aarch64.dmg` from the [latest release](https://github.com/mentenaz/mentenaz.Forge.Super/releases/latest).
+2. Open it and drag Mentenaz Forge Super into **Applications**.
+3. The first time you open it, macOS blocks it with a message that Apple could not verify it. Open **System Settings**, go to **Privacy & Security**, scroll to the message about Mentenaz Forge Super and choose **Open Anyway**. On macOS 14 and earlier you can instead right-click the app and choose **Open**.
+
+If you prefer Terminal, this removes the block in one step, and you can then open the app as usual:
+
+```sh
+xattr -cr "/Applications/Mentenaz Forge Super.app"
+```
+
+macOS asks only once for each downloaded copy. After that the app opens like any other and can be kept in the Dock. A newer download asks again.
+
 ## If it does not start
 
 On Linux, the most common cause is graphics. See [Linux and graphics troubleshooting](/docs/linux).
+
+On macOS, the message that Apple could not verify the app is the first-open check described above. If the app opens and then quits, or never opens, please report it together with any message you see, since macOS support is new.

@@ -92,7 +92,7 @@ export const docPages: DocPage[] = [
 	{
 		slug: "install",
 		title: "Install",
-		description: "Get Forge Super on Windows or Debian-based Linux.",
+		description: "Get Forge Super on Windows, Debian-based Linux or macOS.",
 	},
 	{
 		slug: "different-from-zed",

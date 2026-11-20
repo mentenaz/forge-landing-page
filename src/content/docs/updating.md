@@ -30,6 +30,10 @@ apt list -a forge-super
 sudo apt-get install forge-super=1.28.0.47
 ```
 
+## macOS
+
+Download the newest disk image from the [latest release](https://github.com/mentenaz/mentenaz.Forge.Super/releases/latest), open it and drag the app into **Applications**, choosing **Replace** when asked. Your settings and data are kept. Because it is a new download, macOS asks you to approve it again the first time you open it, as described in the macOS section of [Install](/docs/install).
+
 ## What changed
 
 Every release is listed with its changes on the [Releases](/docs/releases) page.
