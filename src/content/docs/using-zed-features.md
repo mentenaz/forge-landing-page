@@ -13,7 +13,7 @@ The labels mean:
 
 Two things to keep in mind:
 
-- Zed's website documents the newest Zed. Forge Super is built on Zed 1.29, so a very recent Zed feature may not be here yet. The documentation for exactly the version you run is in the `docs/src` folder of the [Forge Super repository](https://github.com/mentenaz/mentenaz.Forge.Super/tree/main/docs/src).
+- Zed's website documents the newest Zed. Forge Super is built on Zed 1.31, so a very recent Zed feature may not be here yet. The documentation for exactly the version you run is in the `docs/src` folder of the [Forge Super repository](https://github.com/mentenaz/mentenaz.Forge.Super/tree/main/docs/src).
 - Where a Zed page says `zed`, read `forge-super` for the command line, and where it shows a folder named `Zed`, Forge Super uses `ForgeSuper`. Zed's commands appear in the command palette with `forge:` in front of their names.
 
 ## Getting started

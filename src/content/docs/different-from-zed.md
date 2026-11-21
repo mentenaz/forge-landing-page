@@ -1,6 +1,6 @@
 Forge Super is a fork of the Zed editor. Most of what you see is Zed's, and works as Zed's documentation describes. This page lists what is different: what was removed or switched off, which defaults changed, what was added, and what is named differently. Read it before you follow an upstream Zed page, so you know whether that page applies.
 
-Forge Super is an independent project. It is not made, endorsed or supported by Zed Industries. It is built on Zed 1.29 and is distributed under the GPL, like Zed.
+Forge Super is an independent project. It is not made, endorsed or supported by Zed Industries. It is built on Zed 1.31 and is distributed under the GPL, like Zed.
 
 ## In short
 
