@@ -248,6 +248,11 @@ export const docPages: DocPage[] = [
 		minutes: 15,
 	},
 	{
+		slug: "scaffold-panel",
+		title: "Create a project from a template",
+		description: "Find a template, fill in its form, review every file before it is written, and create the project.",
+	},
+	{
 		slug: "add-an-extension",
 		title: "Add an extension",
 		description: "How an extension gets into the catalogue, and how to add one only Forge Super carries.",

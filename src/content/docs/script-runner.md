@@ -65,6 +65,8 @@ The address appears in the bar. Click it to open it in your browser, or click th
 
 For SharePoint Framework projects, the panel also notices the workbench debug address that `gulp serve` or `heft start` print, and shows it in a **Debug script** bar with a **Copy** button.
 
+Package installs are the exception. For `npm install`, `pnpm add`, `pip install`, `cargo add` and the like, the panel shows no Links bar and does not colour addresses, because an install prints a registry address on almost every line and it would only bury the output. A command with several parts, such as `npm install && npm run dev`, is not treated as an install, so the dev server's address still shows.
+
 ## 5. See what other panels run here
 
 Run a script from the Node panel, or click **build** in the .NET panel, and look at the Script Runner. It opens by itself and shows that command's output, with the folder it ran in on the **cwd** line.
@@ -74,6 +76,7 @@ This is the shared place where the language panels and the package managers run 
 ## 6. Good to know
 
 - **Only the newest 500 lines are kept.** A command that prints a lot loses its oldest lines. The count in the header is the number shown now.
+- **It can fill the window.** The panel header has a full-screen button, like the stock bottom panels, for reading a long output. Click it again to go back.
 - **Colour codes are removed** from the output, so you read plain text.
 - **The built-in tools come first.** The runner puts Forge Super's own runtimes first on the path, such as the Node.js and Python versions you chose in their panels. A command finds them without you installing anything.
 - **A project's Python environment is not switched on.** If a Python command fails with `No module named …`, its packages are in the project's virtual environment. See [Get around the Python panel](/docs/python-panel).

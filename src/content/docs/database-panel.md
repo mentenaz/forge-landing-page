@@ -10,6 +10,8 @@ At the top is a row of tabs, one for each kind of database: **SQLite**, **Postgr
 
 [//]: # (TODO screenshot database-panel-1-overview.png: The Database panel at the bottom with the type tabs and the Add Connection tab.)
 
+The panel header has a full-screen button, like the stock bottom panels. Use it when you want the whole window for the table; click it again to return.
+
 ## 2. Make a practice database
 
 SQLite keeps a whole database in one file, so it is the easiest place to start. An empty file is a valid, empty SQLite database. In the project folder, create one:

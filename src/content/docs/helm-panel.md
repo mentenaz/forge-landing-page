@@ -173,6 +173,18 @@ Click **Create Repository** in the menu and fill in the form:
 
 To change an existing repository, click the settings icon (**Edit repository**) on its page. You can change its name, description, homepage, topics, and the **Issues**, **Projects**, **Wiki** and **Discussions** switches. The **Private** switch changes who can see the code. A warning appears under it as soon as you flip it, saying what saving will do, and visibility is only sent to GitHub when you actually changed it. Making a repository public exposes its code and history to everyone, and GitHub may refuse depending on your plan or organisation.
 
+## 11. Publish a folder to GitHub
+
+A folder that is not on GitHub yet has no remote, and the Git panel shows a **Publish** button for it. Click it, and the **Publish to GitHub** dialog opens.
+
+1. Choose the **Owner**: you, or one of your organisations.
+2. Either pick an existing repository under **Repository**, eight to a page, and click **Connect**, or click **Create new repo**, give it a **Name**, choose whether it is **Private**, and create it.
+3. Helm connects the folder to that repository and pushes it, and tells you when it is done.
+
+Publishing never forces a push, so a repository that already has history is not overwritten.
+
+Helm runs Git in your project only once you trust it. In Restricted Mode a banner at the top of Helm says so. Trust the project when you are ready, and Helm continues. This is on purpose: a repository's own settings can name a program for Git to run.
+
 ## If something goes wrong
 
 **An organisation's repositories are missing.** The organisation restricts third-party apps. An owner has to approve Helm. The sign-in screen links to where you can request it. Owners can read what to approve in [Helm for administrators](/docs/helm-admin).

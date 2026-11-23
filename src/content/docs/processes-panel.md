@@ -10,6 +10,8 @@ From top to bottom it has a filter box and a **Refresh** button, the table, and 
 
 [//]: # (TODO screenshot processes-panel-1-overview.png: The Processes panel with the filter box, the table and the footer.)
 
+The panel header has a full-screen button, like the stock bottom panels. Use it when you want the whole window for the table; click it again to return.
+
 ## 2. Start something to look at
 
 You need a process that runs for a while. Open the **Script Runner** panel (`Ctrl+K` then `K`) and run a command that keeps going. On Windows:

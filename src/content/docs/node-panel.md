@@ -90,6 +90,18 @@ The list refreshes every few seconds, and only while you can see it.
 
 Under **Quick Actions**, click **Task Chain**. It opens the task-chain wizard with this project already filled in, so you can build a flow that starts it, together with the rest of your servers, in one click. That is the next tutorial: [Add a task chain](/docs/task-chain).
 
+## 9. Edit an SPFx solution
+
+When the project is a SharePoint Framework solution, the panel shows an **SPFx** row with the SharePoint icon. At the end of that row is a gear. Click it, and a tab opens with two pages.
+
+**Details** shows the solution's name, description and version, read from `config/package-solution.json`. Change one and the panel checks it as you type, by the same rules the scaffolding engine uses: the name cannot be empty, and the version must be four numbers such as `1.0.0.1`. A problem is shown under the box it belongs to. Under **Changes** you see the old and new line, and **Apply changes** turns on only when something has really changed. Nothing else in the file is touched, and comments and line endings stay as they were. The solution id and the SPFx version cannot be changed here.
+
+**Components** lists what is already in the solution and adds web parts. Choose the template (only those that match the solution's SPFx version are offered, 1.20 or newer), type a name, and use the **+** and **-** buttons for more. The engine checks each name live, including one that already exists, ignoring capital letters. Under **Changes** you see which files would be created and which would be edited, then click **Add web part**. Each web part gets its own id automatically. **Open web part** opens its main file.
+
+If you add a web part whose framework differs from the solution's, a note says so: its packages are added to `package.json`, and the ones already there are not changed. After an add, run `npm install` before you build.
+
+**Undo** appears after a change and takes back the last one, an edit or an add. It refuses, and names the file, if you changed that file by hand since. Only the last change is kept, and nothing is ever deleted by an add. Removing a web part is not something this tab does.
+
 ## If something goes wrong
 
 **The wrong Node version is used.** Look at the line at the top of the panel. If it says `pinned`, you pinned a version for this workspace; click **Auto** to follow the project again. A server you started earlier keeps its old version until you restart it.
