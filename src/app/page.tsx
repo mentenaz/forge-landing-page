@@ -113,6 +113,13 @@ function platformLabel(platform: string, filename: string): string {
 	return PLATFORM_LABEL[platform] ?? platform;
 }
 
+// The Intel Mac build is not published for now: it does not finish building. A
+// disk image for it is never offered, even if an older release recorded one.
+// Take this filter out when there is an Intel build again.
+function isIntelMac(asset: { platform: string; filename: string }): boolean {
+	return asset.platform === "macos" && asset.filename.includes("x86_64");
+}
+
 function formatStat(value: number): string {
 	if (value >= 1000) return `${(value / 1000).toFixed(1)}k`;
 	return String(value);
@@ -167,7 +174,9 @@ export default async function Home() {
 
 	// The platform count and the download line follow what the latest release
 	// really has, so macOS is only claimed once a disk image is published.
-	const latestAssets = (releaseResult.data as LatestRelease | null)?.release_assets ?? [];
+	const latestAssets = ((releaseResult.data as LatestRelease | null)?.release_assets ?? []).filter(
+		(a) => !isIntelMac(a),
+	);
 	const platformCount =
 		new Set(latestAssets.map((a) => (a.platform.startsWith("linux") ? "linux" : a.platform))).size || 2;
 	const hasMacDownload = latestAssets.some((a) => a.platform === "macos");
@@ -188,7 +197,7 @@ export default async function Home() {
 
 	// Direct downloads of the newest Forge Super release. Until one has been
 	// recorded, everything points at the GitHub releases page.
-	const downloads = (latest?.release_assets ?? []).map((a) => ({
+	const downloads = (latest?.release_assets ?? []).filter((a) => !isIntelMac(a)).map((a) => ({
 		icon: (
 			<ForgeIcon
 				src="/icons/Forge_Cockpit.png"
