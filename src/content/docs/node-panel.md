@@ -102,6 +102,8 @@ If you add a web part whose framework differs from the solution's, a note says s
 
 **Undo** appears after a change and takes back the last one, an edit or an add. It refuses, and names the file, if you changed that file by hand since. Only the last change is kept, and nothing is ever deleted by an add. Removing a web part is not something this tab does.
 
+A third page, **Packages**, imports a folder of shared services into the solution. The whole tab is described in [Edit an SPFx solution](/docs/edit-spfx-solution).
+
 ## If something goes wrong
 
 **The wrong Node version is used.** Look at the line at the top of the panel. If it says `pinned`, you pinned a version for this workspace; click **Auto** to follow the project again. A server you started earlier keeps its old version until you restart it.

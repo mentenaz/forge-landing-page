@@ -59,6 +59,12 @@ const FEATURES = [
 		description:
 			"Node, .NET, Python and Rust panels with npm, NuGet, pip and Cargo: registry search, outdated views and security advisories.",
 	},
+	{
+		icon: <ForgeIcon src="/icons/FileExplorerNBG.png" alt="Project templates" width={40} height={40} />,
+		title: "Project templates",
+		description:
+			"Start an SPFx, Vite or full-stack project from a template and see every file before it is written. Add your own templates, and add web parts or shared services to a solution you already have.",
+	},
 ];
 
 const GETTING_STARTED = [

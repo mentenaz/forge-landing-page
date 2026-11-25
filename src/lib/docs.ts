@@ -84,6 +84,12 @@ export const docFeatures: DocFeature[] = [
 		description: "Sign in to GitHub, read repositories without cloning, and handle everyday GitHub chores in the editor.",
 		icon: { src: "/icons/GitOps_NBG.png", alt: "Helm", width: 40, height: 40 },
 	},
+	{
+		slug: "scaffold",
+		title: "Project templates",
+		description: "Start a project from a template, keep your templates up to date, add your own, and change a solution you already have.",
+		icon: { src: "/icons/FileExplorerNBG.png", alt: "Project templates", width: 40, height: 40 },
+	},
 ];
 
 // The order here is the order on the docs hub. The body of each page is
@@ -251,6 +257,25 @@ export const docPages: DocPage[] = [
 		slug: "scaffold-panel",
 		title: "Create a project from a template",
 		description: "Find a template, fill in its form, review every file before it is written, and create the project.",
+		kind: "tutorial",
+		features: ["scaffold"],
+		minutes: 10,
+	},
+	{
+		slug: "own-templates",
+		title: "Add your own template",
+		description: "Drop a template folder into Forge Super, write its manifest, check it, and use it from the Scaffold panel.",
+		kind: "tutorial",
+		features: ["scaffold"],
+		minutes: 10,
+	},
+	{
+		slug: "edit-spfx-solution",
+		title: "Edit an SPFx solution",
+		description: "Change a solution's name and version, add web parts, and import a package of services, with a preview and an undo.",
+		kind: "tutorial",
+		features: ["scaffold", "node"],
+		minutes: 10,
 	},
 	{
 		slug: "add-an-extension",
