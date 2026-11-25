@@ -103,6 +103,13 @@ const PLATFORM_LABEL: Record<string, string> = {
 	macos: "macOS",
 };
 
+// A release found by the macOS fallback below.
+type OlderRelease = {
+	version: string;
+	release_date: string;
+	release_assets: { platform: string; filename: string; download_url: string }[];
+};
+
 // The Apple Silicon and Intel disk images share one platform, so the filename
 // says which Mac a button is for.
 function platformLabel(platform: string, filename: string): string {
@@ -210,6 +217,42 @@ export default async function Home() {
 		filename: a.filename,
 		url: a.download_url,
 	}));
+	// GitHub sometimes has no free macOS runner, so the newest release can come out
+	// without a Mac build. Then the Mac button points to the newest release that
+	// has one, with its version on the button, and a note under the downloads says
+	// why. Any failure here leaves the page as it was: the note still links to
+	// every release.
+	let macFallback: { version: string; filename: string; url: string } | null = null;
+	if (!hasMacDownload) {
+		try {
+			const { data: older } = await supabase
+				.from("releases")
+				.select("version, release_date, release_assets!inner(platform, filename, download_url)")
+				.eq("product", "forge-super")
+				.eq("release_assets.platform", "macos")
+				.order("release_date", { ascending: false })
+				.limit(5);
+			for (const release of (older as OlderRelease[] | null) ?? []) {
+				const asset = release.release_assets.find((a) => a.platform === "macos" && !isIntelMac(a));
+				if (asset) {
+					macFallback = { version: release.version, filename: asset.filename, url: asset.download_url };
+					break;
+				}
+			}
+		} catch {
+			macFallback = null;
+		}
+	}
+	if (macFallback) {
+		downloads.push({
+			icon: (
+				<ForgeIcon src="/icons/Forge_Cockpit.png" alt="macOS (Apple Silicon)" width={48} height={48} />
+			),
+			platform: `macOS (Apple Silicon), from ${macFallback.version}`,
+			filename: macFallback.filename,
+			url: macFallback.url,
+		});
+	}
 	// Only the chips that have a value; an empty one is left out, not shown blank.
 	const heroChipList = [heroChips.memory, heroChips.startup, heroChips.accounts].filter(
 		(chip): chip is string => Boolean(chip),
@@ -346,7 +389,7 @@ export default async function Home() {
 					<div className="container">
 						<h2 className="section-title">Download Forge Super</h2>
 						<p className="section-subtitle">
-							{hasMacDownload
+							{hasMacDownload || macFallback
 								? "Free. Available for Windows, Linux and macOS."
 								: "Free. Available for Windows and Linux."}
 						</p>
@@ -362,6 +405,20 @@ export default async function Home() {
 									/>
 								))}
 							</div>
+						)}
+						{!hasMacDownload && (
+							<p className={styles.methodNote}>
+								The newest release has no macOS build. GitHub sometimes has no free macOS runner, so a
+								release can come out without one.{" "}
+								{macFallback
+									? "The macOS button above is from the newest release that has it. "
+									: "There is no macOS build to link right now. "}
+								Every release, with its macOS build when it has one, is on{" "}
+								<a href={`${GITHUB_REPO}/releases`} target="_blank" rel="noopener noreferrer">
+									the releases page
+								</a>
+								.
+							</p>
 						)}
 						{(["linux", "windows", "macos"] as const).map((platform) =>
 							methodsByPlatform[platform].length > 0 ? (

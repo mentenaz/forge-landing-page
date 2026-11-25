@@ -52,7 +52,7 @@ To go back, run the installer again without `--edge`.
 
 macOS support is new. The build is not code-signed or notarized by Apple, and it has had very little testing on real Macs, so expect rough edges. For now there is a disk image for Macs with Apple silicon (M1 or newer). An Intel build is not published yet.
 
-1. Download `Mentenaz-Forge-Super-aarch64.dmg` from the [latest release](https://github.com/mentenaz/mentenaz.Forge.Super/releases/latest).
+1. Download `Mentenaz-Forge-Super-aarch64.dmg` from the newest release that has it. The [download page](/#download) links it. GitHub sometimes has no free macOS runner, so the newest release can come out without a Mac build. If the [latest release](https://github.com/mentenaz/mentenaz.Forge.Super/releases/latest) has no `.dmg`, open the [list of releases](https://github.com/mentenaz/mentenaz.Forge.Super/releases) and take the newest one that does.
 2. Open it and drag Mentenaz Forge Super into **Applications**.
 3. The first time you open it, macOS blocks it with a message that Apple could not verify it. Open **System Settings**, go to **Privacy & Security**, scroll to the message about Mentenaz Forge Super and choose **Open Anyway**. On macOS 14 and earlier you can instead right-click the app and choose **Open**.
 
